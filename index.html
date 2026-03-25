@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Manuela – Two Witches & A Broom</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --purple: #3d2b8e;
+    --purple-mid: #5c43b0;
+    --purple-light: #ebe8f7;
+    --purple-soft: #f3f1fb;
+    --lavender: #d4cef5;
+    --cream: #faf9f6;
+    --text: #1a1630;
+    --text-muted: #6b6588;
+    --white: #ffffff;
+    --accent: #8b73e0;
+    --green: #4caf85;
+    --orange: #e8803a;
+    --red: #e05c5c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+    background: var(--purple); display: flex; flex-direction: column;
+    padding: 28px 20px; gap: 4px; z-index: 100;
+  }
+  .logo-area {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px; padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .logo-img {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--purple-light); display: flex; align-items: center;
+    justify-content: center; overflow: hidden; flex-shrink: 0; font-size: 24px;
+  }
+  .logo-text h2 { font-family: 'Playfair Display', serif; font-size: 13px; color: white; line-height: 1.2; }
+  .logo-text span { font-size: 10px; color: var(--lavender); font-weight: 300; }
+  .nav-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lavender); opacity: 0.6; padding: 12px 8px 5px; font-weight: 600; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; cursor: pointer; color: rgba(255,255,255,0.65); font-size: 13px; transition: all 0.2s; text-decoration: none; }
+  .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.12); color: white; }
+  .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
+  .role-box { margin-top: auto; padding: 12px; background: rgba(255,255,255,0.08); border-radius: 10px; }
+  .role-box .rb-label { font-size: 10px; color: var(--lavender); margin-bottom: 3px; }
+  .role-box .rb-name { font-size: 13px; color: white; font-weight: 600; }
+  .role-box .rb-role { font-size: 11px; color: var(--lavender); margin-top: 2px; }
+
+  /* MAIN */
+  .main { margin-left: 220px; padding: 32px 36px; min-height: 100vh; }
+  .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
+  .header-left h1 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--purple); line-height: 1; }
+  .header-left h1 em { font-style: italic; color: var(--accent); }
+  .header-left p { margin-top: 5px; font-size: 13px; color: var(--text-muted); font-weight: 300; }
+  .date-badge { background: var(--purple-light); border-radius: 10px; padding: 10px 16px; text-align: right; }
+  .date-badge .day { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--purple); font-weight: 700; }
+  .date-badge .date-str { font-size: 11px; color: var(--text-muted); }
+
+  /* GRID */
+  .grid { display: grid; gap: 18px; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .g4 { grid-template-columns: repeat(4,1fr); }
+
+  /* CARD */
+  .card { background: white; border-radius: 16px; padding: 22px; border: 1px solid rgba(61,43,142,0.07); box-shadow: 0 2px 12px rgba(61,43,142,0.05); }
+  .card-title { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+
+  /* STAT */
+  .stat { background: white; border-radius: 14px; padding: 18px 20px; border: 1px solid rgba(61,43,142,0.07); }
+  .stat .lbl { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 5px; }
+  .stat .val { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--purple); font-weight: 700; }
+  .stat .sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .stat.dark { background: var(--purple); }
+  .stat.dark .lbl, .stat.dark .sub { color: var(--lavender); }
+  .stat.dark .val { color: white; }
+
+  /* ROUTINE */
+  .r-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--purple-soft); }
+  .r-item:last-child { border-bottom: none; }
+  .r-time { font-size: 11px; font-weight: 600; color: var(--accent); min-width: 58px; padding-top: 2px; }
+  .r-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lavender); margin-top: 5px; flex-shrink: 0; }
+  .r-dot.g { background: var(--green); }
+  .r-dot.o { background: var(--orange); }
+  .r-dot.p { background: var(--purple); }
+  .r-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .r-content p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  /* CHECKLIST */
+  .ck { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ck li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.4; }
+  .ck li::before { content: '✦'; color: var(--accent); font-size: 9px; margin-top: 3px; flex-shrink: 0; }
+
+  /* RULE LIST */
+  .rl { display: flex; flex-direction: column; gap: 10px; }
+  .ri { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.4; }
+  .ri-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* FLOW SECTION */
+  .flow-wrap { background: var(--purple); border-radius: 20px; padding: 26px; }
+  .flow-heading { font-family: 'Playfair Display', serif; font-size: 19px; color: white; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .flow-heading span { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--lavender); font-style: normal; font-weight: 300; }
+  .flow-tabs { display: flex; gap: 7px; margin-bottom: 20px; flex-wrap: wrap; }
+  .ft { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.55); background: transparent; transition: all 0.2s; }
+  .ft.active { background: white; color: var(--purple); border-color: white; font-weight: 600; }
+  .flow-content { display: none; }
+  .flow-content.active { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+  .fs { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 14px 14px; flex: 1; min-width: 100px; cursor: default; transition: background 0.2s; }
+  .fs:hover { background: rgba(255,255,255,0.17); }
+  .fs .sn { font-size: 10px; font-weight: 700; color: var(--lavender); letter-spacing: 0.4px; margin-bottom: 5px; }
+  .fs .st { font-size: 13px; font-weight: 600; color: white; margin-bottom: 4px; }
+  .fs .sd { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+  .fa { color: var(--lavender); font-size: 16px; flex-shrink: 0; align-self: center; }
+
+  /* SERVICE */
+  .svc { background: var(--purple-soft); border-radius: 12px; padding: 14px 15px; border-left: 3px solid var(--accent); }
+  .svc h4 { font-size: 13px; font-weight: 600; color: var(--purple); margin-bottom: 4px; }
+  .svc p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .svc .price { font-size: 13px; font-weight: 700; color: var(--purple-mid); margin-top: 6px; }
+
+  /* GUARANTEE */
+  .guarantee { background: linear-gradient(135deg, var(--purple), var(--purple-mid)); border-radius: 14px; padding: 18px 20px; color: white; }
+  .guarantee h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 6px; }
+  .guarantee p { font-size: 12px; color: var(--lavender); line-height: 1.5; }
+
+  /* INFO ROW */
+  .ir { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--purple-soft); font-size: 13px; }
+  .ir:last-child { border-bottom: none; }
+  .ir .k { color: var(--text-muted); }
+  .ir .v { color: var(--text); font-weight: 600; }
+
+  /* BADGE */
+  .badge { display: inline-block; background: var(--purple-light); color: var(--purple); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
+  .badge.o { background: #fdf0e6; color: var(--orange); }
+
+  /* DIRT */
+  .dirt-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+  .di { border-radius: 10px; padding: 10px 6px; text-align: center; }
+  .di .dn { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .di .dl { font-size: 10px; margin-top: 3px; font-weight: 500; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* SCRIPT BOX */
+  .script-box { background: var(--purple-soft); border-radius: 10px; padding: 13px 14px; font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; border-left: 3px solid var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo-area">
+    <div class="logo-img">🧙</div>
+    <div class="logo-text">
+      <h2>Two Witches<br>&amp; A Broom</h2>
+      <span>Cleaning Co.</span>
+    </div>
+  </div>
+  <div class="nav-label">Main</div>
+  <a class="nav-item active" onclick="showPage('home',this)"><span class="icon">🏠</span> Dashboard</a>
+  <a class="nav-item" onclick="showPage('sales',this)"><span class="icon">💬</span> Sales</a>
+  <a class="nav-item" onclick="showPage('services',this)"><span class="icon">🧼</span> Services</a>
+  <a class="nav-item" onclick="showPage('pricing',this)"><span class="icon">💰</span> Pricing</a>
+  <a class="nav-item" onclick="showPage('company',this)"><span class="icon">🏢</span> Company Info</a>
+  <div class="nav-label" style="padding-top:20px;">You</div>
+  <div class="role-box">
+    <div class="rb-label">Logged in as</div>
+    <div class="rb-name">Manuela</div>
+    <div class="rb-role">CX &amp; Sales VA</div>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="header">
+    <div class="header-left">
+      <h1>Hey, <em>Manuela</em> 🧙‍♀️</h1>
+      <p>VA at Two Witches &amp; A Broom · CX &amp; Sales</p>
+    </div>
+    <div class="date-badge">
+      <div class="day" id="js-day">—</div>
+      <div class="date-str" id="js-date">—</div>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-bottom:20px;">
+    <div class="stat dark"><div class="lbl">Min. Service</div><div class="val">$150</div><div class="sub">Never go below</div></div>
+    <div class="stat"><div class="lbl">TTB Deep Clean</div><div class="val">$490+</div><div class="sub">Starting price</div></div>
+    <div class="stat"><div class="lbl">Monthly Goal/Client</div><div class="val">$300</div><div class="sub">Recurring target</div></div>
+    <div class="stat"><div class="lbl">Guarantee</div><div class="val">24h</div><div class="sub">Satisfaction window</div></div>
+  </div>
+
+  <div class="grid g2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">📅 Daily Routine</div>
+      <div class="r-item"><div class="r-time">Morning</div><div class="r-dot g"></div><div class="r-content"><h4>Open ZenMaid &amp; Check Schedule</h4><p>Review today's appointments. Verify all client profiles have complete notes.</p></div></div>
+      <div class="r-item"><div class="r-time">Ongoing</div><div class="r-dot p"></div><div class="r-content"><h4>Handle Inbound Leads &amp; Calls</h4><p>Build rapport → Discovery → Close. Always push recurring services.</p></div></div>
+      <div class="r-item"><div class="r-time">1h after</div><div class="r-dot o"></div><div class="r-content"><h4>Confirm Open-to-Close Check-in</h4><p>Techs call office 1h after arrival. Confirm dirt level + time estimate.</p></div></div>
+      <div class="r-item"><div class="r-time">Post-clean</div><div class="r-dot g"></div><div class="r-content"><h4>Charge Client in AuthNet</h4><p>Charge after service. Verify tax + total. If declined → try another card.</p></div></div>
+      <div class="r-item"><div class="r-time">Next day</div><div class="r-dot p"></div><div class="r-content"><h4>24-Hour Follow-Up Call</h4><p>Happy → upsell recurring + ask for Google review. Unhappy → offer re-clean fast.</p></div></div>
+      <div class="r-item"><div class="r-time">Ongoing</div><div class="r-dot o"></div><div class="r-content"><h4>Manage Slack Comms</h4><p>Cleaner issues → escalate to Sandy. Stay clear, professional, consistent.</p></div></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title">🚫 Never Say / Never Do</div>
+        <ul class="ck">
+          <li>NEVER mention hourly rate ($60–$70/h) to clients</li>
+          <li>NEVER talk about <strong>time</strong> → always say <strong>effort</strong></li>
+          <li>NEVER share owner's phone or your personal number</li>
+          <li>Do NOT clean: walls, exterior windows, carpets, unfinished basements</li>
+          <li>Do NOT wash dishes or enter closed rooms</li>
+          <li>Do NOT use client's products (except marble/granite with approval)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Always Do</div>
+        <ul class="ck">
+          <li>Push recurring services on every interaction</li>
+          <li>Use <strong>sandwich method</strong>: nice → request → nice</li>
+          <li>Update ZenMaid notes after every client call</li>
+          <li>Offer reschedule before allowing a skip</li>
+          <li>Skip weekly = charged as biweekly (×1.25)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS FLOWS -->
+  <div class="flow-wrap">
+    <div class="flow-heading">🔄 Process Flows <span>— step-by-step order of operations</span></div>
+    <div class="flow-tabs">
+      <button class="ft active" onclick="switchTab('lead',this)">Lead → Sale</button>
+      <button class="ft" onclick="switchTab('followup',this)">24h Follow-Up</button>
+      <button class="ft" onclick="switchTab('issue',this)">Issue / Complaint</button>
+      <button class="ft" onclick="switchTab('reschedule',this)">Reschedule</button>
+      <button class="ft" onclick="switchTab('booking',this)">New Booking</button>
+    </div>
+
+    <div class="flow-content active" id="flow-lead">
+      <div class="fs"><div class="sn">01</div><div class="st">Build Rapport</div><div class="sd">Warm greeting, smile on call, make them feel heard.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">02</div><div class="st">Discovery</div><div class="sd">Bedrooms, bathrooms, sqft, adults/kids, pets?</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">03</div><div class="st">Dirt Code</div><div class="sd">"Describe the condition — no judgment, just for accuracy."</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">04</div><div class="st">Identify Pain</div><div class="sd">Find what frustrates them. Use emotion to connect.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">05</div><div class="st">Offer Solution</div><div class="sd">Flat rate quote. Push recurring. "Imagine never cleaning again."</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">06</div><div class="st">Close</div><div class="sd">3 forms required: house details + agreement + credit card.</div></div>
+    </div>
+
+    <div class="flow-content" id="flow-followup">
+      <div class="fs"><div class="sn">01</div><div class="st">Call Next Day</div><div class="sd">Trigger: Open-to-Close form submitted by tech.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">02</div><div class="st">Check Satisfaction</div><div class="sd">Ask how everything went. Listen first, always.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">Happy ✓</div><div class="st">Upsell Recurring</div><div class="sd">Best moment = home looks amazing. Ask for Google review, offer $20 tip to tech in their name.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">Unhappy ✗</div><div class="st">Fix Fast</div><div class="sd">Offer free re-clean. Same day preferred, next day max.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">05</div><div class="st">Log in ZenMaid</div><div class="sd">Add note with outcome. Issue: add note for next visit + preferred tech.</div></div>
+    </div>
+
+    <div class="flow-content" id="flow-issue">
+      <div class="fs"><div class="sn">01</div><div class="st">Listen</div><div class="sd">Listening solves 90% of problems. Don't interrupt.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">02</div><div class="st">Fix Issue</div><div class="sd">Offer re-clean within 24h guarantee window.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">03</div><div class="st">Add ZenMaid Note</div><div class="sd">Flag for next visit. Private note if office-only.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">04</div><div class="st">Offer Diff Tech</div><div class="sd">If pattern persists, suggest a different technician.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">05</div><div class="st">Refund (Rare)</div><div class="sd">Last resort only. Escalate to Sandy first.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">06</div><div class="st">Follow Up Again</div><div class="sd">After fix, always call to confirm satisfaction.</div></div>
+    </div>
+
+    <div class="flow-content" id="flow-reschedule">
+      <div class="fs"><div class="sn">Always</div><div class="st">Reschedule First</div><div class="sd">Always offer reschedule BEFORE allowing a skip.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">Priority 1</div><div class="st">One-time / TTB</div><div class="sd">Highest priority to keep rescheduled.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">Priority 2</div><div class="st">First-time Clean</div><div class="sd">Second most important.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">Priority 3</div><div class="st">Weekly</div><div class="sd">Skip weekly = charge biweekly rate (×1.25).</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">4–5</div><div class="st">Biweekly / Monthly</div><div class="sd">Lower priority. Update ZenMaid immediately after.</div></div>
+    </div>
+
+    <div class="flow-content" id="flow-booking">
+      <div class="fs"><div class="sn">01</div><div class="st">3 Forms Complete?</div><div class="sd">House details + Agreement + Credit card. NO forms = NO booking.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">02</div><div class="st">Build Client Profile</div><div class="sd">Access info, pets, trash, dirt code, priorities, restrictions.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">03</div><div class="st">Assign Tech</div><div class="sd">Same tech whenever possible — consistency is our differentiator.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">04</div><div class="st">Set Reminders</div><div class="sd">Email 2 days before. SMS 1 day before. Auto via ZenMaid.</div></div>
+      <div class="fa">›</div>
+      <div class="fs"><div class="sn">05</div><div class="st">Confirm in ZenMaid</div><div class="sd">If it's not in ZenMaid, it doesn't exist.</div></div>
+    </div>
+  </div>
+</div><!-- end home -->
+
+
+<!-- ══ SALES ══ -->
+<div class="page" id="page-sales">
+  <div class="header">
+    <div class="header-left"><h1><em>Sales</em> Playbook</h1><p>Scripts, discovery &amp; closing strategies</p></div>
+  </div>
+  <div class="grid g2" style="margin-bottom:18px;">
+    <div class="card">
+      <div class="card-title">📞 Sales Call — Step by Step</div>
+      <div class="rl">
+        <div class="ri"><div style="background:var(--purple);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">1</div><div><strong>Build Rapport</strong> — warm greeting, smile, make them feel heard</div></div>
+        <div class="ri"><div style="background:var(--purple);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">2</div><div><strong>Discovery</strong> — bedrooms, bathrooms, sqft, adults/kids, pets?</div></div>
+        <div class="ri"><div style="background:var(--accent);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">3</div><div><strong>Identify Pain</strong> — find what frustrates them, use emotion</div></div>
+        <div class="ri"><div style="background:var(--accent);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">4</div><div><strong>Offer Solution</strong> — flat rate, push recurring first, always</div></div>
+        <div class="ri"><div style="background:var(--green);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">5</div><div><strong>Close</strong> — 3 forms required before booking is confirmed</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title">🐾 Pet Script</div>
+        <div class="script-box">"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive."</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Always ask about aggression history. 75% of clients have pets.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">💫 Emotion Sells</div>
+        <ul class="ck">
+          <li>"Imagine never having to clean again"</li>
+          <li>"Look at the difference after this clean"</li>
+          <li>Best upsell moment = right after a spotless clean</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-title">🔢 Dirt Code Scale</div>
+      <div class="script-box" style="margin-bottom:14px;">"Please do your best to describe the current condition of your home in terms of cleaning. This is not for judgment, just for an accurate estimate."</div>
+      <div class="dirt-grid">
+        <div class="di" style="background:#e8f7f2;"><div class="dn" style="color:#4caf85;">1</div><div class="dl" style="color:#4caf85;">Spotless</div></div>
+        <div class="di" style="background:#eef7e8;"><div class="dn" style="color:#7ab648;">2</div><div class="dl" style="color:#7ab648;">Clean</div></div>
+        <div class="di" style="background:var(--purple-soft);"><div class="dn" style="color:var(--accent);">3</div><div class="dl" style="color:var(--accent);">Average</div></div>
+        <div class="di" style="background:#fdf0e6;"><div class="dn" style="color:var(--orange);">4</div><div class="dl" style="color:var(--orange);">Dirty</div></div>
+        <div class="di" style="background:#fde8e8;"><div class="dn" style="color:var(--red);">5</div><div class="dl" style="color:var(--red);">Heavy</div></div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">5+ = buildup → Option 1: stay within estimate. Option 2: pay for additional effort.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Discovery Questions</div>
+      <div class="rl">
+        <div class="ri"><span class="ri-icon">🛏️</span><div>How many <strong>bedrooms</strong>?</div></div>
+        <div class="ri"><span class="ri-icon">🚿</span><div>How many <strong>bathrooms</strong>?</div></div>
+        <div class="ri"><span class="ri-icon">📐</span><div>Approximate <strong>square footage</strong>?</div></div>
+        <div class="ri"><span class="ri-icon">👨‍👩‍👧</span><div>How many <strong>adults / kids</strong>?</div></div>
+        <div class="ri"><span class="ri-icon">🐶</span><div><strong>Pets</strong>? Type? Aggressive?</div></div>
+        <div class="ri"><span class="ri-icon">🚿</span><div>When was <strong>shower last cleaned</strong> with product?</div></div>
+        <div class="ri"><span class="ri-icon">🍽️</span><div>How often are <strong>counters wiped</strong>?</div></div>
+        <div class="ri"><span class="ri-icon">🧹</span><div>How often are <strong>floors cleaned</strong>?</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end sales -->
+
+
+<!-- ══ SERVICES ══ -->
+<div class="page" id="page-services">
+  <div class="header">
+    <div class="header-left"><h1><em>Services</em> Menu</h1><p>What we offer &amp; how to position them</p></div>
+  </div>
+  <div class="grid g2" style="margin-bottom:18px;">
+    <div class="card">
+      <div class="card-title">🧼 Service Types</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="svc" style="border-left-color:var(--green);"><h4>Recurring Cleaning</h4><p>Weekly, biweekly, monthly. <strong>85% of sales.</strong> Always push this first.</p><div class="price">Goal: $300/mo/client</div></div>
+        <div class="svc"><h4>General Clean</h4><p>One-time. Use as entry point → convert after follow-up.</p><div class="price">From $150 min</div></div>
+        <div class="svc" style="border-left-color:var(--orange);"><h4>TTB (Top to Bottom)</h4><p>Deep clean. Premium product. The "big reset." Best before recurring.</p><div class="price">Starts at $490</div></div>
+        <div class="svc" style="border-left-color:var(--accent);"><h4>Priority Clean</h4><p>Custom limited service. Specific areas only.</p><div class="price">Custom quote</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title">⭐ Why We Win</div>
+        <ul class="ck">
+          <li>Eco-friendly, non-toxic, odor-free products</li>
+          <li>Safe for pets, kids, and people</li>
+          <li>All techs pass <strong>background checks</strong></li>
+          <li>Reliable — we <strong>always show up</strong></li>
+          <li>Strong systems &amp; processes</li>
+          <li>High consistency vs competitors (main competitor Serenity has bad rep)</li>
+        </ul>
+      </div>
+      <div class="guarantee">
+        <h4>🛡️ 24-Hour Guarantee</h4>
+        <p>If client is unhappy within 24h, we return and fix it — no questions asked. After 24h, no guarantee applies.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 What's Included vs. Not</div>
+    <div class="grid g2">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✓ Included</div>
+        <ul class="ck">
+          <li>Microwave: inside + outside</li>
+          <li>Small appliances: move them</li>
+          <li>Surface >50% covered → clean around items</li>
+          <li>Floors: use client vacuum/mop if requested</li>
+          <li>Marble/granite: use client-approved cleaner</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--red);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✗ Not Included</div>
+        <ul class="ck">
+          <li>Walls</li>
+          <li>Exterior windows</li>
+          <li>Carpets</li>
+          <li>Unfinished basements</li>
+          <li>Washing dishes</li>
+          <li>Entering closed rooms</li>
+          <li>Large appliances (don't move)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- end services -->
+
+
+<!-- ══ PRICING ══ -->
+<div class="page" id="page-pricing">
+  <div class="header">
+    <div class="header-left"><h1><em>Pricing</em> Reference</h1><p>Internal rates &amp; how to quote clients</p></div>
+  </div>
+  <div class="grid g3" style="margin-bottom:18px;">
+    <div class="stat dark"><div class="lbl">Minimum Service</div><div class="val">$150</div><div class="sub">Never go below this</div></div>
+    <div class="stat"><div class="lbl">TTB Deep Clean</div><div class="val">$490+</div><div class="sub">Starting price</div></div>
+    <div class="stat"><div class="lbl">Monthly Goal/Client</div><div class="val">$300</div><div class="sub">Recurring target</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-title">💡 Pricing Rules</div>
+      <div class="rl">
+        <div class="ri"><span class="ri-icon">🔒</span><div>Internal rate: <strong>$60–$70/h per tech — NEVER tell clients</strong></div></div>
+        <div class="ri"><span class="ri-icon">📊</span><div>We use <strong>flat rate pricing</strong> — clients feel safer, better margins</div></div>
+        <div class="ri"><span class="ri-icon">🗣️</span><div>NEVER talk about <strong>time</strong> → always talk about <strong>effort</strong></div></div>
+        <div class="ri"><span class="ri-icon">📈</span><div>Skip weekly = charged as biweekly (<strong>×1.25 multiplier</strong>)</div></div>
+        <div class="ri"><span class="ri-icon">💳</span><div>Charge via <strong>AuthNet</strong> after service. Verify tax + total. Declined → try another card → contact client.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏆 How to Position Price</div>
+      <ul class="ck">
+        <li>Lead with value: eco-friendly, background-checked, reliable</li>
+        <li>Use emotion: "Imagine never having to clean again"</li>
+        <li>Flat rate = no surprises → builds trust</li>
+        <li>If dirt code is high → set expectations on effort upfront</li>
+        <li>TTB = "big reset" → frame it as investment before recurring</li>
+        <li>Best close moment: right after a spotless clean</li>
+      </ul>
+    </div>
+  </div>
+</div><!-- end pricing -->
+
+
+<!-- ══ COMPANY ══ -->
+<div class="page" id="page-company">
+  <div class="header">
+    <div class="header-left"><h1><em>Company</em> Info</h1><p>Two Witches &amp; A Broom — quick reference</p></div>
+  </div>
+  <div class="grid g3" style="margin-bottom:18px;">
+    <div class="card">
+      <div class="card-title">🏢 Overview</div>
+      <div class="ir"><span class="k">Founded</span><span class="v">August 2021</span></div>
+      <div class="ir"><span class="k">Team Size</span><span class="v">~7 techs (hiring +1)</span></div>
+      <div class="ir"><span class="k">Location</span><span class="v">Ohio (EST)</span></div>
+      <div class="ir"><span class="k">Owner</span><span class="v">Remote (since 2025)</span></div>
+      <div class="ir"><span class="k">Growth</span><span class="v">Doubled YoY</span></div>
+      <div class="ir"><span class="k">Main CRM</span><span class="v">ZenMaid</span></div>
+      <div class="ir"><span class="k">Payments</span><span class="v">AuthNet</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Team Structure</div>
+      <div class="ir"><span class="k">Sandy</span><span class="v"><span class="badge">Office Manager</span></span></div>
+      <div class="ir"><span class="k">Manuela</span><span class="v"><span class="badge">CX + Sales VA</span></span></div>
+      <div class="ir"><span class="k">Hailee</span><span class="v"><span class="badge">Trainer</span></span></div>
+      <div class="ir"><span class="k">House Checkers</span><span class="v"><span class="badge">Quality Control</span></span></div>
+      <div class="ir"><span class="k">Techs</span><span class="v"><span class="badge">Execution</span></span></div>
+      <div class="ir"><span class="k">Sandy hours</span><span class="v">8 AM – 2 PM EST</span></div>
+      <div class="ir"><span class="k">Samantha</span><span class="v"><span class="badge o">Montana TZ ⚠️</span></span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🛠️ Tools &amp; Systems</div>
+      <div class="ir"><span class="k">ZenMaid</span><span class="v">Scheduling + CRM</span></div>
+      <div class="ir"><span class="k">AuthNet</span><span class="v">Payments</span></div>
+      <div class="ir"><span class="k">Slack</span><span class="v">Internal comms</span></div>
+      <div class="ir"><span class="k">Google Reviews</span><span class="v">Goal: 200</span></div>
+      <div class="ir"><span class="k">Marketing</span><span class="v">FB / Google / TikTok</span></div>
+      <div class="ir"><span class="k">Note colors</span><span class="v">Yellow=techs / Private=office</span></div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="card-title">🧾 ZenMaid — Client Profile Checklist</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic;">"Could someone else serve this client perfectly using only this profile?"</div>
+      <div class="grid g2" style="gap:8px;">
+        <ul class="ck">
+          <li>Access instructions</li>
+          <li>Pets + aggression history</li>
+          <li>Trash bags location + disposal</li>
+          <li>Basement: included or not</li>
+          <li>Dirt code</li>
+        </ul>
+        <ul class="ck">
+          <li>Preferences &amp; priorities</li>
+          <li>Past complaints</li>
+          <li>Tech preferences</li>
+          <li>Add-ons &amp; restrictions</li>
+          <li>Reschedule/skip history</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🧠 Core Principles</div>
+      <ul class="ck">
+        <li><strong>Consistency matters</strong> — same tech whenever possible</li>
+        <li><strong>Verbage is key</strong> — use standardized language always</li>
+        <li><strong>No gossip</strong> — address issues directly with the person</li>
+        <li>Feedback = opportunity to improve</li>
+        <li>Listening solves 90% of problems</li>
+        <li>If it's not in ZenMaid → it <strong>doesn't exist</strong></li>
+        <li>2 complaints in 60 days → PIP triggered (Sandy handles)</li>
+      </ul>
+    </div>
+  </div>
+</div><!-- end company -->
+
+</main>
+
+<script>
+  const now = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  document.getElementById('js-day').textContent = days[now.getDay()];
+  document.getElementById('js-date').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  function showPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function switchTab(name, el) {
+    document.querySelectorAll('.ft').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.flow-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('flow-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
