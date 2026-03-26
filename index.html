@@ -194,7 +194,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .notion-row:hover .col-resizer{opacity:1;}
 .col-resizer-inner{width:2px;height:32px;background:var(--lavender);border-radius:2px;}
 
-/* ── CARD ── */
+/* ── CARD (Current style) ── */
 .card{
   background:white;border-radius:16px;padding:20px;
   border:1px solid rgba(61,43,142,.07);
@@ -239,6 +239,63 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .card-body{font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
 .card-body:focus{
   outline:none;background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;
+}
+
+/* ── TRELLO CARD (NEW) ── */
+.trello-card{
+  background:white;border-radius:12px;border:1px solid #e8e4f7;
+  box-shadow:0 1px 3px rgba(61,43,142,.06);
+  overflow:hidden;transition:all .2s;
+  cursor:default;position:relative;
+}
+.trello-card:hover{box-shadow:0 4px 12px rgba(61,43,142,.12);}
+.trello-card.dragging{opacity:.4;transform:scale(.98);}
+.trello-card.drag-placeholder{
+  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
+  box-shadow:none!important;opacity:.6;
+}
+
+.trello-card-drag-handle{
+  position:absolute;top:8px;left:-22px;
+  width:18px;height:30px;display:flex;align-items:center;justify-content:center;
+  opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;
+  border-radius:6px;
+}
+.trello-card:hover .trello-card-drag-handle{opacity:.6;}
+.trello-card-drag-handle:hover{opacity:1!important;background:var(--purple-soft);}
+.trello-card-drag-handle:active{cursor:grabbing;}
+
+.trello-card-header{
+  background:var(--purple);color:white;padding:12px 14px;
+  display:flex;align-items:center;gap:8px;justify-content:space-between;
+}
+.trello-card-title{
+  font-size:13px;font-weight:600;flex:1;cursor:text;
+  outline:none;background:transparent;color:white;border:none;
+  font-family:'DM Sans',sans-serif;
+}
+.trello-card-title:focus{
+  background:rgba(0,0,0,0.2);border-radius:6px;padding:2px 6px;margin:-2px -6px;
+}
+.trello-card-actions{display:flex;gap:2px;align-items:center;}
+.trello-card-actions button{
+  background:none;border:none;color:rgba(255,255,255,.6);
+  cursor:pointer;padding:2px 4px;font-size:12px;border-radius:4px;
+  transition:all .15s;line-height:1;
+}
+.trello-card-actions button:hover{background:rgba(0,0,0,0.2);color:white;}
+
+.trello-card-body{
+  padding:14px;font-size:13px;color:var(--text);line-height:1.5;
+  white-space:pre-wrap;word-break:break-word;
+  outline:none;
+}
+.trello-card-body:focus{
+  background:var(--purple-soft);outline:1px solid var(--accent);border-radius:6px;
+}
+
+.trello-card-files{
+  padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
 }
 
 /* ── STAT CARD ── */
@@ -371,7 +428,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   font-size:16px;padding:2px;line-height:1;transition:color .15s;
   display:none;
 }
-.card:hover .file-attach-btn,.stat-card:hover .file-attach-btn{display:inline;}
+.card:hover .file-attach-btn,.stat-card:hover .file-attach-btn,.trello-card:hover .file-attach-btn{display:inline;}
 .file-attach-btn:hover{color:var(--accent);}
 .file-input-hidden{display:none;}
 
@@ -473,7 +530,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 <div class="modal-overlay" id="modal-card">
   <div class="modal">
     <h3>Add Card</h3>
-    <label>Icon</label>
+    <label>Type</label>
+    <select id="card-type-input">
+      <option value="text">Text / Notes (Current)</option>
+      <option value="stat">Stat (big number)</option>
+      <option value="trello">Trello Card (Title outside)</option>
+    </select>
+    <label id="emoji-label">Icon</label>
     <div class="emoji-row" id="card-emoji-row">
       <span class="emoji-opt selected" data-emoji="📋">📋</span>
       <span class="emoji-opt" data-emoji="✅">✅</span>
@@ -485,14 +548,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
       <span class="emoji-opt" data-emoji="🔢">🔢</span>
       <input class="custom-emoji" placeholder="or type…" id="card-emoji-custom" maxlength="4"/>
     </div>
-    <label>Card Title</label>
+    <label id="title-label">Card Title</label>
     <input type="text" id="card-title-input" placeholder="e.g. Daily Routine"/>
-    <label>Type</label>
-    <select id="card-type-input">
-      <option value="text">Text / Notes</option>
-      <option value="stat">Stat (big number)</option>
-    </select>
-    <label>Content</label>
+    <label id="content-label">Content</label>
     <textarea id="card-content-input" placeholder="Write your content here…"></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-card')">Cancel</button>
@@ -752,7 +810,6 @@ async function loadData(){
   unsubSnapshot = onSnapshot(docRef, snap => {
     if(snap.exists()){
       appData = snap.data();
-      // migrate old format rows (array of cards) to new col-based format
       migrateData();
     } else {
       appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
@@ -763,11 +820,9 @@ async function loadData(){
 }
 
 function migrateData(){
-  // old rows had `cards` array directly; new have `cols` array
   for(const page of (appData.pages||[])){
     for(const row of (page.rows||[])){
       if(row.cards && !row.cols){
-        // wrap all cards into a single column per card (or two columns)
         const cols = [];
         let col = { id:'col-'+Date.now()+Math.random().toString(36).slice(2), cards:[] };
         row.cards.forEach((c,i)=>{
@@ -849,7 +904,6 @@ function renderPage(page){
   const view = document.createElement('div');
   view.className = 'page-view active';
 
-  // Header
   const header = document.createElement('div');
   header.className = 'page-header';
 
@@ -884,7 +938,6 @@ function renderPage(page){
   header.appendChild(dateBadge);
   view.appendChild(header);
 
-  // Cards area
   const cardsArea = document.createElement('div');
   cardsArea.className = 'cards-area';
   cardsArea.id = 'cards-area';
@@ -921,7 +974,6 @@ function renderRow(pageId, row){
   rowEl.className = 'notion-row';
   rowEl.dataset.rowid = row.id;
 
-  // Row controls: add column, delete row
   const controls = document.createElement('div');
   controls.className = 'row-controls';
   controls.innerHTML = `
@@ -964,6 +1016,7 @@ function renderCol(pageId, rowId, col){
 // ── RENDER CARD ──
 function renderCard(pageId, rowId, colId, card){
   if(card.type === 'stat') return renderStatCard(pageId, rowId, colId, card);
+  if(card.type === 'trello') return renderTrelloCard(pageId, rowId, colId, card);
 
   const el = document.createElement('div');
   el.className = 'card';
@@ -973,7 +1026,6 @@ function renderCard(pageId, rowId, colId, card){
   el.dataset.colId = colId;
   if(card.dark){ el.style.background='var(--purple)'; }
 
-  // Drag handle
   const handle = document.createElement('div');
   handle.className = 'card-drag-handle';
   handle.title = 'Drag to move';
@@ -981,7 +1033,6 @@ function renderCard(pageId, rowId, colId, card){
   handle.setAttribute('draggable','true');
   el.appendChild(handle);
 
-  // Header
   const header = document.createElement('div');
   header.className = 'card-header';
 
@@ -1010,7 +1061,6 @@ function renderCard(pageId, rowId, colId, card){
   header.appendChild(actions);
   el.appendChild(header);
 
-  // Body — use textContent to avoid &amp; bug
   const bodyEl = document.createElement('div');
   bodyEl.className = 'card-body';
   bodyEl.contentEditable = 'true';
@@ -1020,13 +1070,11 @@ function renderCard(pageId, rowId, colId, card){
   bodyEl.addEventListener('blur',()=>{
     updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
   });
-  // prevent enter from creating <div> elements
   bodyEl.addEventListener('keydown', e=>{
     if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
   });
   el.appendChild(bodyEl);
 
-  // Files
   const filesEl = document.createElement('div');
   filesEl.className = 'card-files';
   filesEl.id = 'files-'+card.id;
@@ -1048,7 +1096,80 @@ function renderCard(pageId, rowId, colId, card){
   attachBtn.onclick = () => fileInput.click();
   el.appendChild(attachBtn);
 
-  // Make card draggable via handle
+  setupCardDrag(handle, el);
+
+  return el;
+}
+
+// ── RENDER TRELLO CARD ──
+function renderTrelloCard(pageId, rowId, colId, card){
+  const el = document.createElement('div');
+  el.className = 'trello-card';
+  el.dataset.cardid = card.id;
+  el.dataset.pageId = pageId;
+  el.dataset.rowId = rowId;
+  el.dataset.colId = colId;
+
+  const handle = document.createElement('div');
+  handle.className = 'trello-card-drag-handle';
+  handle.title = 'Drag to move';
+  handle.innerHTML = '⠿';
+  handle.setAttribute('draggable','true');
+  el.appendChild(handle);
+
+  const header = document.createElement('div');
+  header.className = 'trello-card-header';
+
+  const titleEl = document.createElement('input');
+  titleEl.className = 'trello-card-title';
+  titleEl.type = 'text';
+  titleEl.placeholder = 'Card title…';
+  titleEl.value = card.title || '';
+  titleEl.addEventListener('blur',()=>{ updateCardField(pageId,rowId,colId,card.id,'title',titleEl.value.trim()); });
+
+  const actions = document.createElement('div');
+  actions.className = 'trello-card-actions';
+  actions.innerHTML = `
+    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+
+  header.appendChild(titleEl);
+  header.appendChild(actions);
+  el.appendChild(header);
+
+  const bodyEl = document.createElement('div');
+  bodyEl.className = 'trello-card-body';
+  bodyEl.contentEditable = 'true';
+  bodyEl.setAttribute('data-placeholder','Write description here…');
+  bodyEl.textContent = card.content || '';
+  bodyEl.addEventListener('blur',()=>{
+    updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
+  });
+  bodyEl.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
+  });
+  el.appendChild(bodyEl);
+
+  const filesEl = document.createElement('div');
+  filesEl.className = 'trello-card-files';
+  filesEl.id = 'files-'+card.id;
+  renderFileChips(pageId, rowId, colId, card, filesEl);
+  el.appendChild(filesEl);
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.multiple = true;
+  fileInput.className = 'file-input-hidden';
+  fileInput.id = 'file-input-'+card.id;
+  fileInput.addEventListener('change', e => uploadFiles(e, pageId, rowId, colId, card.id));
+  el.appendChild(fileInput);
+
+  const attachBtn = document.createElement('button');
+  attachBtn.className = 'file-attach-btn';
+  attachBtn.title = 'Attach file';
+  attachBtn.textContent = '📎';
+  attachBtn.onclick = () => fileInput.click();
+  el.appendChild(attachBtn);
+
   setupCardDrag(handle, el);
 
   return el;
@@ -1154,10 +1275,9 @@ function setupCardDrag(handle, cardEl){
       colId: cardEl.dataset.colId,
     };
     cardEl.classList.add('dragging');
-    // set ghost
     const ghost = document.getElementById('dnd-ghost');
-    const titleEl = cardEl.querySelector('.card-title-text,.sc-label');
-    ghost.textContent = titleEl ? (titleEl.textContent||'Card') : 'Card';
+    const titleEl = cardEl.querySelector('.card-title-text,.trello-card-title,.sc-label');
+    ghost.textContent = titleEl ? (titleEl.textContent||titleEl.value||'Card') : 'Card';
     ghost.style.display = 'block';
     e.dataTransfer.setDragImage(ghost, 20, 20);
     e.dataTransfer.effectAllowed = 'move';
@@ -1176,21 +1296,18 @@ function initDnd(pageId){
   const area = document.getElementById('cards-area');
   if(!area) return;
 
-  // Delegate drag events on columns
   area.addEventListener('dragover', e => {
     if(!dragState) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 
-    // find target col
     const colEl = e.target.closest('.notion-col');
     if(!colEl) return;
 
     clearDndHighlights();
     colEl.classList.add('drag-over-col');
 
-    // figure out insert position within col
-    const cards = [...colEl.querySelectorAll('.card,.stat-card')].filter(c=>!c.classList.contains('dragging'));
+    const cards = [...colEl.querySelectorAll('.card,.stat-card,.trello-card')].filter(c=>!c.classList.contains('dragging'));
     let afterCard = null;
     for(const c of cards){
       const box = c.getBoundingClientRect();
@@ -1214,7 +1331,6 @@ function initDnd(pageId){
 
     if(!targetRowId || !targetColId) return;
 
-    // Remove card from source
     const page = getPage(pageId);
     let movedCard = null;
     for(const row of (page.rows||[])){
@@ -1229,7 +1345,6 @@ function initDnd(pageId){
     }
     if(!movedCard) return;
 
-    // Insert into target
     const targetRow = (page.rows||[]).find(r=>r.id===targetRowId);
     if(!targetRow) return;
     const targetCol = (targetRow.cols||[]).find(c=>c.id===targetColId);
@@ -1350,24 +1465,76 @@ window.openAddCard = (pageId,rowId,colId)=>{
   document.getElementById('card-title-input').value = '';
   document.getElementById('card-content-input').value = '';
   document.getElementById('card-type-input').value = 'text';
+  updateCardTypeFields();
   setSelectedEmoji('card-emoji-row','📋');
   document.getElementById('card-emoji-custom').value = '';
   openModal('modal-card');
 };
+
+// Update labels based on card type
+function updateCardTypeFields(){
+  const type = document.getElementById('card-type-input').value;
+  const emojiLabel = document.getElementById('emoji-label');
+  const titleLabel = document.getElementById('title-label');
+  const contentLabel = document.getElementById('content-label');
+  const emojiRow = document.getElementById('card-emoji-row');
+
+  if(type === 'trello'){
+    emojiLabel.style.display = 'none';
+    emojiRow.style.display = 'none';
+    titleLabel.textContent = 'Card Title';
+    contentLabel.textContent = 'Description';
+  } else {
+    emojiLabel.style.display = 'block';
+    emojiRow.style.display = 'flex';
+    titleLabel.textContent = type === 'stat' ? 'Label' : 'Card Title';
+    contentLabel.textContent = type === 'stat' ? 'Value' : 'Content';
+  }
+}
+
+document.getElementById('card-type-input').addEventListener('change', updateCardTypeFields);
+
 document.getElementById('modal-card-save').onclick = ()=>{
   if(!pendingCardTarget) return;
   const {pageId,rowId,colId} = pendingCardTarget;
   const col = getCol(pageId,rowId,colId);
   if(!col) return;
   const type = document.getElementById('card-type-input').value;
-  const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
   const title = document.getElementById('card-title-input').value.trim();
   const content = document.getElementById('card-content-input').value.trim();
-  const newCard = {id:'card-'+Date.now(), type, emoji, title, content, files:[]};
-  if(type==='stat'){
-    newCard.label=title; newCard.value=content; newCard.sub='';
-    delete newCard.title; delete newCard.content;
+  
+  let newCard;
+  if(type === 'trello'){
+    newCard = {
+      id:'card-'+Date.now(),
+      type:'trello',
+      title: title || 'Untitled',
+      content: content || '',
+      files: []
+    };
+  } else if(type === 'stat'){
+    const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
+    newCard = {
+      id:'card-'+Date.now(),
+      type:'stat',
+      emoji,
+      label: title || 'Label',
+      value: content || '',
+      sub: '',
+      files: []
+    };
+  } else {
+    const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
+    newCard = {
+      id:'card-'+Date.now(),
+      type:'text',
+      emoji,
+      title: title || 'Untitled',
+      content: content || '',
+      files: []
+    };
   }
+  
   if(!col.cards) col.cards=[];
   col.cards.push(newCard);
   saveData(); closeModal('modal-card'); renderApp();
