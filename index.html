@@ -36,9 +36,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .ni-actions button{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:2px 3px;font-size:12px;border-radius:4px;transition:color .15s;}
 .add-page-btn{display:flex;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.4);font-size:12px;border:1px dashed rgba(255,255,255,.2);background:none;width:100%;text-align:left;transition:all .2s;margin-top:4px;font-family:'DM Sans',sans-serif;}
 .add-page-btn:hover{color:rgba(255,255,255,.8);}
-.role-box{margin-top:auto;padding:12px;background:rgba(255,255,255,.08);border-radius:10px;}
-.role-box .rb-name{font-size:13px;color:white;font-weight:600;}
-.role-box .rb-role{font-size:11px;color:var(--lavender);margin-top:2px;}
+
+/* ─── CLOCKS ─── */
+.clocks-box{margin-top:auto;padding:12px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;flex-direction:column;gap:10px;}
+.clocks-box-label{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--lavender);opacity:.6;font-weight:600;margin-bottom:2px;}
+.clock-row{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.clock-city{font-size:11.5px;color:rgba(255,255,255,.6);font-weight:400;}
+.clock-time{font-size:13px;color:white;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.5px;}
 
 /* ─── MAIN ─── */
 .main{margin-left:var(--sidebar-w);padding:28px 32px;min-height:100vh;display:flex;flex-direction:column;}
@@ -83,12 +87,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .card-attach-count{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:3px;}
 .card-edit-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:11px;padding:2px 6px;border-radius:5px;transition:all .15s;font-family:'DM Sans',sans-serif;}
 .card-edit-btn:hover{background:var(--purple-soft);color:var(--purple);}
-
-/* ─── ADD CARD BUTTON ─── */
 .add-card-btn{display:flex;align-items:center;gap:6px;margin:0 8px 10px;padding:7px 10px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);font-size:12.5px;font-family:'DM Sans',sans-serif;transition:all .18s;width:calc(100% - 16px);}
 .add-card-btn:hover{background:rgba(139,115,224,.12);color:var(--purple-mid);}
-
-/* ─── GHOST COL (drop zone) ─── */
 .col-ghost{flex:0 0 var(--card-w);border:2px dashed var(--lavender);border-radius:14px;min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--lavender);font-size:13px;cursor:default;opacity:0;transition:opacity .2s;}
 .col-ghost.visible{opacity:1;}
 
@@ -113,8 +113,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .btn-confirm:hover{background:var(--purple-mid);}
 .btn-danger{padding:9px 20px;border-radius:10px;border:none;background:#fde8e8;color:#e05c5c;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
 .btn-danger:hover{background:#e05c5c;color:white;}
-
-/* ─── CARD DETAIL VIEW ─── */
 .card-detail-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--purple);margin-bottom:6px;outline:none;border:none;background:none;width:100%;font-weight:700;}
 .card-detail-content{width:100%;padding:10px 13px;border:1.5px solid #e8e4f7;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;min-height:160px;resize:vertical;line-height:1.7;transition:border .15s;}
 .card-detail-content:focus{border-color:var(--accent);}
@@ -138,9 +136,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
     </div>
   </div>
   <div id="nav-sections"></div>
-  <div class="role-box">
-    <div class="rb-name">Manuela Oliveira</div>
-    <div class="rb-role">CX & Sales VA</div>
+  <div class="clocks-box">
+    <div class="clocks-box-label">🕐 World Clocks</div>
+    <div class="clock-row">
+      <span class="clock-city">🇧🇷 Gramado RS</span>
+      <span class="clock-time" id="clock-gramado">--:--</span>
+    </div>
+    <div class="clock-row">
+      <span class="clock-city">🇺🇸 Findlay OH</span>
+      <span class="clock-time" id="clock-findlay">--:--</span>
+    </div>
+    <div class="clock-row">
+      <span class="clock-city">🇺🇸 Montana</span>
+      <span class="clock-time" id="clock-montana">--:--</span>
+    </div>
   </div>
 </div>
 
@@ -161,7 +170,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   <div id="board" class="board"></div>
 </main>
 
-<!-- Page modal -->
 <div class="modal-overlay" id="modal-page">
   <div class="modal">
     <h3 id="modal-page-heading">New Page</h3>
@@ -183,7 +191,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
-<!-- Card detail modal -->
 <div class="modal-overlay" id="modal-card">
   <div class="modal modal-wide">
     <input class="card-detail-title" id="card-detail-title" placeholder="Card title…"/>
@@ -203,7 +210,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
-<!-- Column rename modal -->
 <div class="modal-overlay" id="modal-col">
   <div class="modal">
     <h3>Rename Column</h3>
@@ -235,59 +241,41 @@ let appData = {
       id: 'p1', emoji: '🏠', label: 'Dashboard',
       title: 'Dashboard', subtitle: 'Overview & daily tasks',
       columns: [
-        {
-          id: 'col1', title: 'Daily Routine',
-          cards: [
+        { id: 'col1', title: 'Daily Routine', cards: [
             {id: 'c1', title: 'Morning Checklist', content: '🟢 Check schedule\n🟣 Review leads\n🟠 Check ZenMaid\n🟢 Reply to messages', attachments: []},
             {id: 'c2', title: 'Post-clean Follow-up', content: '• Send thank you message\n• Request review\n• Offer reschedule\n• Update CRM notes', attachments: []},
-          ]
-        },
-        {
-          id: 'col2', title: 'Rules',
-          cards: [
+        ]},
+        { id: 'col2', title: 'Rules', cards: [
             {id: 'c3', title: '🚫 Never Do', content: '• Never quote hourly rate to clients\n• Never use the word "time"\n• Never share personal phone\n• Never promise same-day bookings without checking', attachments: []},
             {id: 'c4', title: '✅ Always Do', content: '• Push recurring packages first\n• Update ZenMaid after every call\n• Offer reschedule if cancellation\n• Confirm 24h before appointment', attachments: []},
-          ]
-        },
-        {
-          id: 'col3', title: 'Quick Refs',
-          cards: [
+        ]},
+        { id: 'col3', title: 'Quick Refs', cards: [
             {id: 'c5', title: 'Minimum Service Price', content: '$150\n\nNever go below this value — for any service type or client.', attachments: []},
-          ]
-        },
+        ]},
       ]
     },
     {
       id: 'p2', emoji: '💬', label: 'Sales',
       title: 'Sales Playbook', subtitle: 'Scripts and strategies',
       columns: [
-        {
-          id: 'col4', title: 'Call Flow',
-          cards: [
+        { id: 'col4', title: 'Call Flow', cards: [
             {id: 'c6', title: 'Sales Call Steps', content: '1️⃣ Build Rapport — be warm, friendly\n2️⃣ Discovery — ask the right questions\n3️⃣ Identify Pain — what bothers them?\n4️⃣ Offer Solution — position our service\n5️⃣ Close — ask for the booking', attachments: []},
-          ]
-        },
-        {
-          id: 'col5', title: 'Discovery',
-          cards: [
+        ]},
+        { id: 'col5', title: 'Discovery', cards: [
             {id: 'c7', title: 'Discovery Questions', content: '🛏️ How many bedrooms?\n🚿 How many bathrooms?\n📐 Approx. square footage?\n👨‍👩‍👧 Adults / kids at home?\n🐶 Pets? (type, size)\n🧹 Last time professionally cleaned?', attachments: []},
-          ]
-        },
+        ]},
       ]
     },
     {
       id: 'p3', emoji: '🧼', label: 'Services',
       title: 'Services Menu', subtitle: 'What we offer',
       columns: [
-        {
-          id: 'col6', title: 'Service Types',
-          cards: [
+        { id: 'col6', title: 'Service Types', cards: [
             {id: 'c8', title: 'Recurring Clean', content: '🟢 Weekly / Biweekly / Monthly\n\nBest value for clients. Always push this option first. Eligible for loyalty pricing after 3 visits.', attachments: []},
             {id: 'c9', title: 'General (One-time)', content: '🔵 Standard deep clean for new or occasional clients.\n\nIdeal entry point — often converts to recurring.', attachments: []},
             {id: 'c10', title: 'Top-to-Bottom (TTB)', content: '🟠 Starting at $490\n\nFull intensive clean. Includes inside appliances, cabinets, windows. Quote individually.', attachments: []},
             {id: 'c11', title: 'Priority Service', content: '🟣 Custom scheduling / priority slots\n\nFor VIP or high-urgency clients. Pricing varies — always confirm with owner first.', attachments: []},
-          ]
-        },
+        ]},
       ]
     },
   ]
@@ -298,24 +286,20 @@ const STORAGE_KEY = 'twb_appdata';
 const STORAGE_PAGE = 'twb_currentPage';
 
 function saveData(){
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-    localStorage.setItem(STORAGE_PAGE, currentPageId);
-  } catch(e){ /* storage full or unavailable */ }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); localStorage.setItem(STORAGE_PAGE, currentPageId); } catch(e){}
 }
-
 function loadData(){
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if(saved) appData = JSON.parse(saved);
     const savedPage = localStorage.getItem(STORAGE_PAGE);
     if(savedPage && appData.pages.find(p => p.id === savedPage)) currentPageId = savedPage;
-  } catch(e){ /* corrupted data — fall back to defaults */ }
+  } catch(e){}
 }
 
 let currentPageId = 'p1';
 let pendingPageEdit = null;
-let pendingCardEdit = { colId: null, cardId: null }; // null cardId = new card
+let pendingCardEdit = { colId: null, cardId: null };
 let pendingColEdit = null;
 let dragState = { cardId: null, fromColId: null };
 
@@ -323,6 +307,18 @@ let dragState = { cardId: null, fromColId: null };
 const now = new Date();
 document.getElementById('day-name').textContent = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][now.getDay()];
 document.getElementById('date-str').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+// ─── CLOCKS ───
+function formatTime(tz){
+  return new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz});
+}
+function updateClocks(){
+  document.getElementById('clock-gramado').textContent = formatTime('America/Sao_Paulo');
+  document.getElementById('clock-findlay').textContent  = formatTime('America/New_York');
+  document.getElementById('clock-montana').textContent  = formatTime('America/Denver');
+}
+updateClocks();
+setInterval(updateClocks, 1000);
 
 // ─── RENDER ───
 function renderApp(){
@@ -340,7 +336,6 @@ function renderSidebar(){
   const sec = document.createElement('div');
   sec.className = 'nav-section';
   sec.innerHTML = `<div class="nav-section-label"><span>Pages</span><button onclick="openAddPage()">＋</button></div>`;
-
   appData.pages.forEach(page => {
     const item = document.createElement('div');
     item.className = 'nav-item' + (page.id === currentPageId ? ' active' : '');
@@ -348,7 +343,6 @@ function renderSidebar(){
     item.addEventListener('click', () => { currentPageId = page.id; saveData(); renderApp(); });
     sec.appendChild(item);
   });
-
   const addBtn = document.createElement('button');
   addBtn.className = 'add-page-btn';
   addBtn.textContent = '＋ Add page';
@@ -360,13 +354,10 @@ function renderSidebar(){
 function renderBoard(page){
   const board = document.getElementById('board');
   board.innerHTML = '';
-
   page.columns.forEach(col => {
     const colEl = document.createElement('div');
     colEl.className = 'column';
     colEl.dataset.colId = col.id;
-
-    // Header
     const hdr = document.createElement('div');
     hdr.className = 'col-header';
     const titleEl = document.createElement('input');
@@ -374,196 +365,90 @@ function renderBoard(page){
     titleEl.value = col.title;
     titleEl.addEventListener('blur', () => { col.title = titleEl.value; saveData(); });
     titleEl.addEventListener('keydown', e => { if(e.key === 'Enter') titleEl.blur(); });
-
     const actions = document.createElement('div');
     actions.className = 'col-actions';
     actions.innerHTML = `<button title="Delete column" onclick="openDeleteCol('${col.id}')">🗑️</button>`;
-    hdr.appendChild(titleEl);
-    hdr.appendChild(actions);
-    colEl.appendChild(hdr);
-
-    // Cards
+    hdr.appendChild(titleEl); hdr.appendChild(actions); colEl.appendChild(hdr);
     const cardsContainer = document.createElement('div');
     cardsContainer.className = 'col-cards';
     cardsContainer.dataset.colId = col.id;
-
-    col.cards.forEach(card => {
-      cardsContainer.appendChild(createCardEl(card, col.id));
-    });
-
-    // Drop zone at bottom
+    col.cards.forEach(card => cardsContainer.appendChild(createCardEl(card, col.id)));
     const dropZone = document.createElement('div');
-    dropZone.className = 'col-cards-drop-zone';
     dropZone.style.cssText = 'flex:1;min-height:20px;';
-    dropZone.dataset.colId = col.id;
     setupDropZone(dropZone, col.id, null);
     cardsContainer.appendChild(dropZone);
-
     colEl.appendChild(cardsContainer);
-
-    // Add card button
     const addBtn = document.createElement('button');
     addBtn.className = 'add-card-btn';
     addBtn.innerHTML = '<span style="font-size:16px;line-height:1">＋</span> Add card';
     addBtn.onclick = () => openNewCard(col.id);
     colEl.appendChild(addBtn);
-
-    // Column drag-over setup
-    colEl.addEventListener('dragover', e => {
-      e.preventDefault();
-      colEl.classList.add('drag-over');
-    });
-    colEl.addEventListener('dragleave', e => {
-      if(!colEl.contains(e.relatedTarget)) colEl.classList.remove('drag-over');
-    });
-    colEl.addEventListener('drop', e => {
-      e.preventDefault();
-      colEl.classList.remove('drag-over');
-      if(!dragState.cardId) return;
-      moveCard(dragState.cardId, dragState.fromColId, col.id, null);
-    });
-
+    colEl.addEventListener('dragover', e => { e.preventDefault(); colEl.classList.add('drag-over'); });
+    colEl.addEventListener('dragleave', e => { if(!colEl.contains(e.relatedTarget)) colEl.classList.remove('drag-over'); });
+    colEl.addEventListener('drop', e => { e.preventDefault(); colEl.classList.remove('drag-over'); if(!dragState.cardId) return; moveCard(dragState.cardId, dragState.fromColId, col.id, null); });
     board.appendChild(colEl);
   });
 }
 
 function createCardEl(card, colId){
   const el = document.createElement('div');
-  el.className = 'card';
-  el.draggable = true;
-  el.dataset.cardId = card.id;
-  el.dataset.colId = colId;
-
+  el.className = 'card'; el.draggable = true; el.dataset.cardId = card.id; el.dataset.colId = colId;
   const preview = card.content ? card.content.replace(/\n/g,' ').slice(0,90) : '';
   const hasAttach = card.attachments && card.attachments.length > 0;
-
-  el.innerHTML = `
-    <div class="card-inner">
-      <div class="card-title-row">
-        <span class="card-title">${escHtml(card.title)}</span>
-      </div>
-      ${preview ? `<div class="card-preview">${escHtml(preview)}</div>` : ''}
-    </div>
-    ${hasAttach ? `<div class="card-footer"><span class="card-attach-count">📎 ${card.attachments.length}</span></div>` : ''}
-  `;
-
+  el.innerHTML = `<div class="card-inner"><div class="card-title-row"><span class="card-title">${escHtml(card.title)}</span></div>${preview ? `<div class="card-preview">${escHtml(preview)}</div>` : ''}</div>${hasAttach ? `<div class="card-footer"><span class="card-attach-count">📎 ${card.attachments.length}</span></div>` : ''}`;
   el.addEventListener('click', () => openCardModal(colId, card.id));
-
-  el.addEventListener('dragstart', e => {
-    dragState = { cardId: card.id, fromColId: colId };
-    el.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', card.id);
-  });
-  el.addEventListener('dragend', () => {
-    el.classList.remove('dragging');
-    dragState = { cardId: null, fromColId: null };
-  });
-
-  // Card drag-over for inserting before
-  el.addEventListener('dragover', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    if(dragState.cardId && dragState.cardId !== card.id) el.classList.add('drag-target');
-  });
+  el.addEventListener('dragstart', e => { dragState = { cardId: card.id, fromColId: colId }; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', card.id); });
+  el.addEventListener('dragend', () => { el.classList.remove('dragging'); dragState = { cardId: null, fromColId: null }; });
+  el.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); if(dragState.cardId && dragState.cardId !== card.id) el.classList.add('drag-target'); });
   el.addEventListener('dragleave', () => el.classList.remove('drag-target'));
-  el.addEventListener('drop', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    el.classList.remove('drag-target');
-    if(!dragState.cardId || dragState.cardId === card.id) return;
-    moveCard(dragState.cardId, dragState.fromColId, colId, card.id);
-  });
-
+  el.addEventListener('drop', e => { e.preventDefault(); e.stopPropagation(); el.classList.remove('drag-target'); if(!dragState.cardId || dragState.cardId === card.id) return; moveCard(dragState.cardId, dragState.fromColId, colId, card.id); });
   return el;
 }
 
 function setupDropZone(el, colId, beforeCardId){
   el.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); });
-  el.addEventListener('drop', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    if(!dragState.cardId) return;
-    moveCard(dragState.cardId, dragState.fromColId, colId, beforeCardId);
-  });
+  el.addEventListener('drop', e => { e.preventDefault(); e.stopPropagation(); if(!dragState.cardId) return; moveCard(dragState.cardId, dragState.fromColId, colId, beforeCardId); });
 }
 
-// ─── MOVE CARD ───
 function moveCard(cardId, fromColId, toColId, beforeCardId){
   const page = appData.pages.find(p => p.id === currentPageId);
   const fromCol = page.columns.find(c => c.id === fromColId);
   const toCol = page.columns.find(c => c.id === toColId);
   if(!fromCol || !toCol) return;
-
   const cardIdx = fromCol.cards.findIndex(c => c.id === cardId);
   if(cardIdx === -1) return;
   const [card] = fromCol.cards.splice(cardIdx, 1);
-
-  if(beforeCardId){
-    const beforeIdx = toCol.cards.findIndex(c => c.id === beforeCardId);
-    if(beforeIdx !== -1){ toCol.cards.splice(beforeIdx, 0, card); }
-    else { toCol.cards.push(card); }
-  } else {
-    toCol.cards.push(card);
-  }
-
-  renderBoard(page);
-  saveData();
+  if(beforeCardId){ const bi = toCol.cards.findIndex(c => c.id === beforeCardId); if(bi !== -1){ toCol.cards.splice(bi, 0, card); } else { toCol.cards.push(card); } } else { toCol.cards.push(card); }
+  renderBoard(page); saveData();
 }
 
-// ─── ADD COLUMN ───
 function addColumn(){
   const page = appData.pages.find(p => p.id === currentPageId);
   if(!page) return;
-  page.columns.push({
-    id: 'col' + Date.now(),
-    title: 'New Column',
-    cards: []
-  });
-  renderBoard(page);
-  saveData();
+  page.columns.push({ id: 'col'+Date.now(), title: 'New Column', cards: [] });
+  renderBoard(page); saveData();
 }
 
-// ─── COL DELETE ───
 function openDeleteCol(colId){
   pendingColEdit = colId;
   const page = appData.pages.find(p => p.id === currentPageId);
   const col = page.columns.find(c => c.id === colId);
   document.getElementById('col-name-input').value = col ? col.title : '';
-  document.getElementById('col-delete-btn').onclick = () => {
-    page.columns = page.columns.filter(c => c.id !== colId);
-    closeModal('modal-col');
-    renderBoard(page);
-    saveData();
-  };
-  document.getElementById('col-save-btn').onclick = () => {
-    if(col) col.title = document.getElementById('col-name-input').value.trim() || col.title;
-    closeModal('modal-col');
-    renderBoard(page);
-    saveData();
-  };
+  document.getElementById('col-delete-btn').onclick = () => { page.columns = page.columns.filter(c => c.id !== colId); closeModal('modal-col'); renderBoard(page); saveData(); };
+  document.getElementById('col-save-btn').onclick = () => { if(col) col.title = document.getElementById('col-name-input').value.trim() || col.title; closeModal('modal-col'); renderBoard(page); saveData(); };
   openModal('modal-col');
 }
 
-// ─── CARD MODAL ───
 function openCardModal(colId, cardId){
   const page = appData.pages.find(p => p.id === currentPageId);
   const col = page.columns.find(c => c.id === colId);
   const card = col.cards.find(c => c.id === cardId);
   if(!card) return;
-
   pendingCardEdit = { colId, cardId };
   document.getElementById('card-detail-title').value = card.title;
   document.getElementById('card-detail-content').value = card.content;
   renderAttachList(card);
-
-  document.getElementById('card-delete-btn').onclick = () => {
-    col.cards = col.cards.filter(c => c.id !== cardId);
-    closeCardModal();
-    renderBoard(page);
-    saveData();
-  };
-
+  document.getElementById('card-delete-btn').onclick = () => { col.cards = col.cards.filter(c => c.id !== cardId); closeCardModal(); renderBoard(page); saveData(); };
   openModal('modal-card');
 }
 
@@ -573,10 +458,8 @@ function openNewCard(colId){
   document.getElementById('card-detail-content').value = '';
   document.getElementById('attach-list').innerHTML = '';
   document.getElementById('attach-section-label').style.display = 'none';
-
   document.getElementById('card-delete-btn').onclick = () => closeCardModal();
   document.getElementById('card-delete-btn').textContent = 'Cancel';
-
   openModal('modal-card');
 }
 
@@ -584,30 +467,17 @@ document.getElementById('card-save-btn').onclick = () => {
   const title = document.getElementById('card-detail-title').value.trim();
   const content = document.getElementById('card-detail-content').value.trim();
   if(!title) return;
-
   const page = appData.pages.find(p => p.id === currentPageId);
   const col = page.columns.find(c => c.id === pendingCardEdit.colId);
   if(!col) return;
-
-  if(pendingCardEdit.cardId){
-    const card = col.cards.find(c => c.id === pendingCardEdit.cardId);
-    if(card){ card.title = title; card.content = content; }
-  } else {
-    col.cards.push({ id: 'c'+Date.now(), title, content, attachments: [] });
-  }
-
+  if(pendingCardEdit.cardId){ const card = col.cards.find(c => c.id === pendingCardEdit.cardId); if(card){ card.title = title; card.content = content; } }
+  else { col.cards.push({ id: 'c'+Date.now(), title, content, attachments: [] }); }
   document.getElementById('card-delete-btn').textContent = 'Delete';
-  closeCardModal();
-  renderBoard(page);
-  saveData();
+  closeCardModal(); renderBoard(page); saveData();
 };
 
-function closeCardModal(){
-  document.getElementById('card-delete-btn').textContent = 'Delete';
-  closeModal('modal-card');
-}
+function closeCardModal(){ document.getElementById('card-delete-btn').textContent = 'Delete'; closeModal('modal-card'); }
 
-// ─── ATTACHMENTS ───
 function attachIcon(type){
   if(type.startsWith('image/')) return '🖼️';
   if(type === 'application/pdf') return '📄';
@@ -618,11 +488,9 @@ function attachIcon(type){
 
 function openAttachment(att){
   if(!att || !att.data){ alert('No file data found.'); return; }
-  const overlay = document.getElementById('modal-preview');
   const body = document.getElementById('preview-body');
   document.getElementById('preview-filename').textContent = att.name;
   body.innerHTML = '';
-
   if(att.type.startsWith('image/')){
     const img = document.createElement('img');
     img.src = att.data;
@@ -630,21 +498,16 @@ function openAttachment(att){
     body.appendChild(img);
   } else if(att.type === 'application/pdf'){
     const embed = document.createElement('embed');
-    embed.src = att.data;
-    embed.type = 'application/pdf';
+    embed.src = att.data; embed.type = 'application/pdf';
     embed.style.cssText = 'width:100%;height:70vh;border-radius:8px;';
     body.appendChild(embed);
   } else {
-    // For other files: show a download link
     const wrap = document.createElement('div');
     wrap.style.cssText = 'text-align:center;padding:32px;';
-    wrap.innerHTML = `<div style="font-size:48px;margin-bottom:12px;">${attachIcon(att.type)}</div>
-      <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:20px;">${escHtml(att.name)}</div>
-      <a href="${att.data}" download="${escHtml(att.name)}" style="background:var(--purple);color:white;padding:10px 24px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:600;">⬇ Download</a>`;
+    wrap.innerHTML = `<div style="font-size:48px;margin-bottom:12px;">${attachIcon(att.type)}</div><div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:20px;">${escHtml(att.name)}</div><a href="${att.data}" download="${escHtml(att.name)}" style="background:var(--purple);color:white;padding:10px 24px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:600;">⬇ Download</a>`;
     body.appendChild(wrap);
   }
-
-  overlay.classList.add('show');
+  document.getElementById('modal-preview').classList.add('show');
 }
 
 function renderAttachList(card){
@@ -657,20 +520,12 @@ function renderAttachList(card){
       const row = document.createElement('div');
       row.className = 'attach-row';
       const icon = attachIcon(att.type || '');
-      row.innerHTML = `
-        <span class="attach-open" style="cursor:pointer;flex:1;color:var(--purple-mid);font-weight:500;">${icon} ${escHtml(att.name)}</span>
-        <span style="font-size:11px;color:var(--text-muted);margin-right:8px;">${att.size ? (att.size/1024).toFixed(1)+'KB' : ''}</span>
-        <button class="attach-del">×</button>`;
-      row.querySelector('.attach-open').addEventListener('click', () => {
-        const live = attachmentRef(idx);
-        if(live) openAttachment(live);
-      });
+      row.innerHTML = `<span class="attach-open" style="cursor:pointer;flex:1;color:var(--purple-mid);font-weight:500;">${icon} ${escHtml(att.name)}</span><span style="font-size:11px;color:var(--text-muted);margin-right:8px;">${att.size ? (att.size/1024).toFixed(1)+'KB' : ''}</span><button class="attach-del">×</button>`;
+      row.querySelector('.attach-open').addEventListener('click', () => { const live = attachmentRef(idx); if(live) openAttachment(live); });
       row.querySelector('.attach-del').addEventListener('click', () => removeAttachFromModal(idx));
       list.appendChild(row);
     });
-  } else {
-    label.style.display = 'none';
-  }
+  } else { label.style.display = 'none'; }
 }
 
 function attachmentRef(idx){
@@ -686,8 +541,7 @@ function removeAttachFromModal(idx){
   const card = col && col.cards.find(c => c.id === pendingCardEdit.cardId);
   if(!card) return;
   card.attachments.splice(idx, 1);
-  saveData();
-  renderAttachList(card);
+  saveData(); renderAttachList(card);
 }
 
 function triggerFileInput(){ document.getElementById('file-input').click(); }
@@ -700,18 +554,12 @@ function handleFileInput(){
   const card = col && col.cards.find(c => c.id === pendingCardEdit.cardId);
   if(!card) return;
   if(!card.attachments) card.attachments = [];
-
   const reader = new FileReader();
-  reader.onload = e => {
-    card.attachments.push({ name: file.name, size: file.size, type: file.type, data: e.target.result });
-    saveData();
-    renderAttachList(card);
-  };
+  reader.onload = e => { card.attachments.push({ name: file.name, size: file.size, type: file.type, data: e.target.result }); saveData(); renderAttachList(card); };
   reader.readAsDataURL(file);
   document.getElementById('file-input').value = '';
 }
 
-// ─── PAGE MODALS ───
 function openAddPage(){
   pendingPageEdit = null;
   document.getElementById('modal-page-heading').textContent = 'New Page';
@@ -734,28 +582,18 @@ function deletePage(pageId){
   if(appData.pages.length <= 1){ alert('Cannot delete the only page.'); return; }
   appData.pages = appData.pages.filter(p => p.id !== pageId);
   if(currentPageId === pageId) currentPageId = appData.pages[0].id;
-  saveData();
-  renderApp();
+  saveData(); renderApp();
 }
 
 document.getElementById('modal-page-save').onclick = () => {
   const name = document.getElementById('page-name-input').value.trim();
   if(!name) return;
   const emoji = document.querySelector('#page-emoji-row .emoji-opt.selected')?.dataset.emoji || '📋';
-
-  if(pendingPageEdit){
-    const page = appData.pages.find(p => p.id === pendingPageEdit);
-    if(page){ page.label = name; page.emoji = emoji; page.title = name; }
-    pendingPageEdit = null;
-  } else {
-    appData.pages.push({ id:'p'+Date.now(), emoji, label:name, title:name, subtitle:'', columns:[] });
-  }
-  closeModal('modal-page');
-  saveData();
-  renderApp();
+  if(pendingPageEdit){ const page = appData.pages.find(p => p.id === pendingPageEdit); if(page){ page.label = name; page.emoji = emoji; page.title = name; } pendingPageEdit = null; }
+  else { appData.pages.push({ id:'p'+Date.now(), emoji, label:name, title:name, subtitle:'', columns:[] }); }
+  closeModal('modal-page'); saveData(); renderApp();
 };
 
-// ─── UTILS ───
 function openModal(id){ document.getElementById(id).classList.add('show'); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 
@@ -772,21 +610,10 @@ document.querySelectorAll('.emoji-row').forEach(row => {
   });
 });
 
-function escHtml(text){
-  const d = document.createElement('div');
-  d.textContent = text || '';
-  return d.innerHTML;
-}
+function escHtml(text){ const d = document.createElement('div'); d.textContent = text || ''; return d.innerHTML; }
 
-// page title/subtitle editable
-document.getElementById('page-title').addEventListener('blur', function(){
-  const page = appData.pages.find(p => p.id === currentPageId);
-  if(page){ page.title = this.textContent.trim(); saveData(); }
-});
-document.getElementById('page-subtitle').addEventListener('blur', function(){
-  const page = appData.pages.find(p => p.id === currentPageId);
-  if(page){ page.subtitle = this.textContent.trim(); saveData(); }
-});
+document.getElementById('page-title').addEventListener('blur', function(){ const page = appData.pages.find(p => p.id === currentPageId); if(page){ page.title = this.textContent.trim(); saveData(); } });
+document.getElementById('page-subtitle').addEventListener('blur', function(){ const page = appData.pages.find(p => p.id === currentPageId); if(page){ page.subtitle = this.textContent.trim(); saveData(); } });
 
 loadData();
 renderApp();
