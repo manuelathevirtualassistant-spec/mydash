@@ -78,14 +78,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .nav-item{
   display:flex;align-items:center;gap:9px;padding:8px 10px;
   border-radius:8px;cursor:pointer;color:rgba(255,255,255,.65);
-  font-size:13px;transition:all .2s;position:relative;group:true;
+  font-size:13px;transition:all .2s;position:relative;
 }
 .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.12);color:white;}
 .nav-item .ni-emoji{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
 .nav-item .ni-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.nav-item .ni-actions{
-  display:none;gap:2px;align-items:center;flex-shrink:0;
-}
+.nav-item .ni-actions{display:none;gap:2px;align-items:center;flex-shrink:0;}
 .nav-item:hover .ni-actions{display:flex;}
 .ni-actions button{
   background:none;border:none;color:rgba(255,255,255,.5);
@@ -128,28 +126,99 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   font-family:'Playfair Display',serif;font-size:28px;
   color:var(--purple);line-height:1;cursor:text;
 }
-.page-header-left h1 em{font-style:italic;color:var(--accent);}
 .page-header-left p{margin-top:5px;font-size:13px;color:var(--text-muted);font-weight:300;cursor:text;}
 .date-badge{background:var(--purple-light);border-radius:10px;padding:10px 16px;text-align:right;flex-shrink:0;}
 .date-badge .day{font-family:'Playfair Display',serif;font-size:22px;color:var(--purple);font-weight:700;}
 .date-badge .ds{font-size:11px;color:var(--text-muted);}
 
-/* ── CARDS GRID ── */
-.cards-area{display:flex;flex-direction:column;gap:20px;}
-.cards-row{display:grid;gap:16px;}
-.cards-row.cols-1{grid-template-columns:1fr;}
-.cards-row.cols-2{grid-template-columns:1fr 1fr;}
-.cards-row.cols-3{grid-template-columns:1fr 1fr 1fr;}
-.cards-row.cols-4{grid-template-columns:repeat(4,1fr);}
+/* ── NOTION-STYLE LAYOUT ── */
+.cards-area{display:flex;flex-direction:column;gap:0;}
+
+/* Row = horizontal flex container of column groups */
+.notion-row{
+  display:flex;gap:0;align-items:stretch;
+  position:relative;min-height:60px;
+  border-radius:12px;
+  transition:background .15s;
+}
+.notion-row.drag-over-row{background:rgba(139,115,224,0.06);}
+
+/* Column inside a row */
+.notion-col{
+  flex:1;display:flex;flex-direction:column;gap:8px;
+  padding:8px;min-width:0;
+  position:relative;
+}
+.notion-col.drag-over-col{background:rgba(139,115,224,0.08);border-radius:10px;}
+
+/* Row separator / add-row zone */
+.row-gap{
+  height:28px;display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:default;
+}
+.row-gap-line{
+  width:100%;height:2px;background:transparent;border-radius:2px;
+  transition:background .15s;
+}
+.row-gap:hover .row-gap-line,.row-gap.drop-active .row-gap-line{
+  background:var(--accent);
+}
+.row-gap-add{
+  opacity:0;position:absolute;left:50%;transform:translateX(-50%);
+  background:var(--purple);color:white;border:none;border-radius:20px;
+  padding:4px 14px;font-size:11px;font-family:'DM Sans',sans-serif;
+  cursor:pointer;white-space:nowrap;transition:opacity .15s;
+  pointer-events:none;
+}
+.row-gap:hover .row-gap-add{opacity:1;pointer-events:auto;}
+
+/* Row controls */
+.row-controls{
+  display:none;position:absolute;top:8px;right:8px;
+  gap:4px;z-index:10;
+}
+.notion-row:hover .row-controls{display:flex;}
+.row-ctl-btn{
+  background:white;border:1px solid #e8e4f7;color:var(--text-muted);
+  border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;
+  transition:all .15s;font-family:'DM Sans',sans-serif;line-height:1.4;
+}
+.row-ctl-btn:hover{background:var(--purple-soft);color:var(--purple);border-color:var(--accent);}
+
+/* col divider drag handle */
+.col-resizer{
+  width:6px;flex-shrink:0;cursor:col-resize;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s;
+}
+.notion-row:hover .col-resizer{opacity:1;}
+.col-resizer-inner{width:2px;height:32px;background:var(--lavender);border-radius:2px;}
 
 /* ── CARD ── */
 .card{
   background:white;border-radius:16px;padding:20px;
   border:1px solid rgba(61,43,142,.07);
   box-shadow:0 2px 12px rgba(61,43,142,.05);
-  position:relative;transition:box-shadow .2s;
+  position:relative;transition:box-shadow .2s, opacity .2s, transform .2s;
+  cursor:default;
 }
 .card:hover{box-shadow:0 4px 20px rgba(61,43,142,.1);}
+.card.dragging{opacity:.4;transform:scale(.98);}
+.card.drag-placeholder{
+  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
+  box-shadow:none!important;opacity:.6;
+}
+
+.card-drag-handle{
+  position:absolute;top:12px;left:-22px;
+  width:18px;height:30px;display:flex;align-items:center;justify-content:center;
+  opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;
+  border-radius:6px;
+}
+.card:hover .card-drag-handle{opacity:.6;}
+.card-drag-handle:hover{opacity:1!important;background:var(--purple-soft);}
+.card-drag-handle:active{cursor:grabbing;}
+
 .card-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .card-emoji{font-size:16px;cursor:pointer;transition:transform .15s;}
 .card-emoji:hover{transform:scale(1.2);}
@@ -157,10 +226,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   font-size:11px;font-weight:600;letter-spacing:1.1px;
   text-transform:uppercase;color:var(--accent);flex:1;cursor:text;
 }
-.card-title-text[contenteditable=true]:focus{outline:none;border-bottom:1px dashed var(--accent);}
-.card-actions{
-  display:none;gap:4px;align-items:center;
-}
+.card-title-text:focus{outline:none;border-bottom:1px dashed var(--accent);}
+.card-actions{display:none;gap:4px;align-items:center;}
 .card:hover .card-actions{display:flex;}
 .card-actions button{
   background:none;border:none;color:var(--text-muted);
@@ -169,20 +236,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 }
 .card-actions button:hover{background:var(--purple-soft);color:var(--purple);}
 
-.card-body{font-size:13px;color:var(--text);line-height:1.6;}
-.card-body[contenteditable=true]{
-  outline:none;min-height:40px;cursor:text;
-}
-.card-body[contenteditable=true]:focus{
-  background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;
+.card-body{font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+.card-body:focus{
+  outline:none;background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;
 }
 
 /* ── STAT CARD ── */
 .stat-card{
   background:white;border-radius:14px;padding:18px 20px;
   border:1px solid rgba(61,43,142,.07);position:relative;
+  transition:box-shadow .2s, opacity .2s, transform .2s;
+  cursor:default;
 }
 .stat-card.dark{background:var(--purple);}
+.stat-card.dragging{opacity:.4;transform:scale(.98);}
+.stat-card.drag-placeholder{
+  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
+  box-shadow:none!important;opacity:.6;
+}
 .stat-card .sc-label{font-size:11px;color:var(--text-muted);margin-bottom:5px;cursor:text;}
 .stat-card.dark .sc-label{color:var(--lavender);}
 .stat-card .sc-value{
@@ -194,50 +265,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .stat-card.dark .sc-sub{color:var(--lavender);}
 .stat-card:hover .card-actions{display:flex;}
 .stat-card .card-actions{position:absolute;top:8px;right:8px;}
+.stat-card .card-drag-handle{position:absolute;top:12px;left:-22px;}
+.stat-card:hover .card-drag-handle{opacity:.6;}
 
-/* ── FLOW CARD ── */
-.flow-wrap{
-  background:var(--purple);border-radius:20px;padding:24px;
-  position:relative;
-}
-.flow-wrap:hover .card-actions{display:flex;}
-.flow-wrap .card-actions{position:absolute;top:12px;right:12px;}
-.flow-wrap .card-actions button{color:rgba(255,255,255,.5);}
-.flow-wrap .card-actions button:hover{background:rgba(255,255,255,.15);color:white;}
-.flow-heading{
-  font-family:'Playfair Display',serif;font-size:18px;
-  color:white;margin-bottom:16px;cursor:text;
-}
-.flow-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
-.ft{
-  padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;
-  cursor:pointer;border:1px solid rgba(255,255,255,.2);
-  color:rgba(255,255,255,.55);background:transparent;transition:all .2s;
-  font-family:'DM Sans',sans-serif;
-}
-.ft.active{background:white;color:var(--purple);border-color:white;font-weight:600;}
-.flow-content{display:none;gap:8px;align-items:stretch;flex-wrap:wrap;}
-.flow-content.active{display:flex;}
-.fs{
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
-  border-radius:12px;padding:14px;flex:1;min-width:100px;
-}
-.fs .sn{font-size:10px;font-weight:700;color:var(--lavender);margin-bottom:4px;}
-.fs .st{font-size:13px;font-weight:600;color:white;margin-bottom:3px;}
-.fs .sd{font-size:11px;color:rgba(255,255,255,.6);line-height:1.4;}
-.fa{color:var(--lavender);font-size:16px;flex-shrink:0;align-self:center;}
-
-/* ── ADD ROW / CARD BUTTONS ── */
-.add-row-btn,.add-card-btn{
+/* ── ADD CARD BUTTON ── */
+.add-card-btn{
   display:flex;align-items:center;justify-content:center;gap:6px;
   padding:9px;border-radius:10px;cursor:pointer;
   border:1px dashed rgba(61,43,142,.2);background:none;
   color:var(--text-muted);font-size:12px;width:100%;
-  transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:6px;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+  flex-shrink:0;
 }
-.add-row-btn:hover,.add-card-btn:hover{
-  border-color:var(--accent);color:var(--accent);background:var(--purple-soft);
+.add-card-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--purple-soft);}
+
+/* ── ADD ROW BUTTON (bottom) ── */
+.add-row-bottom{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px;border-radius:10px;cursor:pointer;
+  border:1px dashed rgba(61,43,142,.15);background:none;
+  color:var(--text-muted);font-size:12px;width:100%;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+  margin-top:8px;
 }
+.add-row-bottom:hover{border-color:var(--accent);color:var(--accent);background:var(--purple-soft);}
 
 /* ── SAVE INDICATOR ── */
 #save-indicator{
@@ -324,16 +375,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .file-attach-btn:hover{color:var(--accent);}
 .file-input-hidden{display:none;}
 
-/* ── INLINE EDIT STYLE ── */
-[contenteditable=true]:empty:before{
-  content:attr(data-placeholder);color:rgba(0,0,0,.25);pointer-events:none;
-}
-
-/* ── CHECKLIST ── */
-.ck{list-style:none;display:flex;flex-direction:column;gap:8px;}
-.ck li{display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:1.4;}
-.ck li::before{content:'✦';color:var(--accent);font-size:9px;margin-top:3px;flex-shrink:0;}
-
 /* ── LOADING ── */
 #loading{
   position:fixed;inset:0;background:var(--purple);
@@ -347,8 +388,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 #loading p{color:rgba(255,255,255,.7);font-size:14px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ── MISC ── */
-.hint{font-size:11px;color:var(--text-muted);font-style:italic;opacity:.7;margin-top:4px;}
+/* ── DND GHOST ── */
+.dnd-ghost{
+  position:fixed;pointer-events:none;z-index:9000;
+  opacity:.85;transform:rotate(2deg) scale(1.02);
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+  border-radius:16px;background:white;
+  padding:16px;font-size:12px;color:var(--text);
+  max-width:220px;
+}
 .page-view{display:none;}
 .page-view.active{display:block;}
 </style>
@@ -387,7 +435,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
       <button class="rb-signout" id="sign-out-btn">Sign out</button>
     </div>
   </nav>
-
   <main class="main" id="main-content">
     <div id="pages-container"></div>
   </main>
@@ -444,7 +491,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
     <select id="card-type-input">
       <option value="text">Text / Notes</option>
       <option value="stat">Stat (big number)</option>
-      <option value="checklist">Checklist</option>
     </select>
     <label>Content</label>
     <textarea id="card-content-input" placeholder="Write your content here…"></textarea>
@@ -467,7 +513,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
-<!-- MODAL: Emoji Picker for card -->
+<!-- MODAL: Emoji Picker -->
 <div class="modal-overlay" id="modal-emoji">
   <div class="modal">
     <h3>Choose Icon</h3>
@@ -490,12 +536,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
+<!-- DND Ghost element -->
+<div class="dnd-ghost" id="dnd-ghost" style="display:none;"></div>
+
 <!-- Firebase SDKs -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot }
+import { getFirestore, doc, setDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
@@ -519,23 +568,31 @@ const DEFAULT_DATA = {
   meta:{ companyName:"Two Witches & A Broom", companySub:"Cleaning Co.", logoIcon:"🧙" },
   pages:[
     {
-      id:"home", emoji:"🏠", label:"Dashboard", active:true,
+      id:"home", emoji:"🏠", label:"Dashboard",
       title:"Hey, Manuela 🧙‍♀️", subtitle:"VA at Two Witches & A Broom · CX & Sales",
       rows:[
         {
-          id:"row-stats", cols:4,
-          cards:[
-            {id:"s1",type:"stat",dark:true,emoji:"",label:"Min. Service",value:"$150",sub:"Never go below"},
-            {id:"s2",type:"stat",emoji:"",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
-            {id:"s3",type:"stat",emoji:"",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
-            {id:"s4",type:"stat",emoji:"",label:"Guarantee",value:"24h",sub:"Satisfaction window"},
+          id:"row-stats",
+          cols:[
+            { id:"col-s1", cards:[
+              {id:"s1",type:"stat",dark:true,label:"Min. Service",value:"$150",sub:"Never go below"},
+              {id:"s2",type:"stat",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
+            ]},
+            { id:"col-s2", cards:[
+              {id:"s3",type:"stat",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
+              {id:"s4",type:"stat",label:"Guarantee",value:"24h",sub:"Satisfaction window"},
+            ]},
           ]
         },
         {
-          id:"row-main", cols:2,
-          cards:[
-            {id:"c1",type:"text",emoji:"📅",title:"Daily Routine",content:`🟢 Morning — Open ZenMaid & Check Schedule\nReview today's appointments, verify all client profiles have complete notes.\n\n🟣 Ongoing — Handle Inbound Leads & Calls\nBuild rapport → Discovery → Close. Always push recurring services.\n\n🟠 1h after arrival — Open-to-Close Check-in\nTechs call office 1h after arrival. Confirm dirt level + time estimate.\n\n🟢 Post-clean — Charge Client in AuthNet\nCharge after service. Verify tax + total. If declined → try another card.\n\n🟣 Next day — 24-Hour Follow-Up Call\nHappy → upsell recurring + ask for Google review.\nUnhappy → offer re-clean fast.\n\n🟠 Ongoing — Manage Slack Comms\nCleaner issues → escalate to Sandy.`},
-            {id:"c2",type:"text",emoji:"🚫",title:"Never Do / Always Do",content:`🚫 NEVER SAY:\n• Hourly rate ($60–$70/h) to clients\n• "Time" → say "effort" instead\n• Share owner's or your personal phone number\n\n🚫 NEVER CLEAN:\n• Walls • Exterior windows • Carpets • Unfinished basements\n• Wash dishes • Enter closed rooms\n• Use client products (except marble/granite)\n\n✅ ALWAYS:\n• Push recurring services every interaction\n• Sandwich method: nice → request → nice\n• Update ZenMaid after every call\n• Offer reschedule before skip\n• Skip weekly = biweekly rate (×1.25)`},
+          id:"row-main",
+          cols:[
+            { id:"col-m1", cards:[
+              {id:"c1",type:"text",emoji:"📅",title:"Daily Routine",content:"🟢 Morning — Open ZenMaid & Check Schedule\nReview today's appointments, verify all client profiles have complete notes.\n\n🟣 Ongoing — Handle Inbound Leads & Calls\nBuild rapport → Discovery → Close. Always push recurring services.\n\n🟠 1h after arrival — Open-to-Close Check-in\nTechs call office 1h after arrival. Confirm dirt level + time estimate.\n\n🟢 Post-clean — Charge Client in AuthNet\nCharge after service. Verify tax + total. If declined → try another card.\n\n🟣 Next day — 24-Hour Follow-Up Call\nHappy → upsell recurring + ask for Google review.\nUnhappy → offer re-clean fast.\n\n🟠 Ongoing — Manage Slack Comms\nCleaner issues → escalate to Sandy."},
+            ]},
+            { id:"col-m2", cards:[
+              {id:"c2",type:"text",emoji:"🚫",title:"Never Do / Always Do",content:"🚫 NEVER SAY:\n• Hourly rate ($60–$70/h) to clients\n• \"Time\" → say \"effort\" instead\n• Share owner's or your personal phone number\n\n🚫 NEVER CLEAN:\n• Walls • Exterior windows • Carpets • Unfinished basements\n• Wash dishes • Enter closed rooms\n• Use client products (except marble/granite)\n\n✅ ALWAYS:\n• Push recurring services every interaction\n• Sandwich method: nice → request → nice\n• Update ZenMaid after every call\n• Offer reschedule before skip\n• Skip weekly = biweekly rate (×1.25)"},
+            ]},
           ]
         }
       ]
@@ -545,18 +602,28 @@ const DEFAULT_DATA = {
       title:"Sales Playbook", subtitle:"Scripts, discovery & closing strategies",
       rows:[
         {
-          id:"row-s1", cols:2,
-          cards:[
-            {id:"sc1",type:"text",emoji:"📞",title:"Sales Call — Step by Step",content:`1️⃣ Build Rapport — warm greeting, smile, make them feel heard\n2️⃣ Discovery — bedrooms, bathrooms, sqft, adults/kids, pets?\n3️⃣ Identify Pain — find what frustrates them, use emotion\n4️⃣ Offer Solution — flat rate, push recurring first, always\n5️⃣ Close — 3 forms required before booking is confirmed`},
-            {id:"sc2",type:"text",emoji:"📋",title:"Discovery Questions",content:`🛏️ How many bedrooms?\n🚿 How many bathrooms?\n📐 Approximate square footage?\n👨‍👩‍👧 How many adults / kids?\n🐶 Pets? Type? Aggressive?\n🚿 When was shower last cleaned with product?\n🍽️ How often are counters wiped?\n🧹 How often are floors cleaned?`},
+          id:"row-s1",
+          cols:[
+            { id:"col-s1a", cards:[
+              {id:"sc1",type:"text",emoji:"📞",title:"Sales Call — Step by Step",content:"1️⃣ Build Rapport — warm greeting, smile, make them feel heard\n2️⃣ Discovery — bedrooms, bathrooms, sqft, adults/kids, pets?\n3️⃣ Identify Pain — find what frustrates them, use emotion\n4️⃣ Offer Solution — flat rate, push recurring first, always\n5️⃣ Close — 3 forms required before booking is confirmed"},
+            ]},
+            { id:"col-s1b", cards:[
+              {id:"sc2",type:"text",emoji:"📋",title:"Discovery Questions",content:"🛏️ How many bedrooms?\n🚿 How many bathrooms?\n📐 Approximate square footage?\n👨‍👩‍👧 How many adults / kids?\n🐶 Pets? Type? Aggressive?\n🚿 When was shower last cleaned with product?\n🍽️ How often are counters wiped?\n🧹 How often are floors cleaned?"},
+            ]},
           ]
         },
         {
-          id:"row-s2", cols:3,
-          cards:[
-            {id:"sc3",type:"text",emoji:"🐾",title:"Pet Script",content:`"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive."\n\n→ Always ask about aggression history.\n→ 75% of clients have pets.`},
-            {id:"sc4",type:"text",emoji:"💫",title:"Emotion Sells",content:`• "Imagine never having to clean again"\n• "Look at the difference after this clean"\n• Best upsell moment = right after spotless clean\n• Sale happens during estimate call or follow-up — NOT after`},
-            {id:"sc5",type:"text",emoji:"🔢",title:"Dirt Code Scale",content:`1 — Spotless ✨\n2 — Clean 🟢\n3 — Average 🟡\n4 — Dirty 🟠\n5 — Heavy / Buildup 🔴\n\n→ 5+ = set expectations on effort upfront\n→ Option 1: stay within estimate\n→ Option 2: pay for additional effort\n\nScript: "Please describe the current condition of your home. Not for judgment — just for an accurate estimate."`},
+          id:"row-s2",
+          cols:[
+            { id:"col-s2a", cards:[
+              {id:"sc3",type:"text",emoji:"🐾",title:"Pet Script",content:"\"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive.\"\n\n→ Always ask about aggression history.\n→ 75% of clients have pets."},
+            ]},
+            { id:"col-s2b", cards:[
+              {id:"sc4",type:"text",emoji:"💫",title:"Emotion Sells",content:"• \"Imagine never having to clean again\"\n• \"Look at the difference after this clean\"\n• Best upsell moment = right after spotless clean\n• Sale happens during estimate call or follow-up — NOT after"},
+            ]},
+            { id:"col-s2c", cards:[
+              {id:"sc5",type:"text",emoji:"🔢",title:"Dirt Code Scale",content:"1 — Spotless ✨\n2 — Clean 🟢\n3 — Average 🟡\n4 — Dirty 🟠\n5 — Heavy / Buildup 🔴\n\n→ 5+ = set expectations on effort upfront\n→ Option 1: stay within estimate\n→ Option 2: pay for additional effort"},
+            ]},
           ]
         }
       ]
@@ -566,17 +633,25 @@ const DEFAULT_DATA = {
       title:"Services Menu", subtitle:"What we offer & how to position them",
       rows:[
         {
-          id:"row-sv1", cols:2,
-          cards:[
-            {id:"sv1",type:"text",emoji:"🧼",title:"Service Types",content:`🟢 Recurring Cleaning — Weekly / Biweekly / Monthly\n85% of sales. Always push this first. Goal: $300/mo per client.\n\n🔵 General Clean — One-time\nFrom $150 minimum. Use as entry point → convert after follow-up.\n\n🟠 TTB (Top to Bottom) — Deep Clean\nStarts at $490. The "big reset." Best positioned before recurring.\n\n🟣 Priority Clean — Custom\nLimited service, specific areas only. Custom quote.`},
-            {id:"sv2",type:"text",emoji:"⭐",title:"Why We Win",content:`✦ Eco-friendly, non-toxic, odor-free products\n✦ Safe for pets, kids, and people\n✦ All techs pass background checks\n✦ Reliable — we always show up\n✦ Strong systems & processes\n✦ High consistency vs competitors\n\n⚠️ Main competitor: Serenity\n→ Bad reputation: inconsistent, hires anyone\n→ We position as the exact opposite`},
+          id:"row-sv1",
+          cols:[
+            { id:"col-sv1a", cards:[
+              {id:"sv1",type:"text",emoji:"🧼",title:"Service Types",content:"🟢 Recurring Cleaning — Weekly / Biweekly / Monthly\n85% of sales. Always push this first. Goal: $300/mo per client.\n\n🔵 General Clean — One-time\nFrom $150 minimum. Use as entry point → convert after follow-up.\n\n🟠 TTB (Top to Bottom) — Deep Clean\nStarts at $490. The \"big reset.\" Best positioned before recurring.\n\n🟣 Priority Clean — Custom\nLimited service, specific areas only. Custom quote."},
+            ]},
+            { id:"col-sv1b", cards:[
+              {id:"sv2",type:"text",emoji:"⭐",title:"Why We Win",content:"✦ Eco-friendly, non-toxic, odor-free products\n✦ Safe for pets, kids, and people\n✦ All techs pass background checks\n✦ Reliable — we always show up\n✦ Strong systems & processes\n✦ High consistency vs competitors\n\n⚠️ Main competitor: Serenity\n→ Bad reputation: inconsistent, hires anyone\n→ We position as the exact opposite"},
+            ]},
           ]
         },
         {
-          id:"row-sv2", cols:2,
-          cards:[
-            {id:"sv3",type:"text",emoji:"✅",title:"Included in Service",content:`✓ Microwave: inside + outside\n✓ Small appliances: move them\n✓ Surface >50% covered → clean around items\n✓ Floors: use client vacuum/mop if requested\n✓ Marble/granite: use client-approved cleaner`},
-            {id:"sv4",type:"text",emoji:"🚫",title:"NOT Included",content:`✗ Walls\n✗ Exterior windows\n✗ Carpets\n✗ Unfinished basements\n✗ Washing dishes\n✗ Entering closed rooms\n✗ Large appliances (don't move)`},
+          id:"row-sv2",
+          cols:[
+            { id:"col-sv2a", cards:[
+              {id:"sv3",type:"text",emoji:"✅",title:"Included in Service",content:"✓ Microwave: inside + outside\n✓ Small appliances: move them\n✓ Surface >50% covered → clean around items\n✓ Floors: use client vacuum/mop if requested\n✓ Marble/granite: use client-approved cleaner"},
+            ]},
+            { id:"col-sv2b", cards:[
+              {id:"sv4",type:"text",emoji:"🚫",title:"NOT Included",content:"✗ Walls\n✗ Exterior windows\n✗ Carpets\n✗ Unfinished basements\n✗ Washing dishes\n✗ Entering closed rooms\n✗ Large appliances (don't move)"},
+            ]},
           ]
         }
       ]
@@ -586,18 +661,22 @@ const DEFAULT_DATA = {
       title:"Pricing Reference", subtitle:"Internal rates & how to quote clients",
       rows:[
         {
-          id:"row-p0", cols:3,
-          cards:[
-            {id:"ps1",type:"stat",dark:true,emoji:"",label:"Minimum Service",value:"$150",sub:"Never go below this"},
-            {id:"ps2",type:"stat",emoji:"",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
-            {id:"ps3",type:"stat",emoji:"",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
+          id:"row-p0",
+          cols:[
+            { id:"col-p0a", cards:[{id:"ps1",type:"stat",dark:true,label:"Minimum Service",value:"$150",sub:"Never go below this"}]},
+            { id:"col-p0b", cards:[{id:"ps2",type:"stat",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"}]},
+            { id:"col-p0c", cards:[{id:"ps3",type:"stat",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"}]},
           ]
         },
         {
-          id:"row-p1", cols:2,
-          cards:[
-            {id:"pc1",type:"text",emoji:"💡",title:"Pricing Rules",content:`🔒 Internal rate: $60–$70/h per tech — NEVER tell clients\n📊 We use flat rate pricing — clients feel safer, better margins\n🗣️ NEVER talk about time → always talk about effort\n📈 Skip weekly = charged as biweekly (×1.25 multiplier)\n💳 Charge via AuthNet after service. Verify tax + total.\nIf declined → try another card → contact client.`},
-            {id:"pc2",type:"text",emoji:"🏆",title:"How to Position Price",content:`✦ Lead with value: eco-friendly, background-checked, reliable\n✦ Use emotion: "Imagine never having to clean again"\n✦ Flat rate = no surprises → builds trust\n✦ If dirt code is high → set expectations upfront\n✦ TTB = "big reset" → frame as investment before recurring\n✦ Best close moment: right after a spotless clean`},
+          id:"row-p1",
+          cols:[
+            { id:"col-p1a", cards:[
+              {id:"pc1",type:"text",emoji:"💡",title:"Pricing Rules",content:"🔒 Internal rate: $60–$70/h per tech — NEVER tell clients\n📊 We use flat rate pricing — clients feel safer, better margins\n🗣️ NEVER talk about time → always talk about effort\n📈 Skip weekly = charged as biweekly (×1.25 multiplier)\n💳 Charge via AuthNet after service. Verify tax + total.\nIf declined → try another card → contact client."},
+            ]},
+            { id:"col-p1b", cards:[
+              {id:"pc2",type:"text",emoji:"🏆",title:"How to Position Price",content:"✦ Lead with value: eco-friendly, background-checked, reliable\n✦ Use emotion: \"Imagine never having to clean again\"\n✦ Flat rate = no surprises → builds trust\n✦ If dirt code is high → set expectations upfront\n✦ TTB = \"big reset\" → frame as investment before recurring\n✦ Best close moment: right after a spotless clean"},
+            ]},
           ]
         }
       ]
@@ -607,17 +686,25 @@ const DEFAULT_DATA = {
       title:"Company Info", subtitle:"Two Witches & A Broom — quick reference",
       rows:[
         {
-          id:"row-co1", cols:2,
-          cards:[
-            {id:"co1",type:"text",emoji:"🏢",title:"Overview",content:`Founded: August 2021\nTeam: ~7 techs (hiring +1)\nLocation: Ohio (EST)\nOwner: Remote (since 2025)\nGrowth: Doubled revenue YoY\nCRM: ZenMaid\nPayments: AuthNet\nComms: Slack\nMarketing: Facebook / Google / TikTok`},
-            {id:"co2",type:"text",emoji:"👥",title:"Team Structure",content:`Sandy → Office Manager\n  Hours: 8 AM – 2 PM EST\n  (hiring, onboarding, training, oversight)\n\nManuela → CX + Sales VA\n  (you! until 5 PM EST)\n\nHailee → Trainer\n\nHouse Checkers → Quality Control\n\nTechs → Execution team\n\n⚠️ Samantha is in Montana (different TZ — always double check)`},
+          id:"row-co1",
+          cols:[
+            { id:"col-co1a", cards:[
+              {id:"co1",type:"text",emoji:"🏢",title:"Overview",content:"Founded: August 2021\nTeam: ~7 techs (hiring +1)\nLocation: Ohio (EST)\nOwner: Remote (since 2025)\nGrowth: Doubled revenue YoY\nCRM: ZenMaid\nPayments: AuthNet\nComms: Slack\nMarketing: Facebook / Google / TikTok"},
+            ]},
+            { id:"col-co1b", cards:[
+              {id:"co2",type:"text",emoji:"👥",title:"Team Structure",content:"Sandy → Office Manager\n  Hours: 8 AM – 2 PM EST\n  (hiring, onboarding, training, oversight)\n\nManuela → CX + Sales VA\n  (you! until 5 PM EST)\n\nHailee → Trainer\n\nHouse Checkers → Quality Control\n\nTechs → Execution team\n\n⚠️ Samantha is in Montana (different TZ — always double check)"},
+            ]},
           ]
         },
         {
-          id:"row-co2", cols:2,
-          cards:[
-            {id:"co3",type:"text",emoji:"🛠️",title:"Tools & Systems",content:`ZenMaid → Scheduling + CRM (Operations Hub)\n  If it's not in ZenMaid → it doesn't exist\n  Notes: Yellow = visible to techs | Private = office only\n\nAuthNet → Payments (charge after service)\n\nSlack → #general-office-questions\n  Cleaner issues → escalate to Sandy\n\nGoogle Reviews → Goal: 200 reviews`},
-            {id:"co4",type:"text",emoji:"🧠",title:"Core Principles",content:`✦ Consistency matters — same tech whenever possible\n✦ Verbage is key — use standardized language always\n✦ No gossip — address issues directly\n✦ Feedback = opportunity to improve\n✦ Listening solves 90% of problems\n✦ If not in ZenMaid → doesn't exist\n✦ 2 complaints in 60 days → PIP triggered (Sandy handles)\n✦ Google Reviews goal: 200`},
+          id:"row-co2",
+          cols:[
+            { id:"col-co2a", cards:[
+              {id:"co3",type:"text",emoji:"🛠️",title:"Tools & Systems",content:"ZenMaid → Scheduling + CRM (Operations Hub)\n  If it's not in ZenMaid → it doesn't exist\n  Notes: Yellow = visible to techs | Private = office only\n\nAuthNet → Payments (charge after service)\n\nSlack → #general-office-questions\n  Cleaner issues → escalate to Sandy\n\nGoogle Reviews → Goal: 200 reviews"},
+            ]},
+            { id:"col-co2b", cards:[
+              {id:"co4",type:"text",emoji:"🧠",title:"Core Principles",content:"✦ Consistency matters — same tech whenever possible\n✦ Verbage is key — use standardized language always\n✦ No gossip — address issues directly\n✦ Feedback = opportunity to improve\n✦ Listening solves 90% of problems\n✦ If not in ZenMaid → doesn't exist\n✦ 2 complaints in 60 days → PIP triggered (Sandy handles)\n✦ Google Reviews goal: 200"},
+            ]},
           ]
         }
       ]
@@ -633,13 +720,13 @@ let saveTimer = null;
 let pendingDelete = null;
 let pendingEmojiTarget = null;
 let pendingPageEdit = null;
+let pendingCardTarget = null;
 let unsubSnapshot = null;
 
 // ── AUTH ──
 document.getElementById('sign-in-btn').addEventListener('click', async () => {
   const provider = new GoogleAuthProvider();
-  try { await signInWithPopup(auth, provider); }
-  catch(e){ console.error(e); }
+  try { await signInWithPopup(auth, provider); } catch(e){ console.error(e); }
 });
 document.getElementById('sign-out-btn').addEventListener('click', () => signOut(auth));
 
@@ -665,12 +752,37 @@ async function loadData(){
   unsubSnapshot = onSnapshot(docRef, snap => {
     if(snap.exists()){
       appData = snap.data();
+      // migrate old format rows (array of cards) to new col-based format
+      migrateData();
     } else {
       appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
       saveData();
     }
     renderApp();
   });
+}
+
+function migrateData(){
+  // old rows had `cards` array directly; new have `cols` array
+  for(const page of (appData.pages||[])){
+    for(const row of (page.rows||[])){
+      if(row.cards && !row.cols){
+        // wrap all cards into a single column per card (or two columns)
+        const cols = [];
+        let col = { id:'col-'+Date.now()+Math.random().toString(36).slice(2), cards:[] };
+        row.cards.forEach((c,i)=>{
+          col.cards.push(c);
+          if((i+1) % Math.ceil(row.cards.length/(row.cols||2)) === 0){
+            cols.push(col);
+            col = { id:'col-'+Date.now()+Math.random().toString(36).slice(2), cards:[] };
+          }
+        });
+        if(col.cards.length) cols.push(col);
+        row.cols = cols;
+        delete row.cards;
+      }
+    }
+  }
 }
 
 function saveData(){
@@ -696,7 +808,6 @@ function renderApp(){
   const activePage = appData.pages.find(p=>p.id===currentPageId) || appData.pages[0];
   currentPageId = activePage.id;
   renderPage(activePage);
-  // update logo
   document.getElementById('logo-icon').textContent = appData.meta.logoIcon||'🧙';
   document.getElementById('company-name').textContent = appData.meta.companyName||'';
   document.getElementById('company-sub').textContent = appData.meta.companySub||'';
@@ -741,278 +852,562 @@ function renderPage(page){
   // Header
   const header = document.createElement('div');
   header.className = 'page-header';
-  header.innerHTML = `
-    <div class="page-header-left">
-      <h1 contenteditable="true" data-placeholder="Page Title" data-field="title" data-pageid="${page.id}">${page.title||''}</h1>
-      <p contenteditable="true" data-placeholder="Subtitle…" data-field="subtitle" data-pageid="${page.id}">${page.subtitle||''}</p>
-    </div>
-    <div class="date-badge">
-      <div class="day">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]}</div>
-      <div class="ds">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
-    </div>`;
+
+  const titleEl = document.createElement('h1');
+  titleEl.contentEditable = 'true';
+  titleEl.setAttribute('data-placeholder','Page Title');
+  titleEl.style.fontFamily = "'Playfair Display',serif";
+  titleEl.style.fontSize = '28px';
+  titleEl.style.color = 'var(--purple)';
+  titleEl.style.lineHeight = '1';
+  titleEl.textContent = page.title || '';
+  titleEl.addEventListener('blur',()=>{ page.title=titleEl.textContent.trim(); saveData(); });
+
+  const subEl = document.createElement('p');
+  subEl.contentEditable = 'true';
+  subEl.setAttribute('data-placeholder','Subtitle…');
+  subEl.style.marginTop='5px';subEl.style.fontSize='13px';subEl.style.color='var(--text-muted)';subEl.style.fontWeight='300';
+  subEl.textContent = page.subtitle || '';
+  subEl.addEventListener('blur',()=>{ page.subtitle=subEl.textContent.trim(); saveData(); });
+
+  const headerLeft = document.createElement('div');
+  headerLeft.className = 'page-header-left';
+  headerLeft.appendChild(titleEl);
+  headerLeft.appendChild(subEl);
+
+  const now = new Date();
+  const dateBadge = document.createElement('div');
+  dateBadge.className = 'date-badge';
+  dateBadge.innerHTML = `<div class="day">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][now.getDay()]}</div><div class="ds">${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>`;
+
+  header.appendChild(headerLeft);
+  header.appendChild(dateBadge);
   view.appendChild(header);
 
-  // Inline editing for title/subtitle
-  header.querySelectorAll('[contenteditable]').forEach(el => {
-    el.addEventListener('blur', () => {
-      const pg = appData.pages.find(p=>p.id===el.dataset.pageid);
-      if(pg){ pg[el.dataset.field]=el.textContent.trim(); saveData(); }
-    });
-  });
-
-  // Rows
+  // Cards area
   const cardsArea = document.createElement('div');
   cardsArea.className = 'cards-area';
-  (page.rows||[]).forEach(row => {
+  cardsArea.id = 'cards-area';
+
+  const rows = page.rows || [];
+  rows.forEach((row, rowIdx) => {
+    cardsArea.appendChild(makeRowGap(page.id, rowIdx));
     cardsArea.appendChild(renderRow(page.id, row));
   });
+  cardsArea.appendChild(makeRowGap(page.id, rows.length));
 
-  // Add row
   const addRowBtn = document.createElement('button');
-  addRowBtn.className = 'add-row-btn';
-  addRowBtn.innerHTML = '＋ Add new row of cards';
+  addRowBtn.className = 'add-row-bottom';
+  addRowBtn.innerHTML = '＋ Add new row';
   addRowBtn.onclick = () => addRow(page.id);
   cardsArea.appendChild(addRowBtn);
 
   view.appendChild(cardsArea);
   container.appendChild(view);
+
+  initDnd(page.id);
+}
+
+function makeRowGap(pageId, insertIdx){
+  const gap = document.createElement('div');
+  gap.className = 'row-gap';
+  gap.dataset.insertIdx = insertIdx;
+  gap.innerHTML = `<div class="row-gap-line"></div><button class="row-gap-add" onclick="addRowAt('${pageId}',${insertIdx})">＋ Add row here</button>`;
+  return gap;
 }
 
 function renderRow(pageId, row){
   const rowEl = document.createElement('div');
-  rowEl.className = 'cards-row cols-'+(row.cols||2);
+  rowEl.className = 'notion-row';
   rowEl.dataset.rowid = row.id;
 
-  // Column count selector
-  const colCtrl = document.createElement('div');
-  colCtrl.style.cssText='grid-column:1/-1;display:flex;align-items:center;gap:6px;margin-bottom:-8px;';
-  colCtrl.innerHTML = `<span style="font-size:11px;color:var(--text-muted);">Columns:</span>
-    ${[1,2,3,4].map(n=>`<button onclick="setRowCols('${pageId}','${row.id}',${n})" style="padding:3px 8px;border-radius:6px;border:1.5px solid ${row.cols===n?'var(--accent)':'#e8e4f7'};background:${row.cols===n?'var(--purple-soft)':'none'};font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:${row.cols===n?'var(--accent)':'var(--text-muted)'}">${n}</button>`).join('')}
-    <button onclick="deleteRow('${pageId}','${row.id}')" style="margin-left:auto;font-size:11px;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:5px;" title="Delete row">🗑️ row</button>`;
-  rowEl.appendChild(colCtrl);
+  // Row controls: add column, delete row
+  const controls = document.createElement('div');
+  controls.className = 'row-controls';
+  controls.innerHTML = `
+    <button class="row-ctl-btn" onclick="addColToRow('${pageId}','${row.id}')" title="Add column">＋ col</button>
+    <button class="row-ctl-btn" onclick="confirmDelete('row','${pageId}','${row.id}')" title="Delete row" style="color:var(--red)">🗑️</button>`;
+  rowEl.appendChild(controls);
 
-  (row.cards||[]).forEach(card => {
-    rowEl.appendChild(renderCard(pageId, row.id, card));
+  const cols = row.cols || [];
+  cols.forEach((col, colIdx) => {
+    if(colIdx > 0){
+      const resizer = document.createElement('div');
+      resizer.className = 'col-resizer';
+      resizer.innerHTML = '<div class="col-resizer-inner"></div>';
+      rowEl.appendChild(resizer);
+    }
+    rowEl.appendChild(renderCol(pageId, row.id, col));
   });
-
-  // Add card to row
-  const addCardBtn = document.createElement('button');
-  addCardBtn.className = 'add-card-btn';
-  addCardBtn.innerHTML = '＋ Add card';
-  addCardBtn.onclick = () => openAddCard(pageId, row.id);
-  rowEl.appendChild(addCardBtn);
 
   return rowEl;
 }
 
-function renderCard(pageId, rowId, card){
-  if(card.type==='stat') return renderStatCard(pageId, rowId, card);
+function renderCol(pageId, rowId, col){
+  const colEl = document.createElement('div');
+  colEl.className = 'notion-col';
+  colEl.dataset.colid = col.id;
+
+  (col.cards || []).forEach(card => {
+    colEl.appendChild(renderCard(pageId, rowId, col.id, card));
+  });
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-card-btn';
+  addBtn.innerHTML = '＋ Add card';
+  addBtn.onclick = () => openAddCard(pageId, rowId, col.id);
+  colEl.appendChild(addBtn);
+
+  return colEl;
+}
+
+// ── RENDER CARD ──
+function renderCard(pageId, rowId, colId, card){
+  if(card.type === 'stat') return renderStatCard(pageId, rowId, colId, card);
 
   const el = document.createElement('div');
   el.className = 'card';
   el.dataset.cardid = card.id;
+  el.dataset.pageId = pageId;
+  el.dataset.rowId = rowId;
+  el.dataset.colId = colId;
+  if(card.dark){ el.style.background='var(--purple)'; }
 
-  el.innerHTML = `
-    <div class="card-header">
-      <span class="card-emoji" title="Change icon" onclick="openEmojiPicker('card','${pageId}','${rowId}','${card.id}')">${card.emoji||'📋'}</span>
-      <span class="card-title-text" contenteditable="true" data-placeholder="Title">${card.title||''}</span>
-      <div class="card-actions">
-        <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${card.id}')">🌙</button>
-        <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${card.id}')">🗑️</button>
-      </div>
-    </div>
-    <div class="card-body" contenteditable="true" data-placeholder="Write content here…">${escHtml(card.content||'').replace(/\n/g,'<br>')}</div>
-    <div class="card-files" id="files-${card.id}"></div>
-    <input type="file" class="file-input-hidden" id="file-input-${card.id}" multiple/>
-    <button class="file-attach-btn" title="Attach file" onclick="document.getElementById('file-input-${card.id}').click()">📎</button>`;
+  // Drag handle
+  const handle = document.createElement('div');
+  handle.className = 'card-drag-handle';
+  handle.title = 'Drag to move';
+  handle.innerHTML = '⠿';
+  handle.setAttribute('draggable','true');
+  el.appendChild(handle);
 
-  // Title editing
-  const titleEl = el.querySelector('.card-title-text');
-  titleEl.addEventListener('blur', ()=>{
-    updateCardField(pageId,rowId,card.id,'title',titleEl.textContent.trim());
+  // Header
+  const header = document.createElement('div');
+  header.className = 'card-header';
+
+  const emojiEl = document.createElement('span');
+  emojiEl.className = 'card-emoji';
+  emojiEl.title = 'Change icon';
+  emojiEl.textContent = card.emoji || '📋';
+  emojiEl.onclick = () => openEmojiPicker('card', pageId, rowId, colId, card.id);
+
+  const titleEl = document.createElement('span');
+  titleEl.className = 'card-title-text';
+  titleEl.contentEditable = 'true';
+  titleEl.setAttribute('data-placeholder','Title');
+  titleEl.textContent = card.title || '';
+  if(card.dark) titleEl.style.color = 'var(--lavender)';
+  titleEl.addEventListener('blur',()=>{ updateCardField(pageId,rowId,colId,card.id,'title',titleEl.textContent.trim()); });
+
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+  actions.innerHTML = `
+    <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button>
+    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+
+  header.appendChild(emojiEl);
+  header.appendChild(titleEl);
+  header.appendChild(actions);
+  el.appendChild(header);
+
+  // Body — use textContent to avoid &amp; bug
+  const bodyEl = document.createElement('div');
+  bodyEl.className = 'card-body';
+  bodyEl.contentEditable = 'true';
+  bodyEl.setAttribute('data-placeholder','Write content here…');
+  bodyEl.textContent = card.content || '';
+  if(card.dark) bodyEl.style.color = 'white';
+  bodyEl.addEventListener('blur',()=>{
+    updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
   });
-
-  // Content editing
-  const bodyEl = el.querySelector('.card-body');
-  if(card.dark){ el.style.background='var(--purple)'; bodyEl.style.color='white'; titleEl.style.color='var(--lavender)'; }
-  bodyEl.addEventListener('blur', ()=>{
-    const txt = bodyEl.innerHTML.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'');
-    updateCardField(pageId,rowId,card.id,'content',txt);
+  // prevent enter from creating <div> elements
+  bodyEl.addEventListener('keydown', e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
   });
+  el.appendChild(bodyEl);
 
   // Files
-  renderCardFiles(pageId, rowId, card, el);
-  el.querySelector(`#file-input-${card.id}`).addEventListener('change', e => uploadFiles(e, pageId, rowId, card.id));
+  const filesEl = document.createElement('div');
+  filesEl.className = 'card-files';
+  filesEl.id = 'files-'+card.id;
+  renderFileChips(pageId, rowId, colId, card, filesEl);
+  el.appendChild(filesEl);
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.multiple = true;
+  fileInput.className = 'file-input-hidden';
+  fileInput.id = 'file-input-'+card.id;
+  fileInput.addEventListener('change', e => uploadFiles(e, pageId, rowId, colId, card.id));
+  el.appendChild(fileInput);
+
+  const attachBtn = document.createElement('button');
+  attachBtn.className = 'file-attach-btn';
+  attachBtn.title = 'Attach file';
+  attachBtn.textContent = '📎';
+  attachBtn.onclick = () => fileInput.click();
+  el.appendChild(attachBtn);
+
+  // Make card draggable via handle
+  setupCardDrag(handle, el);
 
   return el;
 }
 
-function renderStatCard(pageId, rowId, card){
+function renderStatCard(pageId, rowId, colId, card){
   const el = document.createElement('div');
   el.className = 'stat-card' + (card.dark?' dark':'');
   el.dataset.cardid = card.id;
-  el.innerHTML = `
-    <div class="card-actions" style="position:absolute;top:8px;right:8px;">
-      <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${card.id}')">🌙</button>
-      <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${card.id}')">🗑️</button>
-    </div>
-    <div class="sc-label" contenteditable="true" data-placeholder="Label">${card.label||''}</div>
-    <div class="sc-value" contenteditable="true" data-placeholder="Value">${card.value||''}</div>
-    <div class="sc-sub" contenteditable="true" data-placeholder="Subtitle">${card.sub||''}</div>
-    <div class="card-files" id="files-${card.id}" style="margin-top:8px;"></div>
-    <input type="file" class="file-input-hidden" id="file-input-${card.id}" multiple/>
-    <button class="file-attach-btn" title="Attach file" onclick="document.getElementById('file-input-${card.id}').click()">📎</button>`;
+  el.dataset.pageId = pageId;
+  el.dataset.rowId = rowId;
+  el.dataset.colId = colId;
 
-  el.querySelectorAll('[contenteditable]').forEach(e=>{
-    const f = e.classList.contains('sc-label')?'label':e.classList.contains('sc-value')?'value':'sub';
-    e.addEventListener('blur',()=>updateCardField(pageId,rowId,card.id,f,e.textContent.trim()));
-  });
+  const handle = document.createElement('div');
+  handle.className = 'card-drag-handle';
+  handle.title = 'Drag to move';
+  handle.innerHTML = '⠿';
+  handle.setAttribute('draggable','true');
+  el.appendChild(handle);
 
-  renderCardFiles(pageId, rowId, card, el);
-  el.querySelector(`#file-input-${card.id}`).addEventListener('change', e => uploadFiles(e, pageId, rowId, card.id));
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+  actions.style.cssText='position:absolute;top:8px;right:8px;';
+  actions.innerHTML = `
+    <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button>
+    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+  el.appendChild(actions);
+
+  const labelEl = document.createElement('div');
+  labelEl.className = 'sc-label';
+  labelEl.contentEditable = 'true';
+  labelEl.setAttribute('data-placeholder','Label');
+  labelEl.textContent = card.label || '';
+  labelEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'label',labelEl.textContent.trim()));
+
+  const valueEl = document.createElement('div');
+  valueEl.className = 'sc-value';
+  valueEl.contentEditable = 'true';
+  valueEl.setAttribute('data-placeholder','Value');
+  valueEl.textContent = card.value || '';
+  valueEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'value',valueEl.textContent.trim()));
+
+  const subEl = document.createElement('div');
+  subEl.className = 'sc-sub';
+  subEl.contentEditable = 'true';
+  subEl.setAttribute('data-placeholder','Subtitle');
+  subEl.textContent = card.sub || '';
+  subEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'sub',subEl.textContent.trim()));
+
+  el.appendChild(labelEl);
+  el.appendChild(valueEl);
+  el.appendChild(subEl);
+
+  const filesEl = document.createElement('div');
+  filesEl.className = 'card-files';
+  filesEl.id = 'files-'+card.id;
+  filesEl.style.marginTop='8px';
+  renderFileChips(pageId,rowId,colId,card,filesEl);
+  el.appendChild(filesEl);
+
+  const fileInput = document.createElement('input');
+  fileInput.type='file';fileInput.multiple=true;fileInput.className='file-input-hidden';
+  fileInput.id='file-input-'+card.id;
+  fileInput.addEventListener('change', e=>uploadFiles(e,pageId,rowId,colId,card.id));
+  el.appendChild(fileInput);
+
+  const attachBtn = document.createElement('button');
+  attachBtn.className='file-attach-btn';attachBtn.title='Attach file';attachBtn.textContent='📎';
+  attachBtn.onclick=()=>fileInput.click();
+  el.appendChild(attachBtn);
+
+  setupCardDrag(handle, el);
   return el;
 }
 
-function renderCardFiles(pageId, rowId, card, el){
-  const filesEl = el.querySelector(`#files-${card.id}`);
-  if(!filesEl) return;
-  filesEl.innerHTML = '';
+function renderFileChips(pageId, rowId, colId, card, container){
+  container.innerHTML = '';
   (card.files||[]).forEach(f=>{
     const chip = document.createElement('a');
-    chip.className='file-chip';
-    chip.href=f.url;chip.target='_blank';
-    chip.innerHTML=`<span class="fc-icon">📄</span>${f.name}<button class="fc-del" onclick="event.preventDefault();deleteFile('${pageId}','${rowId}','${card.id}','${f.storagePath}')">✕</button>`;
-    filesEl.appendChild(chip);
+    chip.className = 'file-chip';
+    chip.href = f.url; chip.target = '_blank';
+    const icon = document.createElement('span');
+    icon.className = 'fc-icon'; icon.textContent = '📄';
+    const name = document.createTextNode(f.name);
+    const del = document.createElement('button');
+    del.className = 'fc-del'; del.textContent = '✕';
+    del.onclick = (e)=>{ e.preventDefault(); deleteFile(pageId,rowId,colId,card.id,f.storagePath); };
+    chip.appendChild(icon); chip.appendChild(name); chip.appendChild(del);
+    container.appendChild(chip);
   });
 }
 
-// ── CARD OPERATIONS ──
-function updateCardField(pageId,rowId,cardId,field,val){
-  const card = getCard(pageId,rowId,cardId);
+// ── DRAG AND DROP ──
+let dragState = null;
+
+function setupCardDrag(handle, cardEl){
+  handle.addEventListener('dragstart', e => {
+    e.stopPropagation();
+    dragState = {
+      cardId: cardEl.dataset.cardid,
+      pageId: cardEl.dataset.pageId,
+      rowId: cardEl.dataset.rowId,
+      colId: cardEl.dataset.colId,
+    };
+    cardEl.classList.add('dragging');
+    // set ghost
+    const ghost = document.getElementById('dnd-ghost');
+    const titleEl = cardEl.querySelector('.card-title-text,.sc-label');
+    ghost.textContent = titleEl ? (titleEl.textContent||'Card') : 'Card';
+    ghost.style.display = 'block';
+    e.dataTransfer.setDragImage(ghost, 20, 20);
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(()=>ghost.style.display='none',0);
+  });
+
+  handle.addEventListener('dragend', e => {
+    e.stopPropagation();
+    cardEl.classList.remove('dragging');
+    clearDndHighlights();
+    dragState = null;
+  });
+}
+
+function initDnd(pageId){
+  const area = document.getElementById('cards-area');
+  if(!area) return;
+
+  // Delegate drag events on columns
+  area.addEventListener('dragover', e => {
+    if(!dragState) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    // find target col
+    const colEl = e.target.closest('.notion-col');
+    if(!colEl) return;
+
+    clearDndHighlights();
+    colEl.classList.add('drag-over-col');
+
+    // figure out insert position within col
+    const cards = [...colEl.querySelectorAll('.card,.stat-card')].filter(c=>!c.classList.contains('dragging'));
+    let afterCard = null;
+    for(const c of cards){
+      const box = c.getBoundingClientRect();
+      if(e.clientY < box.top + box.height/2){ break; }
+      afterCard = c;
+    }
+    colEl._dropAfterCard = afterCard ? afterCard.dataset.cardid : null;
+  });
+
+  area.addEventListener('drop', e => {
+    if(!dragState) return;
+    e.preventDefault();
+
+    const colEl = e.target.closest('.notion-col');
+    if(!colEl) return;
+
+    const targetColId = colEl.dataset.colid;
+    const targetRowEl = colEl.closest('.notion-row');
+    const targetRowId = targetRowEl ? targetRowEl.dataset.rowid : null;
+    const afterCardId = colEl._dropAfterCard;
+
+    if(!targetRowId || !targetColId) return;
+
+    // Remove card from source
+    const page = getPage(pageId);
+    let movedCard = null;
+    for(const row of (page.rows||[])){
+      for(const col of (row.cols||[])){
+        const idx = (col.cards||[]).findIndex(c=>c.id===dragState.cardId);
+        if(idx !== -1){
+          movedCard = col.cards.splice(idx, 1)[0];
+          break;
+        }
+      }
+      if(movedCard) break;
+    }
+    if(!movedCard) return;
+
+    // Insert into target
+    const targetRow = (page.rows||[]).find(r=>r.id===targetRowId);
+    if(!targetRow) return;
+    const targetCol = (targetRow.cols||[]).find(c=>c.id===targetColId);
+    if(!targetCol) return;
+    if(!targetCol.cards) targetCol.cards=[];
+
+    let insertIdx = targetCol.cards.length;
+    if(afterCardId){
+      const ai = targetCol.cards.findIndex(c=>c.id===afterCardId);
+      if(ai !== -1) insertIdx = ai + 1;
+    } else {
+      insertIdx = 0;
+    }
+    targetCol.cards.splice(insertIdx, 0, movedCard);
+
+    clearDndHighlights();
+    saveData();
+    renderApp();
+  });
+
+  area.addEventListener('dragleave', e => {
+    if(!e.relatedTarget || !area.contains(e.relatedTarget)){
+      clearDndHighlights();
+    }
+  });
+}
+
+function clearDndHighlights(){
+  document.querySelectorAll('.drag-over-col,.drag-over-row,.drop-active').forEach(el=>{
+    el.classList.remove('drag-over-col','drag-over-row','drop-active');
+  });
+}
+
+// ── CARD / ROW / COL OPERATIONS ──
+function updateCardField(pageId,rowId,colId,cardId,field,val){
+  const card = getCard(pageId,rowId,colId,cardId);
   if(card){ card[field]=val; saveData(); }
 }
 
-function toggleCardDark(pageId,rowId,cardId){
-  const card = getCard(pageId,rowId,cardId);
+window.toggleCardDark = (pageId,rowId,colId,cardId)=>{
+  const card = getCard(pageId,rowId,colId,cardId);
   if(card){ card.dark=!card.dark; saveData(); renderApp(); }
+};
+
+function getPage(pageId){ return (appData.pages||[]).find(p=>p.id===pageId); }
+function getRow(pageId,rowId){ const pg=getPage(pageId); return pg?(pg.rows||[]).find(r=>r.id===rowId):null; }
+function getCol(pageId,rowId,colId){ const row=getRow(pageId,rowId); return row?(row.cols||[]).find(c=>c.id===colId):null; }
+function getCard(pageId,rowId,colId,cardId){ const col=getCol(pageId,rowId,colId); return col?(col.cards||[]).find(c=>c.id===cardId):null; }
+
+window.addColToRow = (pageId, rowId)=>{
+  const row = getRow(pageId,rowId);
+  if(!row) return;
+  if(!row.cols) row.cols=[];
+  row.cols.push({ id:'col-'+Date.now(), cards:[] });
+  saveData(); renderApp();
+};
+
+window.deleteRow = (pageId,rowId)=>{ confirmDelete('row',pageId,rowId); };
+
+function addRow(pageId){
+  addRowAt(pageId, getPage(pageId)?.rows?.length||0);
 }
 
-function getPage(pageId){ return appData.pages.find(p=>p.id===pageId); }
-function getRow(pageId,rowId){ const pg=getPage(pageId); return pg?(pg.rows||[]).find(r=>r.id===rowId):null; }
-function getCard(pageId,rowId,cardId){ const row=getRow(pageId,rowId); return row?(row.cards||[]).find(c=>c.id===cardId):null; }
-
-// ── ROW OPERATIONS ──
-window.setRowCols = (pageId,rowId,n)=>{
-  const row=getRow(pageId,rowId);
-  if(row){ row.cols=n; saveData(); renderApp(); }
-};
-window.deleteRow = (pageId,rowId)=>{
-  const pg=getPage(pageId);
-  if(pg){ pg.rows=(pg.rows||[]).filter(r=>r.id!==rowId); saveData(); renderApp(); }
-};
-function addRow(pageId){
-  const pg=getPage(pageId);
+window.addRowAt = (pageId, insertIdx)=>{
+  const pg = getPage(pageId);
   if(!pg) return;
   if(!pg.rows) pg.rows=[];
-  pg.rows.push({id:'row-'+Date.now(),cols:2,cards:[]});
+  const newRow = {
+    id:'row-'+Date.now(),
+    cols:[
+      { id:'col-'+Date.now()+'a', cards:[] },
+      { id:'col-'+Date.now()+'b', cards:[] },
+    ]
+  };
+  pg.rows.splice(insertIdx, 0, newRow);
   saveData(); renderApp();
-}
+};
 
 // ── PAGE OPERATIONS ──
 window.openAddPage = ()=>{
-  pendingPageEdit=null;
-  document.getElementById('modal-page-title').textContent='New Page';
-  document.getElementById('page-name-input').value='';
+  pendingPageEdit = null;
+  document.getElementById('modal-page-title').textContent = 'New Page';
+  document.getElementById('page-name-input').value = '';
   setSelectedEmoji('page-emoji-row','📋');
-  document.getElementById('page-emoji-custom').value='';
+  document.getElementById('page-emoji-custom').value = '';
   openModal('modal-page');
 };
 window.openEditPage = (pageId)=>{
-  const pg=getPage(pageId);
+  const pg = getPage(pageId);
   if(!pg) return;
-  pendingPageEdit=pageId;
-  document.getElementById('modal-page-title').textContent='Edit Page';
-  document.getElementById('page-name-input').value=pg.label;
-  setSelectedEmoji('page-emoji-row',pg.emoji||'📋');
+  pendingPageEdit = pageId;
+  document.getElementById('modal-page-title').textContent = 'Edit Page';
+  document.getElementById('page-name-input').value = pg.label;
+  setSelectedEmoji('page-emoji-row', pg.emoji||'📋');
   openModal('modal-page');
 };
 document.getElementById('modal-page-save').onclick = ()=>{
-  const name=document.getElementById('page-name-input').value.trim();
+  const name = document.getElementById('page-name-input').value.trim();
   if(!name) return;
-  const emoji=getSelectedEmoji('page-emoji-row','page-emoji-custom');
+  const emoji = getSelectedEmoji('page-emoji-row','page-emoji-custom');
   if(pendingPageEdit){
-    const pg=getPage(pendingPageEdit);
+    const pg = getPage(pendingPageEdit);
     if(pg){ pg.label=name; pg.emoji=emoji; }
   } else {
-    const newPage={
-      id:'page-'+Date.now(),emoji,label:name,
-      title:name,subtitle:'',rows:[]
+    const newPage = {
+      id:'page-'+Date.now(), emoji, label:name,
+      title:name, subtitle:'', rows:[]
     };
     appData.pages.push(newPage);
-    currentPageId=newPage.id;
+    currentPageId = newPage.id;
   }
   saveData(); closeModal('modal-page'); renderApp();
 };
 
 // ── ADD CARD ──
-let pendingCardTarget=null;
-window.openAddCard = (pageId,rowId)=>{
-  pendingCardTarget={pageId,rowId};
-  document.getElementById('card-title-input').value='';
-  document.getElementById('card-content-input').value='';
-  document.getElementById('card-type-input').value='text';
+window.openAddCard = (pageId,rowId,colId)=>{
+  pendingCardTarget = {pageId,rowId,colId};
+  document.getElementById('card-title-input').value = '';
+  document.getElementById('card-content-input').value = '';
+  document.getElementById('card-type-input').value = 'text';
   setSelectedEmoji('card-emoji-row','📋');
+  document.getElementById('card-emoji-custom').value = '';
   openModal('modal-card');
 };
 document.getElementById('modal-card-save').onclick = ()=>{
   if(!pendingCardTarget) return;
-  const {pageId,rowId}=pendingCardTarget;
-  const row=getRow(pageId,rowId);
-  if(!row) return;
-  const type=document.getElementById('card-type-input').value;
-  const emoji=getSelectedEmoji('card-emoji-row','card-emoji-custom');
-  const title=document.getElementById('card-title-input').value.trim();
-  const content=document.getElementById('card-content-input').value.trim();
-  const newCard={id:'card-'+Date.now(),type,emoji,title,content,files:[]};
+  const {pageId,rowId,colId} = pendingCardTarget;
+  const col = getCol(pageId,rowId,colId);
+  if(!col) return;
+  const type = document.getElementById('card-type-input').value;
+  const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
+  const title = document.getElementById('card-title-input').value.trim();
+  const content = document.getElementById('card-content-input').value.trim();
+  const newCard = {id:'card-'+Date.now(), type, emoji, title, content, files:[]};
   if(type==='stat'){
-    newCard.label=title;newCard.value=content;newCard.sub='';delete newCard.title;delete newCard.content;
+    newCard.label=title; newCard.value=content; newCard.sub='';
+    delete newCard.title; delete newCard.content;
   }
-  if(!row.cards) row.cards=[];
-  row.cards.push(newCard);
+  if(!col.cards) col.cards=[];
+  col.cards.push(newCard);
   saveData(); closeModal('modal-card'); renderApp();
 };
 
 // ── DELETE ──
 window.confirmDelete = (type,...args)=>{
-  pendingDelete={type,args};
+  pendingDelete = {type,args};
   openModal('modal-delete');
 };
-document.getElementById('modal-delete-confirm').onclick=()=>{
+document.getElementById('modal-delete-confirm').onclick = ()=>{
   if(!pendingDelete) return;
-  const {type,args}=pendingDelete;
+  const {type,args} = pendingDelete;
   if(type==='page'){
-    appData.pages=appData.pages.filter(p=>p.id!==args[0]);
-    if(currentPageId===args[0]) currentPageId=appData.pages[0]?.id;
+    appData.pages = appData.pages.filter(p=>p.id!==args[0]);
+    if(currentPageId===args[0]) currentPageId = appData.pages[0]?.id;
+  } else if(type==='row'){
+    const [pageId,rowId] = args;
+    const pg = getPage(pageId);
+    if(pg) pg.rows=(pg.rows||[]).filter(r=>r.id!==rowId);
   } else if(type==='card'){
-    const [pageId,rowId,cardId]=args;
-    const row=getRow(pageId,rowId);
-    if(row) row.cards=(row.cards||[]).filter(c=>c.id!==cardId);
+    const [pageId,rowId,colId,cardId] = args;
+    const col = getCol(pageId,rowId,colId);
+    if(col) col.cards=(col.cards||[]).filter(c=>c.id!==cardId);
   }
   saveData(); closeModal('modal-delete'); renderApp();
 };
 
 // ── EMOJI PICKER ──
-window.openEmojiPicker=(targetType,...args)=>{
-  pendingEmojiTarget={targetType,args};
+window.openEmojiPicker = (targetType,...args)=>{
+  pendingEmojiTarget = {targetType,args};
   openModal('modal-emoji');
 };
-document.getElementById('pick-emoji-confirm').onclick=()=>{
+document.getElementById('pick-emoji-confirm').onclick = ()=>{
   if(!pendingEmojiTarget) return;
-  const {targetType,args}=pendingEmojiTarget;
-  const emoji=getSelectedEmoji('pick-emoji-row','pick-emoji-custom');
+  const {targetType,args} = pendingEmojiTarget;
+  const emoji = getSelectedEmoji('pick-emoji-row','pick-emoji-custom');
   if(targetType==='card'){
-    const [pageId,rowId,cardId]=args;
-    const card=getCard(pageId,rowId,cardId);
+    const [pageId,rowId,colId,cardId] = args;
+    const card = getCard(pageId,rowId,colId,cardId);
     if(card){ card.emoji=emoji; saveData(); }
   }
   closeModal('modal-emoji'); renderApp();
@@ -1026,37 +1421,37 @@ document.getElementById('pick-emoji-row').querySelectorAll('.emoji-opt').forEach
 
 // ── LOGO EDIT ──
 document.getElementById('logo-area').addEventListener('dblclick',()=>{
-  const name=prompt('Company name:',appData.meta.companyName);
+  const name = prompt('Company name:',appData.meta.companyName);
   if(name!==null){ appData.meta.companyName=name; saveData(); renderApp(); }
 });
 document.getElementById('logo-icon').addEventListener('click',e=>{
   e.stopPropagation();
-  const icon=prompt('Logo emoji:',appData.meta.logoIcon);
+  const icon = prompt('Logo emoji:',appData.meta.logoIcon);
   if(icon){ appData.meta.logoIcon=icon; saveData(); renderApp(); }
 });
 
 // ── FILE UPLOAD ──
-async function uploadFiles(e, pageId, rowId, cardId){
-  const files=[...e.target.files];
+async function uploadFiles(e, pageId, rowId, colId, cardId){
+  const files = [...e.target.files];
   if(!files.length) return;
   for(const file of files){
-    const path=`files/${currentUser.uid}/${cardId}/${Date.now()}_${file.name}`;
-    const storageRef=ref(storage,path);
+    const path = `files/${currentUser.uid}/${cardId}/${Date.now()}_${file.name}`;
+    const storageRef = ref(storage,path);
     await uploadBytes(storageRef,file);
-    const url=await getDownloadURL(storageRef);
-    const card=getCard(pageId,rowId,cardId);
+    const url = await getDownloadURL(storageRef);
+    const card = getCard(pageId,rowId,colId,cardId);
     if(card){
       if(!card.files) card.files=[];
       card.files.push({name:file.name,url,storagePath:path});
       saveData();
     }
   }
-  e.target.value='';
+  e.target.value = '';
   renderApp();
 }
 
-window.deleteFile=async(pageId,rowId,cardId,storagePath)=>{
-  const card=getCard(pageId,rowId,cardId);
+window.deleteFile = async(pageId,rowId,colId,cardId,storagePath)=>{
+  const card = getCard(pageId,rowId,colId,cardId);
   if(!card) return;
   card.files=(card.files||[]).filter(f=>f.storagePath!==storagePath);
   try{ await deleteObject(ref(storage,storagePath)); }catch(e){}
@@ -1064,21 +1459,20 @@ window.deleteFile=async(pageId,rowId,cardId,storagePath)=>{
 };
 
 // ── MODAL HELPERS ──
-window.openModal=(id)=>document.getElementById(id).classList.add('show');
-window.closeModal=(id)=>document.getElementById(id).classList.remove('show');
+window.openModal = id=>document.getElementById(id).classList.add('show');
+window.closeModal = id=>document.getElementById(id).classList.remove('show');
 document.querySelectorAll('.modal-overlay').forEach(m=>{
   m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('show'); });
 });
 
 function getSelectedEmoji(rowId,customId){
-  const custom=document.getElementById(customId).value.trim();
+  const custom = document.getElementById(customId).value.trim();
   if(custom) return custom;
-  const sel=document.querySelector(`#${rowId} .emoji-opt.selected`);
-  return sel?sel.dataset.emoji:'📋';
+  const sel = document.querySelector(`#${rowId} .emoji-opt.selected`);
+  return sel ? sel.dataset.emoji : '📋';
 }
 function setSelectedEmoji(rowId,emoji){
-  const row=document.getElementById(rowId);
-  row.querySelectorAll('.emoji-opt').forEach(e=>{
+  document.querySelectorAll(`#${rowId} .emoji-opt`).forEach(e=>{
     e.classList.toggle('selected',e.dataset.emoji===emoji);
   });
 }
@@ -1090,13 +1484,6 @@ document.querySelectorAll('.emoji-row').forEach(row=>{
     });
   });
 });
-
-// ── UTILS ──
-function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// Expose globals
-window.toggleCardDark=toggleCardDark;
-window.addRow=addRow;
 </script>
 </body>
 </html>
