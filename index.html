@@ -1,571 +1,1102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Manuela – Two Witches & A Broom</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Manuela · WAAB Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --purple: #3d2b8e;
-    --purple-mid: #5c43b0;
-    --purple-light: #ebe8f7;
-    --purple-soft: #f3f1fb;
-    --lavender: #d4cef5;
-    --cream: #faf9f6;
-    --text: #1a1630;
-    --text-muted: #6b6588;
-    --white: #ffffff;
-    --accent: #8b73e0;
-    --green: #4caf85;
-    --orange: #e8803a;
-    --red: #e05c5c;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+:root{
+  --purple:#3d2b8e;--purple-mid:#5c43b0;--purple-light:#ebe8f7;
+  --purple-soft:#f3f1fb;--lavender:#d4cef5;--cream:#faf9f6;
+  --text:#1a1630;--text-muted:#6b6588;--accent:#8b73e0;
+  --green:#4caf85;--orange:#e8803a;--red:#e05c5c;--white:#fff;
+  --sidebar-w:230px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
 
-  /* SIDEBAR */
-  .sidebar {
-    position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
-    background: var(--purple); display: flex; flex-direction: column;
-    padding: 28px 20px; gap: 4px; z-index: 100;
-  }
-  .logo-area {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 24px; padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-  }
-  .logo-img {
-    width: 44px; height: 44px; border-radius: 10px;
-    background: var(--purple-light); display: flex; align-items: center;
-    justify-content: center; overflow: hidden; flex-shrink: 0; font-size: 24px;
-  }
-  .logo-text h2 { font-family: 'Playfair Display', serif; font-size: 13px; color: white; line-height: 1.2; }
-  .logo-text span { font-size: 10px; color: var(--lavender); font-weight: 300; }
-  .nav-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lavender); opacity: 0.6; padding: 12px 8px 5px; font-weight: 600; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; cursor: pointer; color: rgba(255,255,255,0.65); font-size: 13px; transition: all 0.2s; text-decoration: none; }
-  .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.12); color: white; }
-  .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
-  .role-box { margin-top: auto; padding: 12px; background: rgba(255,255,255,0.08); border-radius: 10px; }
-  .role-box .rb-label { font-size: 10px; color: var(--lavender); margin-bottom: 3px; }
-  .role-box .rb-name { font-size: 13px; color: white; font-weight: 600; }
-  .role-box .rb-role { font-size: 11px; color: var(--lavender); margin-top: 2px; }
+/* ── AUTH SCREEN ── */
+#auth-screen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;background:var(--purple);
+}
+.auth-card{
+  background:white;border-radius:24px;padding:48px 40px;
+  text-align:center;max-width:380px;width:90%;
+  box-shadow:0 24px 80px rgba(0,0,0,0.25);
+}
+.auth-logo{font-size:52px;margin-bottom:16px;}
+.auth-card h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--purple);margin-bottom:6px;}
+.auth-card p{font-size:13px;color:var(--text-muted);margin-bottom:32px;}
+.google-btn{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  width:100%;padding:13px 20px;border-radius:12px;border:2px solid #e8e4f7;
+  background:white;color:var(--text);font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.google-btn:hover{background:var(--purple-soft);border-color:var(--accent);}
+.google-btn svg{width:20px;height:20px;flex-shrink:0;}
 
-  /* MAIN */
-  .main { margin-left: 220px; padding: 32px 36px; min-height: 100vh; }
-  .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
-  .header-left h1 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--purple); line-height: 1; }
-  .header-left h1 em { font-style: italic; color: var(--accent); }
-  .header-left p { margin-top: 5px; font-size: 13px; color: var(--text-muted); font-weight: 300; }
-  .date-badge { background: var(--purple-light); border-radius: 10px; padding: 10px 16px; text-align: right; }
-  .date-badge .day { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--purple); font-weight: 700; }
-  .date-badge .date-str { font-size: 11px; color: var(--text-muted); }
+/* ── APP SHELL ── */
+#app{display:none;}
 
-  /* GRID */
-  .grid { display: grid; gap: 18px; }
-  .g2 { grid-template-columns: 1fr 1fr; }
-  .g3 { grid-template-columns: 1fr 1fr 1fr; }
-  .g4 { grid-template-columns: repeat(4,1fr); }
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;
+  background:var(--purple);display:flex;flex-direction:column;
+  padding:22px 16px;z-index:200;overflow-y:auto;
+}
+.logo-area{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,0.13);
+  cursor:pointer;
+}
+.logo-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(255,255,255,0.12);display:flex;
+  align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.logo-text{flex:1;min-width:0;}
+.logo-text h2{font-family:'Playfair Display',serif;font-size:12px;color:white;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.logo-text span{font-size:10px;color:var(--lavender);font-weight:300;}
 
-  /* CARD */
-  .card { background: white; border-radius: 16px; padding: 22px; border: 1px solid rgba(61,43,142,0.07); box-shadow: 0 2px 12px rgba(61,43,142,0.05); }
-  .card-title { font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.nav-section{margin-bottom:6px;}
+.nav-section-label{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:9px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--lavender);opacity:.6;padding:12px 8px 5px;font-weight:600;
+}
+.nav-section-label button{
+  opacity:0;background:none;border:none;color:var(--lavender);
+  cursor:pointer;font-size:14px;padding:0 2px;line-height:1;transition:opacity .2s;
+}
+.nav-section-label:hover button{opacity:.7;}
+.nav-section-label button:hover{opacity:1!important;}
 
-  /* STAT */
-  .stat { background: white; border-radius: 14px; padding: 18px 20px; border: 1px solid rgba(61,43,142,0.07); }
-  .stat .lbl { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 5px; }
-  .stat .val { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--purple); font-weight: 700; }
-  .stat .sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .stat.dark { background: var(--purple); }
-  .stat.dark .lbl, .stat.dark .sub { color: var(--lavender); }
-  .stat.dark .val { color: white; }
+.nav-item{
+  display:flex;align-items:center;gap:9px;padding:8px 10px;
+  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.65);
+  font-size:13px;transition:all .2s;position:relative;group:true;
+}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.12);color:white;}
+.nav-item .ni-emoji{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+.nav-item .ni-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-item .ni-actions{
+  display:none;gap:2px;align-items:center;flex-shrink:0;
+}
+.nav-item:hover .ni-actions{display:flex;}
+.ni-actions button{
+  background:none;border:none;color:rgba(255,255,255,.5);
+  cursor:pointer;padding:2px 3px;font-size:12px;border-radius:4px;
+  transition:color .15s;line-height:1;
+}
+.ni-actions button:hover{color:white;}
 
-  /* ROUTINE */
-  .r-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--purple-soft); }
-  .r-item:last-child { border-bottom: none; }
-  .r-time { font-size: 11px; font-weight: 600; color: var(--accent); min-width: 58px; padding-top: 2px; }
-  .r-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lavender); margin-top: 5px; flex-shrink: 0; }
-  .r-dot.g { background: var(--green); }
-  .r-dot.o { background: var(--orange); }
-  .r-dot.p { background: var(--purple); }
-  .r-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .r-content p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.add-page-btn{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;
+  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.4);
+  font-size:12px;border:1px dashed rgba(255,255,255,.2);
+  background:none;width:100%;text-align:left;transition:all .2s;
+  margin-top:4px;font-family:'DM Sans',sans-serif;
+}
+.add-page-btn:hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.4);}
 
-  /* CHECKLIST */
-  .ck { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .ck li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.4; }
-  .ck li::before { content: '✦'; color: var(--accent); font-size: 9px; margin-top: 3px; flex-shrink: 0; }
+.role-box{
+  margin-top:auto;padding:12px;background:rgba(255,255,255,.08);
+  border-radius:10px;flex-shrink:0;
+}
+.role-box .rb-name{font-size:13px;color:white;font-weight:600;}
+.role-box .rb-role{font-size:11px;color:var(--lavender);margin-top:2px;}
+.role-box .rb-signout{
+  margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);
+  cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;
+  padding:0;transition:color .2s;
+}
+.role-box .rb-signout:hover{color:rgba(255,255,255,.8);}
 
-  /* RULE LIST */
-  .rl { display: flex; flex-direction: column; gap: 10px; }
-  .ri { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.4; }
-  .ri-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);padding:32px 36px;min-height:100vh;}
 
-  /* FLOW SECTION */
-  .flow-wrap { background: var(--purple); border-radius: 20px; padding: 26px; }
-  .flow-heading { font-family: 'Playfair Display', serif; font-size: 19px; color: white; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-  .flow-heading span { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--lavender); font-style: normal; font-weight: 300; }
-  .flow-tabs { display: flex; gap: 7px; margin-bottom: 20px; flex-wrap: wrap; }
-  .ft { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.55); background: transparent; transition: all 0.2s; }
-  .ft.active { background: white; color: var(--purple); border-color: white; font-weight: 600; }
-  .flow-content { display: none; }
-  .flow-content.active { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
-  .fs { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 14px 14px; flex: 1; min-width: 100px; cursor: default; transition: background 0.2s; }
-  .fs:hover { background: rgba(255,255,255,0.17); }
-  .fs .sn { font-size: 10px; font-weight: 700; color: var(--lavender); letter-spacing: 0.4px; margin-bottom: 5px; }
-  .fs .st { font-size: 13px; font-weight: 600; color: white; margin-bottom: 4px; }
-  .fs .sd { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
-  .fa { color: var(--lavender); font-size: 16px; flex-shrink: 0; align-self: center; }
+/* ── PAGE HEADER ── */
+.page-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:28px;
+}
+.page-header-left h1{
+  font-family:'Playfair Display',serif;font-size:28px;
+  color:var(--purple);line-height:1;cursor:text;
+}
+.page-header-left h1 em{font-style:italic;color:var(--accent);}
+.page-header-left p{margin-top:5px;font-size:13px;color:var(--text-muted);font-weight:300;cursor:text;}
+.date-badge{background:var(--purple-light);border-radius:10px;padding:10px 16px;text-align:right;flex-shrink:0;}
+.date-badge .day{font-family:'Playfair Display',serif;font-size:22px;color:var(--purple);font-weight:700;}
+.date-badge .ds{font-size:11px;color:var(--text-muted);}
 
-  /* SERVICE */
-  .svc { background: var(--purple-soft); border-radius: 12px; padding: 14px 15px; border-left: 3px solid var(--accent); }
-  .svc h4 { font-size: 13px; font-weight: 600; color: var(--purple); margin-bottom: 4px; }
-  .svc p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-  .svc .price { font-size: 13px; font-weight: 700; color: var(--purple-mid); margin-top: 6px; }
+/* ── CARDS GRID ── */
+.cards-area{display:flex;flex-direction:column;gap:20px;}
+.cards-row{display:grid;gap:16px;}
+.cards-row.cols-1{grid-template-columns:1fr;}
+.cards-row.cols-2{grid-template-columns:1fr 1fr;}
+.cards-row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.cards-row.cols-4{grid-template-columns:repeat(4,1fr);}
 
-  /* GUARANTEE */
-  .guarantee { background: linear-gradient(135deg, var(--purple), var(--purple-mid)); border-radius: 14px; padding: 18px 20px; color: white; }
-  .guarantee h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 6px; }
-  .guarantee p { font-size: 12px; color: var(--lavender); line-height: 1.5; }
+/* ── CARD ── */
+.card{
+  background:white;border-radius:16px;padding:20px;
+  border:1px solid rgba(61,43,142,.07);
+  box-shadow:0 2px 12px rgba(61,43,142,.05);
+  position:relative;transition:box-shadow .2s;
+}
+.card:hover{box-shadow:0 4px 20px rgba(61,43,142,.1);}
+.card-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.card-emoji{font-size:16px;cursor:pointer;transition:transform .15s;}
+.card-emoji:hover{transform:scale(1.2);}
+.card-title-text{
+  font-size:11px;font-weight:600;letter-spacing:1.1px;
+  text-transform:uppercase;color:var(--accent);flex:1;cursor:text;
+}
+.card-title-text[contenteditable=true]:focus{outline:none;border-bottom:1px dashed var(--accent);}
+.card-actions{
+  display:none;gap:4px;align-items:center;
+}
+.card:hover .card-actions{display:flex;}
+.card-actions button{
+  background:none;border:none;color:var(--text-muted);
+  cursor:pointer;padding:3px 5px;border-radius:6px;
+  font-size:12px;transition:all .15s;line-height:1;
+}
+.card-actions button:hover{background:var(--purple-soft);color:var(--purple);}
 
-  /* INFO ROW */
-  .ir { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--purple-soft); font-size: 13px; }
-  .ir:last-child { border-bottom: none; }
-  .ir .k { color: var(--text-muted); }
-  .ir .v { color: var(--text); font-weight: 600; }
+.card-body{font-size:13px;color:var(--text);line-height:1.6;}
+.card-body[contenteditable=true]{
+  outline:none;min-height:40px;cursor:text;
+}
+.card-body[contenteditable=true]:focus{
+  background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;
+}
 
-  /* BADGE */
-  .badge { display: inline-block; background: var(--purple-light); color: var(--purple); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
-  .badge.o { background: #fdf0e6; color: var(--orange); }
+/* ── STAT CARD ── */
+.stat-card{
+  background:white;border-radius:14px;padding:18px 20px;
+  border:1px solid rgba(61,43,142,.07);position:relative;
+}
+.stat-card.dark{background:var(--purple);}
+.stat-card .sc-label{font-size:11px;color:var(--text-muted);margin-bottom:5px;cursor:text;}
+.stat-card.dark .sc-label{color:var(--lavender);}
+.stat-card .sc-value{
+  font-family:'Playfair Display',serif;font-size:26px;
+  color:var(--purple);font-weight:700;cursor:text;
+}
+.stat-card.dark .sc-value{color:white;}
+.stat-card .sc-sub{font-size:11px;color:var(--text-muted);margin-top:2px;cursor:text;}
+.stat-card.dark .sc-sub{color:var(--lavender);}
+.stat-card:hover .card-actions{display:flex;}
+.stat-card .card-actions{position:absolute;top:8px;right:8px;}
 
-  /* DIRT */
-  .dirt-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
-  .di { border-radius: 10px; padding: 10px 6px; text-align: center; }
-  .di .dn { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
-  .di .dl { font-size: 10px; margin-top: 3px; font-weight: 500; }
+/* ── FLOW CARD ── */
+.flow-wrap{
+  background:var(--purple);border-radius:20px;padding:24px;
+  position:relative;
+}
+.flow-wrap:hover .card-actions{display:flex;}
+.flow-wrap .card-actions{position:absolute;top:12px;right:12px;}
+.flow-wrap .card-actions button{color:rgba(255,255,255,.5);}
+.flow-wrap .card-actions button:hover{background:rgba(255,255,255,.15);color:white;}
+.flow-heading{
+  font-family:'Playfair Display',serif;font-size:18px;
+  color:white;margin-bottom:16px;cursor:text;
+}
+.flow-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.ft{
+  padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;
+  cursor:pointer;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.55);background:transparent;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.ft.active{background:white;color:var(--purple);border-color:white;font-weight:600;}
+.flow-content{display:none;gap:8px;align-items:stretch;flex-wrap:wrap;}
+.flow-content.active{display:flex;}
+.fs{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;padding:14px;flex:1;min-width:100px;
+}
+.fs .sn{font-size:10px;font-weight:700;color:var(--lavender);margin-bottom:4px;}
+.fs .st{font-size:13px;font-weight:600;color:white;margin-bottom:3px;}
+.fs .sd{font-size:11px;color:rgba(255,255,255,.6);line-height:1.4;}
+.fa{color:var(--lavender);font-size:16px;flex-shrink:0;align-self:center;}
 
-  /* PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
+/* ── ADD ROW / CARD BUTTONS ── */
+.add-row-btn,.add-card-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px;border-radius:10px;cursor:pointer;
+  border:1px dashed rgba(61,43,142,.2);background:none;
+  color:var(--text-muted);font-size:12px;width:100%;
+  transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:6px;
+}
+.add-row-btn:hover,.add-card-btn:hover{
+  border-color:var(--accent);color:var(--accent);background:var(--purple-soft);
+}
 
-  /* SCRIPT BOX */
-  .script-box { background: var(--purple-soft); border-radius: 10px; padding: 13px 14px; font-size: 13px; color: var(--text); line-height: 1.6; font-style: italic; border-left: 3px solid var(--accent); }
+/* ── SAVE INDICATOR ── */
+#save-indicator{
+  position:fixed;bottom:20px;right:20px;
+  background:var(--purple);color:white;
+  border-radius:20px;padding:8px 16px;font-size:12px;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+  z-index:999;
+}
+#save-indicator.show{opacity:1;}
+
+/* ── MODALS ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  display:none;align-items:center;justify-content:center;z-index:1000;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:white;border-radius:20px;padding:28px;
+  width:min(420px,90vw);box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+.modal h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--purple);margin-bottom:20px;}
+.modal label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:6px;}
+.modal input,.modal textarea,.modal select{
+  width:100%;padding:10px 13px;border:1.5px solid #e8e4f7;border-radius:10px;
+  font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);
+  outline:none;transition:border-color .2s;margin-bottom:16px;
+}
+.modal input:focus,.modal textarea:focus{border-color:var(--accent);}
+.modal textarea{min-height:100px;resize:vertical;}
+.modal .emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.modal .emoji-opt{
+  width:36px;height:36px;border-radius:8px;border:2px solid transparent;
+  background:var(--purple-soft);cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.modal .emoji-opt:hover,.modal .emoji-opt.selected{border-color:var(--accent);background:var(--purple-light);}
+.modal .custom-emoji{
+  flex:1;min-width:80px;padding:6px 10px;border:1.5px solid #e8e4f7;
+  border-radius:8px;font-size:14px;text-align:center;
+  font-family:'DM Sans',sans-serif;outline:none;
+}
+.modal .custom-emoji:focus{border-color:var(--accent);}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px;}
+.btn-cancel{
+  padding:9px 20px;border-radius:10px;border:1.5px solid #e8e4f7;
+  background:none;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text-muted);
+  transition:all .2s;
+}
+.btn-cancel:hover{border-color:var(--accent);color:var(--accent);}
+.btn-confirm{
+  padding:9px 20px;border-radius:10px;border:none;
+  background:var(--purple);color:white;cursor:pointer;font-size:13px;
+  font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;
+}
+.btn-confirm:hover{background:var(--purple-mid);}
+.btn-danger{
+  padding:9px 20px;border-radius:10px;border:none;
+  background:#fde8e8;color:var(--red);cursor:pointer;font-size:13px;
+  font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;
+}
+.btn-danger:hover{background:var(--red);color:white;}
+
+/* ── FILE ATTACHMENT ── */
+.card-files{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.file-chip{
+  display:flex;align-items:center;gap:5px;background:var(--purple-soft);
+  border-radius:20px;padding:3px 10px 3px 8px;font-size:11px;color:var(--purple);
+  text-decoration:none;transition:background .15s;
+}
+.file-chip:hover{background:var(--purple-light);}
+.file-chip .fc-icon{font-size:12px;}
+.file-chip .fc-del{
+  background:none;border:none;color:var(--text-muted);cursor:pointer;
+  font-size:11px;padding:0 0 0 3px;line-height:1;
+}
+.file-chip .fc-del:hover{color:var(--red);}
+.file-attach-btn{
+  background:none;border:none;color:var(--text-muted);cursor:pointer;
+  font-size:16px;padding:2px;line-height:1;transition:color .15s;
+  display:none;
+}
+.card:hover .file-attach-btn,.stat-card:hover .file-attach-btn{display:inline;}
+.file-attach-btn:hover{color:var(--accent);}
+.file-input-hidden{display:none;}
+
+/* ── INLINE EDIT STYLE ── */
+[contenteditable=true]:empty:before{
+  content:attr(data-placeholder);color:rgba(0,0,0,.25);pointer-events:none;
+}
+
+/* ── CHECKLIST ── */
+.ck{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.ck li{display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:1.4;}
+.ck li::before{content:'✦';color:var(--accent);font-size:9px;margin-top:3px;flex-shrink:0;}
+
+/* ── LOADING ── */
+#loading{
+  position:fixed;inset:0;background:var(--purple);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;z-index:9999;
+}
+#loading .spin{
+  width:36px;height:36px;border:3px solid rgba(255,255,255,.2);
+  border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;
+}
+#loading p{color:rgba(255,255,255,.7);font-size:14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── MISC ── */
+.hint{font-size:11px;color:var(--text-muted);font-style:italic;opacity:.7;margin-top:4px;}
+.page-view{display:none;}
+.page-view.active{display:block;}
 </style>
 </head>
 <body>
 
-<nav class="sidebar">
-  <div class="logo-area">
-    <div class="logo-img">🧙</div>
-    <div class="logo-text">
-      <h2>Two Witches<br>&amp; A Broom</h2>
-      <span>Cleaning Co.</span>
+<div id="loading"><div class="spin"></div><p>Loading dashboard…</p></div>
+
+<!-- AUTH -->
+<div id="auth-screen" style="display:none;">
+  <div class="auth-card">
+    <div class="auth-logo">🧙‍♀️</div>
+    <h1>Two Witches &amp; A Broom</h1>
+    <p>Sign in to access your personal dashboard</p>
+    <button class="google-btn" id="sign-in-btn">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign in with Google
+    </button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="sidebar" id="sidebar">
+    <div class="logo-area" id="logo-area">
+      <div class="logo-icon" id="logo-icon">🧙</div>
+      <div class="logo-text">
+        <h2 id="company-name">Two Witches &amp; A Broom</h2>
+        <span id="company-sub">Cleaning Co.</span>
+      </div>
+    </div>
+    <div id="nav-sections"></div>
+    <div class="role-box">
+      <div class="rb-name" id="user-name">—</div>
+      <div class="rb-role" id="user-role">CX &amp; Sales VA</div>
+      <button class="rb-signout" id="sign-out-btn">Sign out</button>
+    </div>
+  </nav>
+
+  <main class="main" id="main-content">
+    <div id="pages-container"></div>
+  </main>
+</div>
+
+<!-- SAVE INDICATOR -->
+<div id="save-indicator">💾 Saved</div>
+
+<!-- MODAL: Add / Edit Page -->
+<div class="modal-overlay" id="modal-page">
+  <div class="modal">
+    <h3 id="modal-page-title">New Page</h3>
+    <label>Icon</label>
+    <div class="emoji-row" id="page-emoji-row">
+      <span class="emoji-opt selected" data-emoji="📋">📋</span>
+      <span class="emoji-opt" data-emoji="💬">💬</span>
+      <span class="emoji-opt" data-emoji="🧼">🧼</span>
+      <span class="emoji-opt" data-emoji="💰">💰</span>
+      <span class="emoji-opt" data-emoji="🏢">🏢</span>
+      <span class="emoji-opt" data-emoji="⭐">⭐</span>
+      <span class="emoji-opt" data-emoji="📅">📅</span>
+      <span class="emoji-opt" data-emoji="🔄">🔄</span>
+      <span class="emoji-opt" data-emoji="📊">📊</span>
+      <input class="custom-emoji" placeholder="or type…" id="page-emoji-custom" maxlength="4"/>
+    </div>
+    <label>Page Name</label>
+    <input type="text" id="page-name-input" placeholder="e.g. Sales Playbook"/>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-page')">Cancel</button>
+      <button class="btn-confirm" id="modal-page-save">Save</button>
     </div>
   </div>
-  <div class="nav-label">Main</div>
-  <a class="nav-item active" onclick="showPage('home',this)"><span class="icon">🏠</span> Dashboard</a>
-  <a class="nav-item" onclick="showPage('sales',this)"><span class="icon">💬</span> Sales</a>
-  <a class="nav-item" onclick="showPage('services',this)"><span class="icon">🧼</span> Services</a>
-  <a class="nav-item" onclick="showPage('pricing',this)"><span class="icon">💰</span> Pricing</a>
-  <a class="nav-item" onclick="showPage('company',this)"><span class="icon">🏢</span> Company Info</a>
-  <div class="nav-label" style="padding-top:20px;">You</div>
-  <div class="role-box">
-    <div class="rb-label">Logged in as</div>
-    <div class="rb-name">Manuela</div>
-    <div class="rb-role">CX &amp; Sales VA</div>
+</div>
+
+<!-- MODAL: Add Card -->
+<div class="modal-overlay" id="modal-card">
+  <div class="modal">
+    <h3>Add Card</h3>
+    <label>Icon</label>
+    <div class="emoji-row" id="card-emoji-row">
+      <span class="emoji-opt selected" data-emoji="📋">📋</span>
+      <span class="emoji-opt" data-emoji="✅">✅</span>
+      <span class="emoji-opt" data-emoji="🚫">🚫</span>
+      <span class="emoji-opt" data-emoji="💡">💡</span>
+      <span class="emoji-opt" data-emoji="📞">📞</span>
+      <span class="emoji-opt" data-emoji="💬">💬</span>
+      <span class="emoji-opt" data-emoji="⭐">⭐</span>
+      <span class="emoji-opt" data-emoji="🔢">🔢</span>
+      <input class="custom-emoji" placeholder="or type…" id="card-emoji-custom" maxlength="4"/>
+    </div>
+    <label>Card Title</label>
+    <input type="text" id="card-title-input" placeholder="e.g. Daily Routine"/>
+    <label>Type</label>
+    <select id="card-type-input">
+      <option value="text">Text / Notes</option>
+      <option value="stat">Stat (big number)</option>
+      <option value="checklist">Checklist</option>
+    </select>
+    <label>Content</label>
+    <textarea id="card-content-input" placeholder="Write your content here…"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-card')">Cancel</button>
+      <button class="btn-confirm" id="modal-card-save">Add Card</button>
+    </div>
   </div>
-</nav>
+</div>
 
-<main class="main">
+<!-- MODAL: Confirm Delete -->
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal">
+    <h3>Delete this?</h3>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-delete')">Cancel</button>
+      <button class="btn-danger" id="modal-delete-confirm">Delete</button>
+    </div>
+  </div>
+</div>
 
-<!-- ══ HOME ══ -->
-<div class="page active" id="page-home">
-  <div class="header">
-    <div class="header-left">
-      <h1>Hey, <em>Manuela</em> 🧙‍♀️</h1>
-      <p>VA at Two Witches &amp; A Broom · CX &amp; Sales</p>
+<!-- MODAL: Emoji Picker for card -->
+<div class="modal-overlay" id="modal-emoji">
+  <div class="modal">
+    <h3>Choose Icon</h3>
+    <div class="emoji-row" id="pick-emoji-row" style="margin-bottom:16px;">
+      <span class="emoji-opt" data-emoji="📋">📋</span><span class="emoji-opt" data-emoji="✅">✅</span>
+      <span class="emoji-opt" data-emoji="🚫">🚫</span><span class="emoji-opt" data-emoji="💡">💡</span>
+      <span class="emoji-opt" data-emoji="📞">📞</span><span class="emoji-opt" data-emoji="💬">💬</span>
+      <span class="emoji-opt" data-emoji="⭐">⭐</span><span class="emoji-opt" data-emoji="🔢">🔢</span>
+      <span class="emoji-opt" data-emoji="🧼">🧼</span><span class="emoji-opt" data-emoji="💰">💰</span>
+      <span class="emoji-opt" data-emoji="🏢">🏢</span><span class="emoji-opt" data-emoji="📅">📅</span>
+      <span class="emoji-opt" data-emoji="🔄">🔄</span><span class="emoji-opt" data-emoji="📊">📊</span>
+      <span class="emoji-opt" data-emoji="🛡️">🛡️</span><span class="emoji-opt" data-emoji="🐾">🐾</span>
+      <span class="emoji-opt" data-emoji="🚀">🚀</span><span class="emoji-opt" data-emoji="🎯">🎯</span>
+      <input class="custom-emoji" placeholder="or type…" id="pick-emoji-custom" maxlength="4"/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-emoji')">Cancel</button>
+      <button class="btn-confirm" id="pick-emoji-confirm">Set Icon</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyBRYnwBSFGGvKcTS4fqGAwFxmykxMQ7YVE",
+  authDomain:"waab-e0dc8.firebaseapp.com",
+  projectId:"waab-e0dc8",
+  storageBucket:"waab-e0dc8.firebasestorage.app",
+  messagingSenderId:"826101902777",
+  appId:"1:826101902777:web:65cabb5e7c659d81bb5a68"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+const storage = getStorage(fbApp);
+
+// ── DEFAULT DATA ──
+const DEFAULT_DATA = {
+  meta:{ companyName:"Two Witches & A Broom", companySub:"Cleaning Co.", logoIcon:"🧙" },
+  pages:[
+    {
+      id:"home", emoji:"🏠", label:"Dashboard", active:true,
+      title:"Hey, Manuela 🧙‍♀️", subtitle:"VA at Two Witches & A Broom · CX & Sales",
+      rows:[
+        {
+          id:"row-stats", cols:4,
+          cards:[
+            {id:"s1",type:"stat",dark:true,emoji:"",label:"Min. Service",value:"$150",sub:"Never go below"},
+            {id:"s2",type:"stat",emoji:"",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
+            {id:"s3",type:"stat",emoji:"",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
+            {id:"s4",type:"stat",emoji:"",label:"Guarantee",value:"24h",sub:"Satisfaction window"},
+          ]
+        },
+        {
+          id:"row-main", cols:2,
+          cards:[
+            {id:"c1",type:"text",emoji:"📅",title:"Daily Routine",content:`🟢 Morning — Open ZenMaid & Check Schedule\nReview today's appointments, verify all client profiles have complete notes.\n\n🟣 Ongoing — Handle Inbound Leads & Calls\nBuild rapport → Discovery → Close. Always push recurring services.\n\n🟠 1h after arrival — Open-to-Close Check-in\nTechs call office 1h after arrival. Confirm dirt level + time estimate.\n\n🟢 Post-clean — Charge Client in AuthNet\nCharge after service. Verify tax + total. If declined → try another card.\n\n🟣 Next day — 24-Hour Follow-Up Call\nHappy → upsell recurring + ask for Google review.\nUnhappy → offer re-clean fast.\n\n🟠 Ongoing — Manage Slack Comms\nCleaner issues → escalate to Sandy.`},
+            {id:"c2",type:"text",emoji:"🚫",title:"Never Do / Always Do",content:`🚫 NEVER SAY:\n• Hourly rate ($60–$70/h) to clients\n• "Time" → say "effort" instead\n• Share owner's or your personal phone number\n\n🚫 NEVER CLEAN:\n• Walls • Exterior windows • Carpets • Unfinished basements\n• Wash dishes • Enter closed rooms\n• Use client products (except marble/granite)\n\n✅ ALWAYS:\n• Push recurring services every interaction\n• Sandwich method: nice → request → nice\n• Update ZenMaid after every call\n• Offer reschedule before skip\n• Skip weekly = biweekly rate (×1.25)`},
+          ]
+        }
+      ]
+    },
+    {
+      id:"sales", emoji:"💬", label:"Sales",
+      title:"Sales Playbook", subtitle:"Scripts, discovery & closing strategies",
+      rows:[
+        {
+          id:"row-s1", cols:2,
+          cards:[
+            {id:"sc1",type:"text",emoji:"📞",title:"Sales Call — Step by Step",content:`1️⃣ Build Rapport — warm greeting, smile, make them feel heard\n2️⃣ Discovery — bedrooms, bathrooms, sqft, adults/kids, pets?\n3️⃣ Identify Pain — find what frustrates them, use emotion\n4️⃣ Offer Solution — flat rate, push recurring first, always\n5️⃣ Close — 3 forms required before booking is confirmed`},
+            {id:"sc2",type:"text",emoji:"📋",title:"Discovery Questions",content:`🛏️ How many bedrooms?\n🚿 How many bathrooms?\n📐 Approximate square footage?\n👨‍👩‍👧 How many adults / kids?\n🐶 Pets? Type? Aggressive?\n🚿 When was shower last cleaned with product?\n🍽️ How often are counters wiped?\n🧹 How often are floors cleaned?`},
+          ]
+        },
+        {
+          id:"row-s2", cols:3,
+          cards:[
+            {id:"sc3",type:"text",emoji:"🐾",title:"Pet Script",content:`"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive."\n\n→ Always ask about aggression history.\n→ 75% of clients have pets.`},
+            {id:"sc4",type:"text",emoji:"💫",title:"Emotion Sells",content:`• "Imagine never having to clean again"\n• "Look at the difference after this clean"\n• Best upsell moment = right after spotless clean\n• Sale happens during estimate call or follow-up — NOT after`},
+            {id:"sc5",type:"text",emoji:"🔢",title:"Dirt Code Scale",content:`1 — Spotless ✨\n2 — Clean 🟢\n3 — Average 🟡\n4 — Dirty 🟠\n5 — Heavy / Buildup 🔴\n\n→ 5+ = set expectations on effort upfront\n→ Option 1: stay within estimate\n→ Option 2: pay for additional effort\n\nScript: "Please describe the current condition of your home. Not for judgment — just for an accurate estimate."`},
+          ]
+        }
+      ]
+    },
+    {
+      id:"services", emoji:"🧼", label:"Services",
+      title:"Services Menu", subtitle:"What we offer & how to position them",
+      rows:[
+        {
+          id:"row-sv1", cols:2,
+          cards:[
+            {id:"sv1",type:"text",emoji:"🧼",title:"Service Types",content:`🟢 Recurring Cleaning — Weekly / Biweekly / Monthly\n85% of sales. Always push this first. Goal: $300/mo per client.\n\n🔵 General Clean — One-time\nFrom $150 minimum. Use as entry point → convert after follow-up.\n\n🟠 TTB (Top to Bottom) — Deep Clean\nStarts at $490. The "big reset." Best positioned before recurring.\n\n🟣 Priority Clean — Custom\nLimited service, specific areas only. Custom quote.`},
+            {id:"sv2",type:"text",emoji:"⭐",title:"Why We Win",content:`✦ Eco-friendly, non-toxic, odor-free products\n✦ Safe for pets, kids, and people\n✦ All techs pass background checks\n✦ Reliable — we always show up\n✦ Strong systems & processes\n✦ High consistency vs competitors\n\n⚠️ Main competitor: Serenity\n→ Bad reputation: inconsistent, hires anyone\n→ We position as the exact opposite`},
+          ]
+        },
+        {
+          id:"row-sv2", cols:2,
+          cards:[
+            {id:"sv3",type:"text",emoji:"✅",title:"Included in Service",content:`✓ Microwave: inside + outside\n✓ Small appliances: move them\n✓ Surface >50% covered → clean around items\n✓ Floors: use client vacuum/mop if requested\n✓ Marble/granite: use client-approved cleaner`},
+            {id:"sv4",type:"text",emoji:"🚫",title:"NOT Included",content:`✗ Walls\n✗ Exterior windows\n✗ Carpets\n✗ Unfinished basements\n✗ Washing dishes\n✗ Entering closed rooms\n✗ Large appliances (don't move)`},
+          ]
+        }
+      ]
+    },
+    {
+      id:"pricing", emoji:"💰", label:"Pricing",
+      title:"Pricing Reference", subtitle:"Internal rates & how to quote clients",
+      rows:[
+        {
+          id:"row-p0", cols:3,
+          cards:[
+            {id:"ps1",type:"stat",dark:true,emoji:"",label:"Minimum Service",value:"$150",sub:"Never go below this"},
+            {id:"ps2",type:"stat",emoji:"",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
+            {id:"ps3",type:"stat",emoji:"",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
+          ]
+        },
+        {
+          id:"row-p1", cols:2,
+          cards:[
+            {id:"pc1",type:"text",emoji:"💡",title:"Pricing Rules",content:`🔒 Internal rate: $60–$70/h per tech — NEVER tell clients\n📊 We use flat rate pricing — clients feel safer, better margins\n🗣️ NEVER talk about time → always talk about effort\n📈 Skip weekly = charged as biweekly (×1.25 multiplier)\n💳 Charge via AuthNet after service. Verify tax + total.\nIf declined → try another card → contact client.`},
+            {id:"pc2",type:"text",emoji:"🏆",title:"How to Position Price",content:`✦ Lead with value: eco-friendly, background-checked, reliable\n✦ Use emotion: "Imagine never having to clean again"\n✦ Flat rate = no surprises → builds trust\n✦ If dirt code is high → set expectations upfront\n✦ TTB = "big reset" → frame as investment before recurring\n✦ Best close moment: right after a spotless clean`},
+          ]
+        }
+      ]
+    },
+    {
+      id:"company", emoji:"🏢", label:"Company Info",
+      title:"Company Info", subtitle:"Two Witches & A Broom — quick reference",
+      rows:[
+        {
+          id:"row-co1", cols:2,
+          cards:[
+            {id:"co1",type:"text",emoji:"🏢",title:"Overview",content:`Founded: August 2021\nTeam: ~7 techs (hiring +1)\nLocation: Ohio (EST)\nOwner: Remote (since 2025)\nGrowth: Doubled revenue YoY\nCRM: ZenMaid\nPayments: AuthNet\nComms: Slack\nMarketing: Facebook / Google / TikTok`},
+            {id:"co2",type:"text",emoji:"👥",title:"Team Structure",content:`Sandy → Office Manager\n  Hours: 8 AM – 2 PM EST\n  (hiring, onboarding, training, oversight)\n\nManuela → CX + Sales VA\n  (you! until 5 PM EST)\n\nHailee → Trainer\n\nHouse Checkers → Quality Control\n\nTechs → Execution team\n\n⚠️ Samantha is in Montana (different TZ — always double check)`},
+          ]
+        },
+        {
+          id:"row-co2", cols:2,
+          cards:[
+            {id:"co3",type:"text",emoji:"🛠️",title:"Tools & Systems",content:`ZenMaid → Scheduling + CRM (Operations Hub)\n  If it's not in ZenMaid → it doesn't exist\n  Notes: Yellow = visible to techs | Private = office only\n\nAuthNet → Payments (charge after service)\n\nSlack → #general-office-questions\n  Cleaner issues → escalate to Sandy\n\nGoogle Reviews → Goal: 200 reviews`},
+            {id:"co4",type:"text",emoji:"🧠",title:"Core Principles",content:`✦ Consistency matters — same tech whenever possible\n✦ Verbage is key — use standardized language always\n✦ No gossip — address issues directly\n✦ Feedback = opportunity to improve\n✦ Listening solves 90% of problems\n✦ If not in ZenMaid → doesn't exist\n✦ 2 complaints in 60 days → PIP triggered (Sandy handles)\n✦ Google Reviews goal: 200`},
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// ── STATE ──
+let appData = null;
+let currentUser = null;
+let currentPageId = null;
+let saveTimer = null;
+let pendingDelete = null;
+let pendingEmojiTarget = null;
+let pendingPageEdit = null;
+let unsubSnapshot = null;
+
+// ── AUTH ──
+document.getElementById('sign-in-btn').addEventListener('click', async () => {
+  const provider = new GoogleAuthProvider();
+  try { await signInWithPopup(auth, provider); }
+  catch(e){ console.error(e); }
+});
+document.getElementById('sign-out-btn').addEventListener('click', () => signOut(auth));
+
+onAuthStateChanged(auth, async user => {
+  document.getElementById('loading').style.display = 'none';
+  if(user){
+    currentUser = user;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('user-name').textContent = user.displayName || user.email;
+    await loadData();
+  } else {
+    currentUser = null;
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    if(unsubSnapshot){ unsubSnapshot(); unsubSnapshot = null; }
+  }
+});
+
+// ── FIRESTORE ──
+async function loadData(){
+  const docRef = doc(db, 'dashboards', currentUser.uid);
+  unsubSnapshot = onSnapshot(docRef, snap => {
+    if(snap.exists()){
+      appData = snap.data();
+    } else {
+      appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      saveData();
+    }
+    renderApp();
+  });
+}
+
+function saveData(){
+  if(!currentUser || !appData) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try{
+      await setDoc(doc(db,'dashboards',currentUser.uid), appData);
+      showSaved();
+    }catch(e){ console.error('Save error',e); }
+  }, 800);
+}
+
+function showSaved(){
+  const el = document.getElementById('save-indicator');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+// ── RENDER ──
+function renderApp(){
+  renderSidebar();
+  const activePage = appData.pages.find(p=>p.id===currentPageId) || appData.pages[0];
+  currentPageId = activePage.id;
+  renderPage(activePage);
+  // update logo
+  document.getElementById('logo-icon').textContent = appData.meta.logoIcon||'🧙';
+  document.getElementById('company-name').textContent = appData.meta.companyName||'';
+  document.getElementById('company-sub').textContent = appData.meta.companySub||'';
+}
+
+function renderSidebar(){
+  const container = document.getElementById('nav-sections');
+  container.innerHTML = '';
+  const section = document.createElement('div');
+  section.className = 'nav-section';
+  const lbl = document.createElement('div');
+  lbl.className = 'nav-section-label';
+  lbl.innerHTML = `<span>Pages</span><button title="Add page" onclick="openAddPage()">＋</button>`;
+  section.appendChild(lbl);
+  appData.pages.forEach(page => {
+    const item = document.createElement('div');
+    item.className = 'nav-item' + (page.id===currentPageId?' active':'');
+    item.innerHTML = `
+      <span class="ni-emoji">${page.emoji||'📋'}</span>
+      <span class="ni-label">${page.label}</span>
+      <span class="ni-actions">
+        <button title="Edit" onclick="event.stopPropagation();openEditPage('${page.id}')">✏️</button>
+        <button title="Delete" onclick="event.stopPropagation();confirmDelete('page','${page.id}')">🗑️</button>
+      </span>`;
+    item.addEventListener('click', ()=>{ currentPageId=page.id; renderApp(); });
+    section.appendChild(item);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-page-btn';
+  addBtn.innerHTML = '＋ Add page';
+  addBtn.onclick = openAddPage;
+  section.appendChild(addBtn);
+  container.appendChild(section);
+}
+
+function renderPage(page){
+  const container = document.getElementById('pages-container');
+  container.innerHTML = '';
+  const view = document.createElement('div');
+  view.className = 'page-view active';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'page-header';
+  header.innerHTML = `
+    <div class="page-header-left">
+      <h1 contenteditable="true" data-placeholder="Page Title" data-field="title" data-pageid="${page.id}">${page.title||''}</h1>
+      <p contenteditable="true" data-placeholder="Subtitle…" data-field="subtitle" data-pageid="${page.id}">${page.subtitle||''}</p>
     </div>
     <div class="date-badge">
-      <div class="day" id="js-day">—</div>
-      <div class="date-str" id="js-date">—</div>
-    </div>
-  </div>
+      <div class="day">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]}</div>
+      <div class="ds">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+    </div>`;
+  view.appendChild(header);
 
-  <div class="grid g4" style="margin-bottom:20px;">
-    <div class="stat dark"><div class="lbl">Min. Service</div><div class="val">$150</div><div class="sub">Never go below</div></div>
-    <div class="stat"><div class="lbl">TTB Deep Clean</div><div class="val">$490+</div><div class="sub">Starting price</div></div>
-    <div class="stat"><div class="lbl">Monthly Goal/Client</div><div class="val">$300</div><div class="sub">Recurring target</div></div>
-    <div class="stat"><div class="lbl">Guarantee</div><div class="val">24h</div><div class="sub">Satisfaction window</div></div>
-  </div>
+  // Inline editing for title/subtitle
+  header.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const pg = appData.pages.find(p=>p.id===el.dataset.pageid);
+      if(pg){ pg[el.dataset.field]=el.textContent.trim(); saveData(); }
+    });
+  });
 
-  <div class="grid g2" style="margin-bottom:20px;">
-    <div class="card">
-      <div class="card-title">📅 Daily Routine</div>
-      <div class="r-item"><div class="r-time">Morning</div><div class="r-dot g"></div><div class="r-content"><h4>Open ZenMaid &amp; Check Schedule</h4><p>Review today's appointments. Verify all client profiles have complete notes.</p></div></div>
-      <div class="r-item"><div class="r-time">Ongoing</div><div class="r-dot p"></div><div class="r-content"><h4>Handle Inbound Leads &amp; Calls</h4><p>Build rapport → Discovery → Close. Always push recurring services.</p></div></div>
-      <div class="r-item"><div class="r-time">1h after</div><div class="r-dot o"></div><div class="r-content"><h4>Confirm Open-to-Close Check-in</h4><p>Techs call office 1h after arrival. Confirm dirt level + time estimate.</p></div></div>
-      <div class="r-item"><div class="r-time">Post-clean</div><div class="r-dot g"></div><div class="r-content"><h4>Charge Client in AuthNet</h4><p>Charge after service. Verify tax + total. If declined → try another card.</p></div></div>
-      <div class="r-item"><div class="r-time">Next day</div><div class="r-dot p"></div><div class="r-content"><h4>24-Hour Follow-Up Call</h4><p>Happy → upsell recurring + ask for Google review. Unhappy → offer re-clean fast.</p></div></div>
-      <div class="r-item"><div class="r-time">Ongoing</div><div class="r-dot o"></div><div class="r-content"><h4>Manage Slack Comms</h4><p>Cleaner issues → escalate to Sandy. Stay clear, professional, consistent.</p></div></div>
-    </div>
+  // Rows
+  const cardsArea = document.createElement('div');
+  cardsArea.className = 'cards-area';
+  (page.rows||[]).forEach(row => {
+    cardsArea.appendChild(renderRow(page.id, row));
+  });
 
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="card">
-        <div class="card-title">🚫 Never Say / Never Do</div>
-        <ul class="ck">
-          <li>NEVER mention hourly rate ($60–$70/h) to clients</li>
-          <li>NEVER talk about <strong>time</strong> → always say <strong>effort</strong></li>
-          <li>NEVER share owner's phone or your personal number</li>
-          <li>Do NOT clean: walls, exterior windows, carpets, unfinished basements</li>
-          <li>Do NOT wash dishes or enter closed rooms</li>
-          <li>Do NOT use client's products (except marble/granite with approval)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-title">✅ Always Do</div>
-        <ul class="ck">
-          <li>Push recurring services on every interaction</li>
-          <li>Use <strong>sandwich method</strong>: nice → request → nice</li>
-          <li>Update ZenMaid notes after every client call</li>
-          <li>Offer reschedule before allowing a skip</li>
-          <li>Skip weekly = charged as biweekly (×1.25)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  // Add row
+  const addRowBtn = document.createElement('button');
+  addRowBtn.className = 'add-row-btn';
+  addRowBtn.innerHTML = '＋ Add new row of cards';
+  addRowBtn.onclick = () => addRow(page.id);
+  cardsArea.appendChild(addRowBtn);
 
-  <!-- PROCESS FLOWS -->
-  <div class="flow-wrap">
-    <div class="flow-heading">🔄 Process Flows <span>— step-by-step order of operations</span></div>
-    <div class="flow-tabs">
-      <button class="ft active" onclick="switchTab('lead',this)">Lead → Sale</button>
-      <button class="ft" onclick="switchTab('followup',this)">24h Follow-Up</button>
-      <button class="ft" onclick="switchTab('issue',this)">Issue / Complaint</button>
-      <button class="ft" onclick="switchTab('reschedule',this)">Reschedule</button>
-      <button class="ft" onclick="switchTab('booking',this)">New Booking</button>
-    </div>
+  view.appendChild(cardsArea);
+  container.appendChild(view);
+}
 
-    <div class="flow-content active" id="flow-lead">
-      <div class="fs"><div class="sn">01</div><div class="st">Build Rapport</div><div class="sd">Warm greeting, smile on call, make them feel heard.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">02</div><div class="st">Discovery</div><div class="sd">Bedrooms, bathrooms, sqft, adults/kids, pets?</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">03</div><div class="st">Dirt Code</div><div class="sd">"Describe the condition — no judgment, just for accuracy."</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">04</div><div class="st">Identify Pain</div><div class="sd">Find what frustrates them. Use emotion to connect.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">05</div><div class="st">Offer Solution</div><div class="sd">Flat rate quote. Push recurring. "Imagine never cleaning again."</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">06</div><div class="st">Close</div><div class="sd">3 forms required: house details + agreement + credit card.</div></div>
-    </div>
+function renderRow(pageId, row){
+  const rowEl = document.createElement('div');
+  rowEl.className = 'cards-row cols-'+(row.cols||2);
+  rowEl.dataset.rowid = row.id;
 
-    <div class="flow-content" id="flow-followup">
-      <div class="fs"><div class="sn">01</div><div class="st">Call Next Day</div><div class="sd">Trigger: Open-to-Close form submitted by tech.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">02</div><div class="st">Check Satisfaction</div><div class="sd">Ask how everything went. Listen first, always.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">Happy ✓</div><div class="st">Upsell Recurring</div><div class="sd">Best moment = home looks amazing. Ask for Google review, offer $20 tip to tech in their name.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">Unhappy ✗</div><div class="st">Fix Fast</div><div class="sd">Offer free re-clean. Same day preferred, next day max.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">05</div><div class="st">Log in ZenMaid</div><div class="sd">Add note with outcome. Issue: add note for next visit + preferred tech.</div></div>
-    </div>
+  // Column count selector
+  const colCtrl = document.createElement('div');
+  colCtrl.style.cssText='grid-column:1/-1;display:flex;align-items:center;gap:6px;margin-bottom:-8px;';
+  colCtrl.innerHTML = `<span style="font-size:11px;color:var(--text-muted);">Columns:</span>
+    ${[1,2,3,4].map(n=>`<button onclick="setRowCols('${pageId}','${row.id}',${n})" style="padding:3px 8px;border-radius:6px;border:1.5px solid ${row.cols===n?'var(--accent)':'#e8e4f7'};background:${row.cols===n?'var(--purple-soft)':'none'};font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:${row.cols===n?'var(--accent)':'var(--text-muted)'}">${n}</button>`).join('')}
+    <button onclick="deleteRow('${pageId}','${row.id}')" style="margin-left:auto;font-size:11px;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:5px;" title="Delete row">🗑️ row</button>`;
+  rowEl.appendChild(colCtrl);
 
-    <div class="flow-content" id="flow-issue">
-      <div class="fs"><div class="sn">01</div><div class="st">Listen</div><div class="sd">Listening solves 90% of problems. Don't interrupt.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">02</div><div class="st">Fix Issue</div><div class="sd">Offer re-clean within 24h guarantee window.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">03</div><div class="st">Add ZenMaid Note</div><div class="sd">Flag for next visit. Private note if office-only.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">04</div><div class="st">Offer Diff Tech</div><div class="sd">If pattern persists, suggest a different technician.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">05</div><div class="st">Refund (Rare)</div><div class="sd">Last resort only. Escalate to Sandy first.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">06</div><div class="st">Follow Up Again</div><div class="sd">After fix, always call to confirm satisfaction.</div></div>
-    </div>
+  (row.cards||[]).forEach(card => {
+    rowEl.appendChild(renderCard(pageId, row.id, card));
+  });
 
-    <div class="flow-content" id="flow-reschedule">
-      <div class="fs"><div class="sn">Always</div><div class="st">Reschedule First</div><div class="sd">Always offer reschedule BEFORE allowing a skip.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">Priority 1</div><div class="st">One-time / TTB</div><div class="sd">Highest priority to keep rescheduled.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">Priority 2</div><div class="st">First-time Clean</div><div class="sd">Second most important.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">Priority 3</div><div class="st">Weekly</div><div class="sd">Skip weekly = charge biweekly rate (×1.25).</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">4–5</div><div class="st">Biweekly / Monthly</div><div class="sd">Lower priority. Update ZenMaid immediately after.</div></div>
-    </div>
+  // Add card to row
+  const addCardBtn = document.createElement('button');
+  addCardBtn.className = 'add-card-btn';
+  addCardBtn.innerHTML = '＋ Add card';
+  addCardBtn.onclick = () => openAddCard(pageId, row.id);
+  rowEl.appendChild(addCardBtn);
 
-    <div class="flow-content" id="flow-booking">
-      <div class="fs"><div class="sn">01</div><div class="st">3 Forms Complete?</div><div class="sd">House details + Agreement + Credit card. NO forms = NO booking.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">02</div><div class="st">Build Client Profile</div><div class="sd">Access info, pets, trash, dirt code, priorities, restrictions.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">03</div><div class="st">Assign Tech</div><div class="sd">Same tech whenever possible — consistency is our differentiator.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">04</div><div class="st">Set Reminders</div><div class="sd">Email 2 days before. SMS 1 day before. Auto via ZenMaid.</div></div>
-      <div class="fa">›</div>
-      <div class="fs"><div class="sn">05</div><div class="st">Confirm in ZenMaid</div><div class="sd">If it's not in ZenMaid, it doesn't exist.</div></div>
-    </div>
-  </div>
-</div><!-- end home -->
+  return rowEl;
+}
 
+function renderCard(pageId, rowId, card){
+  if(card.type==='stat') return renderStatCard(pageId, rowId, card);
 
-<!-- ══ SALES ══ -->
-<div class="page" id="page-sales">
-  <div class="header">
-    <div class="header-left"><h1><em>Sales</em> Playbook</h1><p>Scripts, discovery &amp; closing strategies</p></div>
-  </div>
-  <div class="grid g2" style="margin-bottom:18px;">
-    <div class="card">
-      <div class="card-title">📞 Sales Call — Step by Step</div>
-      <div class="rl">
-        <div class="ri"><div style="background:var(--purple);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">1</div><div><strong>Build Rapport</strong> — warm greeting, smile, make them feel heard</div></div>
-        <div class="ri"><div style="background:var(--purple);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">2</div><div><strong>Discovery</strong> — bedrooms, bathrooms, sqft, adults/kids, pets?</div></div>
-        <div class="ri"><div style="background:var(--accent);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">3</div><div><strong>Identify Pain</strong> — find what frustrates them, use emotion</div></div>
-        <div class="ri"><div style="background:var(--accent);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">4</div><div><strong>Offer Solution</strong> — flat rate, push recurring first, always</div></div>
-        <div class="ri"><div style="background:var(--green);color:white;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">5</div><div><strong>Close</strong> — 3 forms required before booking is confirmed</div></div>
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.dataset.cardid = card.id;
+
+  el.innerHTML = `
+    <div class="card-header">
+      <span class="card-emoji" title="Change icon" onclick="openEmojiPicker('card','${pageId}','${rowId}','${card.id}')">${card.emoji||'📋'}</span>
+      <span class="card-title-text" contenteditable="true" data-placeholder="Title">${card.title||''}</span>
+      <div class="card-actions">
+        <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${card.id}')">🌙</button>
+        <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${card.id}')">🗑️</button>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div class="card">
-        <div class="card-title">🐾 Pet Script</div>
-        <div class="script-box">"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive."</div>
-        <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Always ask about aggression history. 75% of clients have pets.</div>
-      </div>
-      <div class="card">
-        <div class="card-title">💫 Emotion Sells</div>
-        <ul class="ck">
-          <li>"Imagine never having to clean again"</li>
-          <li>"Look at the difference after this clean"</li>
-          <li>Best upsell moment = right after a spotless clean</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="grid g2">
-    <div class="card">
-      <div class="card-title">🔢 Dirt Code Scale</div>
-      <div class="script-box" style="margin-bottom:14px;">"Please do your best to describe the current condition of your home in terms of cleaning. This is not for judgment, just for an accurate estimate."</div>
-      <div class="dirt-grid">
-        <div class="di" style="background:#e8f7f2;"><div class="dn" style="color:#4caf85;">1</div><div class="dl" style="color:#4caf85;">Spotless</div></div>
-        <div class="di" style="background:#eef7e8;"><div class="dn" style="color:#7ab648;">2</div><div class="dl" style="color:#7ab648;">Clean</div></div>
-        <div class="di" style="background:var(--purple-soft);"><div class="dn" style="color:var(--accent);">3</div><div class="dl" style="color:var(--accent);">Average</div></div>
-        <div class="di" style="background:#fdf0e6;"><div class="dn" style="color:var(--orange);">4</div><div class="dl" style="color:var(--orange);">Dirty</div></div>
-        <div class="di" style="background:#fde8e8;"><div class="dn" style="color:var(--red);">5</div><div class="dl" style="color:var(--red);">Heavy</div></div>
-      </div>
-      <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">5+ = buildup → Option 1: stay within estimate. Option 2: pay for additional effort.</div>
-    </div>
-    <div class="card">
-      <div class="card-title">📋 Discovery Questions</div>
-      <div class="rl">
-        <div class="ri"><span class="ri-icon">🛏️</span><div>How many <strong>bedrooms</strong>?</div></div>
-        <div class="ri"><span class="ri-icon">🚿</span><div>How many <strong>bathrooms</strong>?</div></div>
-        <div class="ri"><span class="ri-icon">📐</span><div>Approximate <strong>square footage</strong>?</div></div>
-        <div class="ri"><span class="ri-icon">👨‍👩‍👧</span><div>How many <strong>adults / kids</strong>?</div></div>
-        <div class="ri"><span class="ri-icon">🐶</span><div><strong>Pets</strong>? Type? Aggressive?</div></div>
-        <div class="ri"><span class="ri-icon">🚿</span><div>When was <strong>shower last cleaned</strong> with product?</div></div>
-        <div class="ri"><span class="ri-icon">🍽️</span><div>How often are <strong>counters wiped</strong>?</div></div>
-        <div class="ri"><span class="ri-icon">🧹</span><div>How often are <strong>floors cleaned</strong>?</div></div>
-      </div>
-    </div>
-  </div>
-</div><!-- end sales -->
+    <div class="card-body" contenteditable="true" data-placeholder="Write content here…">${escHtml(card.content||'').replace(/\n/g,'<br>')}</div>
+    <div class="card-files" id="files-${card.id}"></div>
+    <input type="file" class="file-input-hidden" id="file-input-${card.id}" multiple/>
+    <button class="file-attach-btn" title="Attach file" onclick="document.getElementById('file-input-${card.id}').click()">📎</button>`;
 
+  // Title editing
+  const titleEl = el.querySelector('.card-title-text');
+  titleEl.addEventListener('blur', ()=>{
+    updateCardField(pageId,rowId,card.id,'title',titleEl.textContent.trim());
+  });
 
-<!-- ══ SERVICES ══ -->
-<div class="page" id="page-services">
-  <div class="header">
-    <div class="header-left"><h1><em>Services</em> Menu</h1><p>What we offer &amp; how to position them</p></div>
-  </div>
-  <div class="grid g2" style="margin-bottom:18px;">
-    <div class="card">
-      <div class="card-title">🧼 Service Types</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="svc" style="border-left-color:var(--green);"><h4>Recurring Cleaning</h4><p>Weekly, biweekly, monthly. <strong>85% of sales.</strong> Always push this first.</p><div class="price">Goal: $300/mo/client</div></div>
-        <div class="svc"><h4>General Clean</h4><p>One-time. Use as entry point → convert after follow-up.</p><div class="price">From $150 min</div></div>
-        <div class="svc" style="border-left-color:var(--orange);"><h4>TTB (Top to Bottom)</h4><p>Deep clean. Premium product. The "big reset." Best before recurring.</p><div class="price">Starts at $490</div></div>
-        <div class="svc" style="border-left-color:var(--accent);"><h4>Priority Clean</h4><p>Custom limited service. Specific areas only.</p><div class="price">Custom quote</div></div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div class="card">
-        <div class="card-title">⭐ Why We Win</div>
-        <ul class="ck">
-          <li>Eco-friendly, non-toxic, odor-free products</li>
-          <li>Safe for pets, kids, and people</li>
-          <li>All techs pass <strong>background checks</strong></li>
-          <li>Reliable — we <strong>always show up</strong></li>
-          <li>Strong systems &amp; processes</li>
-          <li>High consistency vs competitors (main competitor Serenity has bad rep)</li>
-        </ul>
-      </div>
-      <div class="guarantee">
-        <h4>🛡️ 24-Hour Guarantee</h4>
-        <p>If client is unhappy within 24h, we return and fix it — no questions asked. After 24h, no guarantee applies.</p>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">📋 What's Included vs. Not</div>
-    <div class="grid g2">
-      <div>
-        <div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✓ Included</div>
-        <ul class="ck">
-          <li>Microwave: inside + outside</li>
-          <li>Small appliances: move them</li>
-          <li>Surface >50% covered → clean around items</li>
-          <li>Floors: use client vacuum/mop if requested</li>
-          <li>Marble/granite: use client-approved cleaner</li>
-        </ul>
-      </div>
-      <div>
-        <div style="font-size:11px;font-weight:600;color:var(--red);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✗ Not Included</div>
-        <ul class="ck">
-          <li>Walls</li>
-          <li>Exterior windows</li>
-          <li>Carpets</li>
-          <li>Unfinished basements</li>
-          <li>Washing dishes</li>
-          <li>Entering closed rooms</li>
-          <li>Large appliances (don't move)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div><!-- end services -->
+  // Content editing
+  const bodyEl = el.querySelector('.card-body');
+  if(card.dark){ el.style.background='var(--purple)'; bodyEl.style.color='white'; titleEl.style.color='var(--lavender)'; }
+  bodyEl.addEventListener('blur', ()=>{
+    const txt = bodyEl.innerHTML.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'');
+    updateCardField(pageId,rowId,card.id,'content',txt);
+  });
 
+  // Files
+  renderCardFiles(pageId, rowId, card, el);
+  el.querySelector(`#file-input-${card.id}`).addEventListener('change', e => uploadFiles(e, pageId, rowId, card.id));
 
-<!-- ══ PRICING ══ -->
-<div class="page" id="page-pricing">
-  <div class="header">
-    <div class="header-left"><h1><em>Pricing</em> Reference</h1><p>Internal rates &amp; how to quote clients</p></div>
-  </div>
-  <div class="grid g3" style="margin-bottom:18px;">
-    <div class="stat dark"><div class="lbl">Minimum Service</div><div class="val">$150</div><div class="sub">Never go below this</div></div>
-    <div class="stat"><div class="lbl">TTB Deep Clean</div><div class="val">$490+</div><div class="sub">Starting price</div></div>
-    <div class="stat"><div class="lbl">Monthly Goal/Client</div><div class="val">$300</div><div class="sub">Recurring target</div></div>
-  </div>
-  <div class="grid g2">
-    <div class="card">
-      <div class="card-title">💡 Pricing Rules</div>
-      <div class="rl">
-        <div class="ri"><span class="ri-icon">🔒</span><div>Internal rate: <strong>$60–$70/h per tech — NEVER tell clients</strong></div></div>
-        <div class="ri"><span class="ri-icon">📊</span><div>We use <strong>flat rate pricing</strong> — clients feel safer, better margins</div></div>
-        <div class="ri"><span class="ri-icon">🗣️</span><div>NEVER talk about <strong>time</strong> → always talk about <strong>effort</strong></div></div>
-        <div class="ri"><span class="ri-icon">📈</span><div>Skip weekly = charged as biweekly (<strong>×1.25 multiplier</strong>)</div></div>
-        <div class="ri"><span class="ri-icon">💳</span><div>Charge via <strong>AuthNet</strong> after service. Verify tax + total. Declined → try another card → contact client.</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">🏆 How to Position Price</div>
-      <ul class="ck">
-        <li>Lead with value: eco-friendly, background-checked, reliable</li>
-        <li>Use emotion: "Imagine never having to clean again"</li>
-        <li>Flat rate = no surprises → builds trust</li>
-        <li>If dirt code is high → set expectations on effort upfront</li>
-        <li>TTB = "big reset" → frame it as investment before recurring</li>
-        <li>Best close moment: right after a spotless clean</li>
-      </ul>
-    </div>
-  </div>
-</div><!-- end pricing -->
+  return el;
+}
 
+function renderStatCard(pageId, rowId, card){
+  const el = document.createElement('div');
+  el.className = 'stat-card' + (card.dark?' dark':'');
+  el.dataset.cardid = card.id;
+  el.innerHTML = `
+    <div class="card-actions" style="position:absolute;top:8px;right:8px;">
+      <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${card.id}')">🌙</button>
+      <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${card.id}')">🗑️</button>
+    </div>
+    <div class="sc-label" contenteditable="true" data-placeholder="Label">${card.label||''}</div>
+    <div class="sc-value" contenteditable="true" data-placeholder="Value">${card.value||''}</div>
+    <div class="sc-sub" contenteditable="true" data-placeholder="Subtitle">${card.sub||''}</div>
+    <div class="card-files" id="files-${card.id}" style="margin-top:8px;"></div>
+    <input type="file" class="file-input-hidden" id="file-input-${card.id}" multiple/>
+    <button class="file-attach-btn" title="Attach file" onclick="document.getElementById('file-input-${card.id}').click()">📎</button>`;
 
-<!-- ══ COMPANY ══ -->
-<div class="page" id="page-company">
-  <div class="header">
-    <div class="header-left"><h1><em>Company</em> Info</h1><p>Two Witches &amp; A Broom — quick reference</p></div>
-  </div>
-  <div class="grid g3" style="margin-bottom:18px;">
-    <div class="card">
-      <div class="card-title">🏢 Overview</div>
-      <div class="ir"><span class="k">Founded</span><span class="v">August 2021</span></div>
-      <div class="ir"><span class="k">Team Size</span><span class="v">~7 techs (hiring +1)</span></div>
-      <div class="ir"><span class="k">Location</span><span class="v">Ohio (EST)</span></div>
-      <div class="ir"><span class="k">Owner</span><span class="v">Remote (since 2025)</span></div>
-      <div class="ir"><span class="k">Growth</span><span class="v">Doubled YoY</span></div>
-      <div class="ir"><span class="k">Main CRM</span><span class="v">ZenMaid</span></div>
-      <div class="ir"><span class="k">Payments</span><span class="v">AuthNet</span></div>
-    </div>
-    <div class="card">
-      <div class="card-title">👥 Team Structure</div>
-      <div class="ir"><span class="k">Sandy</span><span class="v"><span class="badge">Office Manager</span></span></div>
-      <div class="ir"><span class="k">Manuela</span><span class="v"><span class="badge">CX + Sales VA</span></span></div>
-      <div class="ir"><span class="k">Hailee</span><span class="v"><span class="badge">Trainer</span></span></div>
-      <div class="ir"><span class="k">House Checkers</span><span class="v"><span class="badge">Quality Control</span></span></div>
-      <div class="ir"><span class="k">Techs</span><span class="v"><span class="badge">Execution</span></span></div>
-      <div class="ir"><span class="k">Sandy hours</span><span class="v">8 AM – 2 PM EST</span></div>
-      <div class="ir"><span class="k">Samantha</span><span class="v"><span class="badge o">Montana TZ ⚠️</span></span></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🛠️ Tools &amp; Systems</div>
-      <div class="ir"><span class="k">ZenMaid</span><span class="v">Scheduling + CRM</span></div>
-      <div class="ir"><span class="k">AuthNet</span><span class="v">Payments</span></div>
-      <div class="ir"><span class="k">Slack</span><span class="v">Internal comms</span></div>
-      <div class="ir"><span class="k">Google Reviews</span><span class="v">Goal: 200</span></div>
-      <div class="ir"><span class="k">Marketing</span><span class="v">FB / Google / TikTok</span></div>
-      <div class="ir"><span class="k">Note colors</span><span class="v">Yellow=techs / Private=office</span></div>
-    </div>
-  </div>
-  <div class="grid g2">
-    <div class="card">
-      <div class="card-title">🧾 ZenMaid — Client Profile Checklist</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic;">"Could someone else serve this client perfectly using only this profile?"</div>
-      <div class="grid g2" style="gap:8px;">
-        <ul class="ck">
-          <li>Access instructions</li>
-          <li>Pets + aggression history</li>
-          <li>Trash bags location + disposal</li>
-          <li>Basement: included or not</li>
-          <li>Dirt code</li>
-        </ul>
-        <ul class="ck">
-          <li>Preferences &amp; priorities</li>
-          <li>Past complaints</li>
-          <li>Tech preferences</li>
-          <li>Add-ons &amp; restrictions</li>
-          <li>Reschedule/skip history</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">🧠 Core Principles</div>
-      <ul class="ck">
-        <li><strong>Consistency matters</strong> — same tech whenever possible</li>
-        <li><strong>Verbage is key</strong> — use standardized language always</li>
-        <li><strong>No gossip</strong> — address issues directly with the person</li>
-        <li>Feedback = opportunity to improve</li>
-        <li>Listening solves 90% of problems</li>
-        <li>If it's not in ZenMaid → it <strong>doesn't exist</strong></li>
-        <li>2 complaints in 60 days → PIP triggered (Sandy handles)</li>
-      </ul>
-    </div>
-  </div>
-</div><!-- end company -->
+  el.querySelectorAll('[contenteditable]').forEach(e=>{
+    const f = e.classList.contains('sc-label')?'label':e.classList.contains('sc-value')?'value':'sub';
+    e.addEventListener('blur',()=>updateCardField(pageId,rowId,card.id,f,e.textContent.trim()));
+  });
 
-</main>
+  renderCardFiles(pageId, rowId, card, el);
+  el.querySelector(`#file-input-${card.id}`).addEventListener('change', e => uploadFiles(e, pageId, rowId, card.id));
+  return el;
+}
 
-<script>
-  const now = new Date();
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  document.getElementById('js-day').textContent = days[now.getDay()];
-  document.getElementById('js-date').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+function renderCardFiles(pageId, rowId, card, el){
+  const filesEl = el.querySelector(`#files-${card.id}`);
+  if(!filesEl) return;
+  filesEl.innerHTML = '';
+  (card.files||[]).forEach(f=>{
+    const chip = document.createElement('a');
+    chip.className='file-chip';
+    chip.href=f.url;chip.target='_blank';
+    chip.innerHTML=`<span class="fc-icon">📄</span>${f.name}<button class="fc-del" onclick="event.preventDefault();deleteFile('${pageId}','${rowId}','${card.id}','${f.storagePath}')">✕</button>`;
+    filesEl.appendChild(chip);
+  });
+}
 
-  function showPage(name, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    el.classList.add('active');
+// ── CARD OPERATIONS ──
+function updateCardField(pageId,rowId,cardId,field,val){
+  const card = getCard(pageId,rowId,cardId);
+  if(card){ card[field]=val; saveData(); }
+}
+
+function toggleCardDark(pageId,rowId,cardId){
+  const card = getCard(pageId,rowId,cardId);
+  if(card){ card.dark=!card.dark; saveData(); renderApp(); }
+}
+
+function getPage(pageId){ return appData.pages.find(p=>p.id===pageId); }
+function getRow(pageId,rowId){ const pg=getPage(pageId); return pg?(pg.rows||[]).find(r=>r.id===rowId):null; }
+function getCard(pageId,rowId,cardId){ const row=getRow(pageId,rowId); return row?(row.cards||[]).find(c=>c.id===cardId):null; }
+
+// ── ROW OPERATIONS ──
+window.setRowCols = (pageId,rowId,n)=>{
+  const row=getRow(pageId,rowId);
+  if(row){ row.cols=n; saveData(); renderApp(); }
+};
+window.deleteRow = (pageId,rowId)=>{
+  const pg=getPage(pageId);
+  if(pg){ pg.rows=(pg.rows||[]).filter(r=>r.id!==rowId); saveData(); renderApp(); }
+};
+function addRow(pageId){
+  const pg=getPage(pageId);
+  if(!pg) return;
+  if(!pg.rows) pg.rows=[];
+  pg.rows.push({id:'row-'+Date.now(),cols:2,cards:[]});
+  saveData(); renderApp();
+}
+
+// ── PAGE OPERATIONS ──
+window.openAddPage = ()=>{
+  pendingPageEdit=null;
+  document.getElementById('modal-page-title').textContent='New Page';
+  document.getElementById('page-name-input').value='';
+  setSelectedEmoji('page-emoji-row','📋');
+  document.getElementById('page-emoji-custom').value='';
+  openModal('modal-page');
+};
+window.openEditPage = (pageId)=>{
+  const pg=getPage(pageId);
+  if(!pg) return;
+  pendingPageEdit=pageId;
+  document.getElementById('modal-page-title').textContent='Edit Page';
+  document.getElementById('page-name-input').value=pg.label;
+  setSelectedEmoji('page-emoji-row',pg.emoji||'📋');
+  openModal('modal-page');
+};
+document.getElementById('modal-page-save').onclick = ()=>{
+  const name=document.getElementById('page-name-input').value.trim();
+  if(!name) return;
+  const emoji=getSelectedEmoji('page-emoji-row','page-emoji-custom');
+  if(pendingPageEdit){
+    const pg=getPage(pendingPageEdit);
+    if(pg){ pg.label=name; pg.emoji=emoji; }
+  } else {
+    const newPage={
+      id:'page-'+Date.now(),emoji,label:name,
+      title:name,subtitle:'',rows:[]
+    };
+    appData.pages.push(newPage);
+    currentPageId=newPage.id;
   }
+  saveData(); closeModal('modal-page'); renderApp();
+};
 
-  function switchTab(name, el) {
-    document.querySelectorAll('.ft').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.flow-content').forEach(c => c.classList.remove('active'));
-    document.getElementById('flow-' + name).classList.add('active');
-    el.classList.add('active');
+// ── ADD CARD ──
+let pendingCardTarget=null;
+window.openAddCard = (pageId,rowId)=>{
+  pendingCardTarget={pageId,rowId};
+  document.getElementById('card-title-input').value='';
+  document.getElementById('card-content-input').value='';
+  document.getElementById('card-type-input').value='text';
+  setSelectedEmoji('card-emoji-row','📋');
+  openModal('modal-card');
+};
+document.getElementById('modal-card-save').onclick = ()=>{
+  if(!pendingCardTarget) return;
+  const {pageId,rowId}=pendingCardTarget;
+  const row=getRow(pageId,rowId);
+  if(!row) return;
+  const type=document.getElementById('card-type-input').value;
+  const emoji=getSelectedEmoji('card-emoji-row','card-emoji-custom');
+  const title=document.getElementById('card-title-input').value.trim();
+  const content=document.getElementById('card-content-input').value.trim();
+  const newCard={id:'card-'+Date.now(),type,emoji,title,content,files:[]};
+  if(type==='stat'){
+    newCard.label=title;newCard.value=content;newCard.sub='';delete newCard.title;delete newCard.content;
   }
+  if(!row.cards) row.cards=[];
+  row.cards.push(newCard);
+  saveData(); closeModal('modal-card'); renderApp();
+};
+
+// ── DELETE ──
+window.confirmDelete = (type,...args)=>{
+  pendingDelete={type,args};
+  openModal('modal-delete');
+};
+document.getElementById('modal-delete-confirm').onclick=()=>{
+  if(!pendingDelete) return;
+  const {type,args}=pendingDelete;
+  if(type==='page'){
+    appData.pages=appData.pages.filter(p=>p.id!==args[0]);
+    if(currentPageId===args[0]) currentPageId=appData.pages[0]?.id;
+  } else if(type==='card'){
+    const [pageId,rowId,cardId]=args;
+    const row=getRow(pageId,rowId);
+    if(row) row.cards=(row.cards||[]).filter(c=>c.id!==cardId);
+  }
+  saveData(); closeModal('modal-delete'); renderApp();
+};
+
+// ── EMOJI PICKER ──
+window.openEmojiPicker=(targetType,...args)=>{
+  pendingEmojiTarget={targetType,args};
+  openModal('modal-emoji');
+};
+document.getElementById('pick-emoji-confirm').onclick=()=>{
+  if(!pendingEmojiTarget) return;
+  const {targetType,args}=pendingEmojiTarget;
+  const emoji=getSelectedEmoji('pick-emoji-row','pick-emoji-custom');
+  if(targetType==='card'){
+    const [pageId,rowId,cardId]=args;
+    const card=getCard(pageId,rowId,cardId);
+    if(card){ card.emoji=emoji; saveData(); }
+  }
+  closeModal('modal-emoji'); renderApp();
+};
+document.getElementById('pick-emoji-row').querySelectorAll('.emoji-opt').forEach(el=>{
+  el.addEventListener('click',function(){
+    document.querySelectorAll('#pick-emoji-row .emoji-opt').forEach(e=>e.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
+
+// ── LOGO EDIT ──
+document.getElementById('logo-area').addEventListener('dblclick',()=>{
+  const name=prompt('Company name:',appData.meta.companyName);
+  if(name!==null){ appData.meta.companyName=name; saveData(); renderApp(); }
+});
+document.getElementById('logo-icon').addEventListener('click',e=>{
+  e.stopPropagation();
+  const icon=prompt('Logo emoji:',appData.meta.logoIcon);
+  if(icon){ appData.meta.logoIcon=icon; saveData(); renderApp(); }
+});
+
+// ── FILE UPLOAD ──
+async function uploadFiles(e, pageId, rowId, cardId){
+  const files=[...e.target.files];
+  if(!files.length) return;
+  for(const file of files){
+    const path=`files/${currentUser.uid}/${cardId}/${Date.now()}_${file.name}`;
+    const storageRef=ref(storage,path);
+    await uploadBytes(storageRef,file);
+    const url=await getDownloadURL(storageRef);
+    const card=getCard(pageId,rowId,cardId);
+    if(card){
+      if(!card.files) card.files=[];
+      card.files.push({name:file.name,url,storagePath:path});
+      saveData();
+    }
+  }
+  e.target.value='';
+  renderApp();
+}
+
+window.deleteFile=async(pageId,rowId,cardId,storagePath)=>{
+  const card=getCard(pageId,rowId,cardId);
+  if(!card) return;
+  card.files=(card.files||[]).filter(f=>f.storagePath!==storagePath);
+  try{ await deleteObject(ref(storage,storagePath)); }catch(e){}
+  saveData(); renderApp();
+};
+
+// ── MODAL HELPERS ──
+window.openModal=(id)=>document.getElementById(id).classList.add('show');
+window.closeModal=(id)=>document.getElementById(id).classList.remove('show');
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('show'); });
+});
+
+function getSelectedEmoji(rowId,customId){
+  const custom=document.getElementById(customId).value.trim();
+  if(custom) return custom;
+  const sel=document.querySelector(`#${rowId} .emoji-opt.selected`);
+  return sel?sel.dataset.emoji:'📋';
+}
+function setSelectedEmoji(rowId,emoji){
+  const row=document.getElementById(rowId);
+  row.querySelectorAll('.emoji-opt').forEach(e=>{
+    e.classList.toggle('selected',e.dataset.emoji===emoji);
+  });
+}
+document.querySelectorAll('.emoji-row').forEach(row=>{
+  row.querySelectorAll('.emoji-opt').forEach(el=>{
+    el.addEventListener('click',function(){
+      row.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+});
+
+// ── UTILS ──
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Expose globals
+window.toggleCardDark=toggleCardDark;
+window.addRow=addRow;
 </script>
 </body>
 </html>
