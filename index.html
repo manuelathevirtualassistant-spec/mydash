@@ -222,14 +222,15 @@ let appData = {
   pages:[
     {
       id:"home", emoji:"🏠", label:"Dashboard",
-      title:"Welcome to WAAB Dashboard", subtitle:"Create, organize, and manage your content",
+      title:"Welcome 🧙‍♀️", subtitle:"Two Witches & A Broom Dashboard",
       rows:[
         {
           id:"row-1",
           cols:[
             { id:"col-1", cards:[
-              {id:"c1",type:"text",emoji:"📋",title:"Sample Text Card",content:"This is a text card with emoji. Click + Add card to create more cards!"},
-              {id:"c2",type:"trello-ext",title:"Trello Extended Card",content:"This is the NEW Trello Extended type. It has a title at the top and content below. Perfect for organizing information!"}
+              {id:"c1",type:"text",emoji:"📋",title:"Sample Text Card",content:"This is a text card with emoji.\n\nClick + Add card to create more cards!"},
+              {id:"c2",type:"trello-ext",title:"Trello Extended Card",content:"This is the NEW Trello Extended type.\n\nIt has a title at the top and content below.\n\nPerfect for organizing information!"},
+              {id:"c3",type:"stat",label:"Monthly Goal",value:"$3,000",sub:"Target per client"}
             ]}
           ]
         }
@@ -237,8 +238,29 @@ let appData = {
     },
     {
       id:"sales", emoji:"💬", label:"Sales",
-      title:"Sales Playbook", subtitle:"Scripts and strategies",
-      rows:[{id:"r2",cols:[{id:"c2",cards:[]}]}]
+      title:"Sales Playbook", subtitle:"Scripts and discovery questions",
+      rows:[{id:"r2",cols:[{id:"c2",cards:[{id:"sc1",type:"trello",title:"Sales Call - Step by Step",content:"1️⃣ Build Rapport\n2️⃣ Discovery\n3️⃣ Identify Pain\n4️⃣ Offer Solution\n5️⃣ Close"}]}]}]
+    },
+    {
+      id:"services", emoji:"🧼", label:"Services",
+      title:"Services Menu", subtitle:"What we offer",
+      rows:[{id:"r3",cols:[{id:"c3",cards:[{id:"sv1",type:"text",emoji:"🧼",title:"Service Types",content:"🟢 Recurring - Weekly/Biweekly\n🔵 General Clean - One time\n🟠 TTB Deep Clean - $490+\n🟣 Priority Clean - Custom"}]}]}]
+    },
+    {
+      id:"pricing", emoji:"💰", label:"Pricing",
+      title:"Pricing Reference", subtitle:"Rates and minimums",
+      rows:[
+        {id:"r4",cols:[
+          {id:"c4a",cards:[{id:"pc1",type:"stat",label:"Min. Service",value:"$150",sub:"Never below"}]},
+          {id:"c4b",cards:[{id:"pc2",type:"stat",label:"TTB Clean",value:"$490+",sub:"Starting"}]},
+          {id:"c4c",cards:[{id:"pc3",type:"stat",label:"Monthly Goal",value:"$300",sub:"Per client"}]}
+        ]}
+      ]
+    },
+    {
+      id:"company", emoji:"🏢", label:"Company Info",
+      title:"Two Witches & A Broom", subtitle:"Company overview",
+      rows:[{id:"r5",cols:[{id:"c5",cards:[{id:"co1",type:"text",emoji:"🏢",title:"Company Info",content:"Founded: August 2021\nTeam: ~7 techs\nLocation: Ohio (EST)\nCRM: ZenMaid\nPayments: AuthNet"}]}]}]
     }
   ]
 };
