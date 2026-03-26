@@ -661,7 +661,10 @@ function renderAttachList(card){
         <span class="attach-open" style="cursor:pointer;flex:1;color:var(--purple-mid);font-weight:500;">${icon} ${escHtml(att.name)}</span>
         <span style="font-size:11px;color:var(--text-muted);margin-right:8px;">${att.size ? (att.size/1024).toFixed(1)+'KB' : ''}</span>
         <button class="attach-del">×</button>`;
-      row.querySelector('.attach-open').addEventListener('click', () => openAttachment(att));
+      row.querySelector('.attach-open').addEventListener('click', () => {
+        const live = attachmentRef(idx);
+        if(live) openAttachment(live);
+      });
       row.querySelector('.attach-del').addEventListener('click', () => removeAttachFromModal(idx));
       list.appendChild(row);
     });
