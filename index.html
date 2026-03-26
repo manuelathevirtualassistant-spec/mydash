@@ -598,6 +598,30 @@ function closeCardModal(){
 }
 
 // ─── ATTACHMENTS ───
+function attachIcon(type){
+  if(type.startsWith('image/')) return '🖼️';
+  if(type === 'application/pdf') return '📄';
+  if(type.includes('word')) return '📝';
+  if(type.includes('sheet') || type.includes('excel') || type.includes('csv')) return '📊';
+  return '📎';
+}
+
+function openAttachment(att){
+  if(!att.data) return;
+  // Images: show inline in a new tab
+  if(att.type.startsWith('image/')){
+    const w = window.open();
+    w.document.write(`<html><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${att.data}" style="max-width:100%;max-height:100vh;object-fit:contain;"/></body></html>`);
+    w.document.close();
+    return;
+  }
+  // PDFs and everything else: trigger download
+  const a = document.createElement('a');
+  a.href = att.data;
+  a.download = att.name;
+  a.click();
+}
+
 function renderAttachList(card){
   const list = document.getElementById('attach-list');
   const label = document.getElementById('attach-section-label');
@@ -607,12 +631,23 @@ function renderAttachList(card){
     card.attachments.forEach((att, idx) => {
       const row = document.createElement('div');
       row.className = 'attach-row';
-      row.innerHTML = `<span>📎 ${escHtml(att.name)}</span><button onclick="removeAttachFromModal(${idx})">×</button>`;
+      const icon = attachIcon(att.type || '');
+      row.innerHTML = `
+        <span style="cursor:pointer;flex:1;color:var(--purple-mid);font-weight:500;" onclick="openAttachment(attachmentRef(${idx}))">${icon} ${escHtml(att.name)}</span>
+        <span style="font-size:11px;color:var(--text-muted);margin-right:8px;">${att.size ? (att.size/1024).toFixed(1)+'KB' : ''}</span>
+        <button onclick="removeAttachFromModal(${idx})">×</button>`;
       list.appendChild(row);
     });
   } else {
     label.style.display = 'none';
   }
+}
+
+function attachmentRef(idx){
+  const page = appData.pages.find(p => p.id === currentPageId);
+  const col = page.columns.find(c => c.id === pendingCardEdit.colId);
+  const card = col && col.cards.find(c => c.id === pendingCardEdit.cardId);
+  return card && card.attachments ? card.attachments[idx] : null;
 }
 
 function removeAttachFromModal(idx){
@@ -635,9 +670,14 @@ function handleFileInput(){
   const card = col && col.cards.find(c => c.id === pendingCardEdit.cardId);
   if(!card) return;
   if(!card.attachments) card.attachments = [];
-  card.attachments.push({ name: file.name, size: file.size, type: file.type });
-  saveData();
-  renderAttachList(card);
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    card.attachments.push({ name: file.name, size: file.size, type: file.type, data: e.target.result });
+    saveData();
+    renderAttachList(card);
+  };
+  reader.readAsDataURL(file);
   document.getElementById('file-input').value = '';
 }
 
