@@ -16,364 +16,129 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
 
-/* ── AUTH SCREEN ── */
-#auth-screen{
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;background:var(--purple);
-}
-.auth-card{
-  background:white;border-radius:24px;padding:48px 40px;
-  text-align:center;max-width:380px;width:90%;
-  box-shadow:0 24px 80px rgba(0,0,0,0.25);
-}
+#auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--purple);}
+.auth-card{background:white;border-radius:24px;padding:48px 40px;text-align:center;max-width:380px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,0.25);}
 .auth-logo{font-size:52px;margin-bottom:16px;}
 .auth-card h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--purple);margin-bottom:6px;}
 .auth-card p{font-size:13px;color:var(--text-muted);margin-bottom:32px;}
-.google-btn{
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  width:100%;padding:13px 20px;border-radius:12px;border:2px solid #e8e4f7;
-  background:white;color:var(--text);font-size:14px;font-weight:600;
-  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
-}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:13px 20px;border-radius:12px;border:2px solid #e8e4f7;background:white;color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .google-btn:hover{background:var(--purple-soft);border-color:var(--accent);}
 .google-btn svg{width:20px;height:20px;flex-shrink:0;}
 
-/* ── APP SHELL ── */
 #app{display:none;}
 
-/* ── SIDEBAR ── */
-.sidebar{
-  position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;
-  background:var(--purple);display:flex;flex-direction:column;
-  padding:22px 16px;z-index:200;overflow-y:auto;
-}
-.logo-area{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:20px;padding-bottom:18px;
-  border-bottom:1px solid rgba(255,255,255,0.13);
-  cursor:pointer;
-}
-.logo-icon{
-  width:42px;height:42px;border-radius:10px;
-  background:rgba(255,255,255,0.12);display:flex;
-  align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
-}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--purple);display:flex;flex-direction:column;padding:22px 16px;z-index:200;overflow-y:auto;}
+.logo-area{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.13);cursor:pointer;}
+.logo-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .logo-text{flex:1;min-width:0;}
 .logo-text h2{font-family:'Playfair Display',serif;font-size:12px;color:white;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .logo-text span{font-size:10px;color:var(--lavender);font-weight:300;}
-
 .nav-section{margin-bottom:6px;}
-.nav-section-label{
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:9px;letter-spacing:1.4px;text-transform:uppercase;
-  color:var(--lavender);opacity:.6;padding:12px 8px 5px;font-weight:600;
-}
-.nav-section-label button{
-  opacity:0;background:none;border:none;color:var(--lavender);
-  cursor:pointer;font-size:14px;padding:0 2px;line-height:1;transition:opacity .2s;
-}
+.nav-section-label{display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--lavender);opacity:.6;padding:12px 8px 5px;font-weight:600;}
+.nav-section-label button{opacity:0;background:none;border:none;color:var(--lavender);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;transition:opacity .2s;}
 .nav-section-label:hover button{opacity:.7;}
-.nav-section-label button:hover{opacity:1!important;}
-
-.nav-item{
-  display:flex;align-items:center;gap:9px;padding:8px 10px;
-  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.65);
-  font-size:13px;transition:all .2s;position:relative;
-}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.65);font-size:13px;transition:all .2s;position:relative;}
 .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.12);color:white;}
 .nav-item .ni-emoji{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
 .nav-item .ni-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .nav-item .ni-actions{display:none;gap:2px;align-items:center;flex-shrink:0;}
 .nav-item:hover .ni-actions{display:flex;}
-.ni-actions button{
-  background:none;border:none;color:rgba(255,255,255,.5);
-  cursor:pointer;padding:2px 3px;font-size:12px;border-radius:4px;
-  transition:color .15s;line-height:1;
-}
-.ni-actions button:hover{color:white;}
-
-.add-page-btn{
-  display:flex;align-items:center;gap:8px;padding:8px 10px;
-  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.4);
-  font-size:12px;border:1px dashed rgba(255,255,255,.2);
-  background:none;width:100%;text-align:left;transition:all .2s;
-  margin-top:4px;font-family:'DM Sans',sans-serif;
-}
+.ni-actions button{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;padding:2px 3px;font-size:12px;border-radius:4px;transition:color .15s;line-height:1;}
+.add-page-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.4);font-size:12px;border:1px dashed rgba(255,255,255,.2);background:none;width:100%;text-align:left;transition:all .2s;margin-top:4px;font-family:'DM Sans',sans-serif;}
 .add-page-btn:hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.4);}
-
-.role-box{
-  margin-top:auto;padding:12px;background:rgba(255,255,255,.08);
-  border-radius:10px;flex-shrink:0;
-}
+.role-box{margin-top:auto;padding:12px;background:rgba(255,255,255,.08);border-radius:10px;flex-shrink:0;}
 .role-box .rb-name{font-size:13px;color:white;font-weight:600;}
 .role-box .rb-role{font-size:11px;color:var(--lavender);margin-top:2px;}
-.role-box .rb-signout{
-  margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);
-  cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;
-  padding:0;transition:color .2s;
-}
+.role-box .rb-signout{margin-top:8px;font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;}
 .role-box .rb-signout:hover{color:rgba(255,255,255,.8);}
 
-/* ── MAIN ── */
 .main{margin-left:var(--sidebar-w);padding:32px 36px;min-height:100vh;}
-
-/* ── PAGE HEADER ── */
-.page-header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:28px;
-}
-.page-header-left h1{
-  font-family:'Playfair Display',serif;font-size:28px;
-  color:var(--purple);line-height:1;cursor:text;
-}
+.page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+.page-header-left h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--purple);line-height:1;cursor:text;}
 .page-header-left p{margin-top:5px;font-size:13px;color:var(--text-muted);font-weight:300;cursor:text;}
 .date-badge{background:var(--purple-light);border-radius:10px;padding:10px 16px;text-align:right;flex-shrink:0;}
 .date-badge .day{font-family:'Playfair Display',serif;font-size:22px;color:var(--purple);font-weight:700;}
 .date-badge .ds{font-size:11px;color:var(--text-muted);}
 
-/* ── NOTION-STYLE LAYOUT ── */
 .cards-area{display:flex;flex-direction:column;gap:0;}
-
-/* Row = horizontal flex container of column groups */
-.notion-row{
-  display:flex;gap:0;align-items:stretch;
-  position:relative;min-height:60px;
-  border-radius:12px;
-  transition:background .15s;
-}
+.notion-row{display:flex;gap:0;align-items:stretch;position:relative;min-height:60px;border-radius:12px;transition:background .15s;}
 .notion-row.drag-over-row{background:rgba(139,115,224,0.06);}
-
-/* Column inside a row */
-.notion-col{
-  flex:1;display:flex;flex-direction:column;gap:8px;
-  padding:8px;min-width:0;
-  position:relative;
-}
+.notion-col{flex:1;display:flex;flex-direction:column;gap:8px;padding:8px;min-width:0;position:relative;}
 .notion-col.drag-over-col{background:rgba(139,115,224,0.08);border-radius:10px;}
-
-/* Row separator / add-row zone */
-.row-gap{
-  height:28px;display:flex;align-items:center;justify-content:center;
-  position:relative;cursor:default;
-}
-.row-gap-line{
-  width:100%;height:2px;background:transparent;border-radius:2px;
-  transition:background .15s;
-}
-.row-gap:hover .row-gap-line,.row-gap.drop-active .row-gap-line{
-  background:var(--accent);
-}
-.row-gap-add{
-  opacity:0;position:absolute;left:50%;transform:translateX(-50%);
-  background:var(--purple);color:white;border:none;border-radius:20px;
-  padding:4px 14px;font-size:11px;font-family:'DM Sans',sans-serif;
-  cursor:pointer;white-space:nowrap;transition:opacity .15s;
-  pointer-events:none;
-}
+.row-gap{height:28px;display:flex;align-items:center;justify-content:center;position:relative;cursor:default;}
+.row-gap-line{width:100%;height:2px;background:transparent;border-radius:2px;transition:background .15s;}
+.row-gap:hover .row-gap-line,.row-gap.drop-active .row-gap-line{background:var(--accent);}
+.row-gap-add{opacity:0;position:absolute;left:50%;transform:translateX(-50%);background:var(--purple);color:white;border:none;border-radius:20px;padding:4px 14px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:opacity .15s;pointer-events:none;}
 .row-gap:hover .row-gap-add{opacity:1;pointer-events:auto;}
-
-/* Row controls */
-.row-controls{
-  display:none;position:absolute;top:8px;right:8px;
-  gap:4px;z-index:10;
-}
+.row-controls{display:none;position:absolute;top:8px;right:8px;gap:4px;z-index:10;}
 .notion-row:hover .row-controls{display:flex;}
-.row-ctl-btn{
-  background:white;border:1px solid #e8e4f7;color:var(--text-muted);
-  border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;
-  transition:all .15s;font-family:'DM Sans',sans-serif;line-height:1.4;
-}
+.row-ctl-btn{background:white;border:1px solid #e8e4f7;color:var(--text-muted);border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;line-height:1.4;}
 .row-ctl-btn:hover{background:var(--purple-soft);color:var(--purple);border-color:var(--accent);}
-
-/* col divider drag handle */
-.col-resizer{
-  width:6px;flex-shrink:0;cursor:col-resize;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .15s;
-}
+.col-resizer{width:6px;flex-shrink:0;cursor:col-resize;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;}
 .notion-row:hover .col-resizer{opacity:1;}
 .col-resizer-inner{width:2px;height:32px;background:var(--lavender);border-radius:2px;}
 
-/* ── CARD (Current style) ── */
-.card{
-  background:white;border-radius:16px;padding:20px;
-  border:1px solid rgba(61,43,142,.07);
-  box-shadow:0 2px 12px rgba(61,43,142,.05);
-  position:relative;transition:box-shadow .2s, opacity .2s, transform .2s;
-  cursor:default;
-}
+.card{background:white;border-radius:16px;padding:20px;border:1px solid rgba(61,43,142,.07);box-shadow:0 2px 12px rgba(61,43,142,.05);position:relative;transition:box-shadow .2s, opacity .2s, transform .2s;cursor:default;}
 .card:hover{box-shadow:0 4px 20px rgba(61,43,142,.1);}
 .card.dragging{opacity:.4;transform:scale(.98);}
-.card.drag-placeholder{
-  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
-  box-shadow:none!important;opacity:.6;
-}
-
-.card-drag-handle{
-  position:absolute;top:12px;left:-22px;
-  width:18px;height:30px;display:flex;align-items:center;justify-content:center;
-  opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;
-  border-radius:6px;
-}
+.card.drag-placeholder{border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;box-shadow:none!important;opacity:.6;}
+.card-drag-handle{position:absolute;top:12px;left:-22px;width:18px;height:30px;display:flex;align-items:center;justify-content:center;opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;border-radius:6px;}
 .card:hover .card-drag-handle{opacity:.6;}
 .card-drag-handle:hover{opacity:1!important;background:var(--purple-soft);}
 .card-drag-handle:active{cursor:grabbing;}
-
 .card-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .card-emoji{font-size:16px;cursor:pointer;transition:transform .15s;}
 .card-emoji:hover{transform:scale(1.2);}
-.card-title-text{
-  font-size:11px;font-weight:600;letter-spacing:1.1px;
-  text-transform:uppercase;color:var(--accent);flex:1;cursor:text;
-}
+.card-title-text{font-size:11px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;color:var(--accent);flex:1;cursor:text;}
 .card-title-text:focus{outline:none;border-bottom:1px dashed var(--accent);}
 .card-actions{display:none;gap:4px;align-items:center;}
 .card:hover .card-actions{display:flex;}
-.card-actions button{
-  background:none;border:none;color:var(--text-muted);
-  cursor:pointer;padding:3px 5px;border-radius:6px;
-  font-size:12px;transition:all .15s;line-height:1;
-}
+.card-actions button{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:3px 5px;border-radius:6px;font-size:12px;transition:all .15s;line-height:1;}
 .card-actions button:hover{background:var(--purple-soft);color:var(--purple);}
-
 .card-body{font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
-.card-body:focus{
-  outline:none;background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;
-}
+.card-body:focus{outline:none;background:var(--purple-soft);border-radius:8px;padding:8px;margin:-8px;}
 
-/* ── TRELLO CARD (NEW) ── */
-.trello-card{
-  background:white;border-radius:12px;border:1px solid #e8e4f7;
-  box-shadow:0 1px 3px rgba(61,43,142,.06);
-  overflow:hidden;transition:all .2s;
-  cursor:default;position:relative;
-}
+.trello-card{background:white;border-radius:12px;border:1px solid #e8e4f7;box-shadow:0 1px 3px rgba(61,43,142,.06);overflow:hidden;transition:all .2s;cursor:default;position:relative;}
 .trello-card:hover{box-shadow:0 4px 12px rgba(61,43,142,.12);}
 .trello-card.dragging{opacity:.4;transform:scale(.98);}
-.trello-card.drag-placeholder{
-  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
-  box-shadow:none!important;opacity:.6;
-}
-
-.trello-card-drag-handle{
-  position:absolute;top:8px;left:-22px;
-  width:18px;height:30px;display:flex;align-items:center;justify-content:center;
-  opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;
-  border-radius:6px;
-}
+.trello-card.drag-placeholder{border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;box-shadow:none!important;opacity:.6;}
+.trello-card-drag-handle{position:absolute;top:8px;left:-22px;width:18px;height:30px;display:flex;align-items:center;justify-content:center;opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;border-radius:6px;}
 .trello-card:hover .trello-card-drag-handle{opacity:.6;}
 .trello-card-drag-handle:hover{opacity:1!important;background:var(--purple-soft);}
 .trello-card-drag-handle:active{cursor:grabbing;}
-
-.trello-card-header{
-  background:var(--purple);color:white;padding:12px 14px;
-  display:flex;align-items:center;gap:8px;justify-content:space-between;
-}
-.trello-card-title{
-  font-size:13px;font-weight:600;flex:1;cursor:text;
-  outline:none;background:transparent;color:white;border:none;
-  font-family:'DM Sans',sans-serif;
-}
-.trello-card-title:focus{
-  background:rgba(0,0,0,0.2);border-radius:6px;padding:2px 6px;margin:-2px -6px;
-}
+.trello-card-header{background:var(--purple);color:white;padding:12px 14px;display:flex;align-items:center;gap:8px;justify-content:space-between;}
+.trello-card-title{font-size:13px;font-weight:600;flex:1;cursor:text;outline:none;background:transparent;color:white;border:none;font-family:'DM Sans',sans-serif;}
+.trello-card-title:focus{background:rgba(0,0,0,0.2);border-radius:6px;padding:2px 6px;margin:-2px -6px;}
 .trello-card-actions{display:flex;gap:2px;align-items:center;}
-.trello-card-actions button{
-  background:none;border:none;color:rgba(255,255,255,.6);
-  cursor:pointer;padding:2px 4px;font-size:12px;border-radius:4px;
-  transition:all .15s;line-height:1;
-}
+.trello-card-actions button{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;padding:2px 4px;font-size:12px;border-radius:4px;transition:all .15s;line-height:1;}
 .trello-card-actions button:hover{background:rgba(0,0,0,0.2);color:white;}
+.trello-card-body{padding:14px;font-size:13px;color:var(--text);line-height:1.5;white-space:pre-wrap;word-break:break-word;outline:none;}
+.trello-card-body:focus{background:var(--purple-soft);outline:1px solid var(--accent);border-radius:6px;}
 
-.trello-card-body{
-  padding:14px;font-size:13px;color:var(--text);line-height:1.5;
-  white-space:pre-wrap;word-break:break-word;
-  outline:none;
-}
-.trello-card-body:focus{
-  background:var(--purple-soft);outline:1px solid var(--accent);border-radius:6px;
-}
-
-.trello-card-files{
-  padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
-}
-
-/* ── TRELLO EXTENDED CARD (NEW TYPE) ── */
-.trello-ext-card{
-  background:white;border-radius:12px;border:1px solid #e8e4f7;
-  box-shadow:0 1px 3px rgba(61,43,142,.06);
-  overflow:hidden;transition:all .2s;
-  cursor:default;position:relative;
-}
+.trello-ext-card{background:white;border-radius:12px;border:1px solid #e8e4f7;box-shadow:0 1px 3px rgba(61,43,142,.06);overflow:hidden;transition:all .2s;cursor:default;position:relative;}
 .trello-ext-card:hover{box-shadow:0 4px 12px rgba(61,43,142,.12);}
 .trello-ext-card.dragging{opacity:.4;transform:scale(.98);}
-.trello-ext-card.drag-placeholder{
-  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
-  box-shadow:none!important;opacity:.6;
-}
-
-.trello-ext-card-drag-handle{
-  position:absolute;top:8px;left:-22px;
-  width:18px;height:30px;display:flex;align-items:center;justify-content:center;
-  opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;
-  border-radius:6px;
-}
+.trello-ext-card.drag-placeholder{border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;box-shadow:none!important;opacity:.6;}
+.trello-ext-card-drag-handle{position:absolute;top:8px;left:-22px;width:18px;height:30px;display:flex;align-items:center;justify-content:center;opacity:0;cursor:grab;transition:opacity .15s;color:var(--text-muted);font-size:13px;border-radius:6px;}
 .trello-ext-card:hover .trello-ext-card-drag-handle{opacity:.6;}
 .trello-ext-card-drag-handle:hover{opacity:1!important;background:var(--purple-soft);}
 .trello-ext-card-drag-handle:active{cursor:grabbing;}
-
-.trello-ext-card-header{
-  padding:14px;border-bottom:1px solid #e8e4f7;
-  display:flex;align-items:center;gap:8px;justify-content:space-between;
-}
-.trello-ext-card-title{
-  font-size:14px;font-weight:600;flex:1;cursor:text;
-  outline:none;background:transparent;color:var(--text);border:none;
-  font-family:'DM Sans',sans-serif;
-}
-.trello-ext-card-title:focus{
-  background:var(--purple-soft);border-radius:6px;padding:2px 6px;margin:-2px -6px;
-}
+.trello-ext-card-header{padding:14px;border-bottom:1px solid #e8e4f7;display:flex;align-items:center;gap:8px;justify-content:space-between;}
+.trello-ext-card-title{font-size:14px;font-weight:600;flex:1;cursor:text;outline:none;background:transparent;color:var(--text);border:none;font-family:'DM Sans',sans-serif;}
+.trello-ext-card-title:focus{background:var(--purple-soft);border-radius:6px;padding:2px 6px;margin:-2px -6px;}
 .trello-ext-card-actions{display:flex;gap:2px;align-items:center;}
-.trello-ext-card-actions button{
-  background:none;border:none;color:var(--text-muted);
-  cursor:pointer;padding:2px 4px;font-size:12px;border-radius:4px;
-  transition:all .15s;line-height:1;
-}
+.trello-ext-card-actions button{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px 4px;font-size:12px;border-radius:4px;transition:all .15s;line-height:1;}
 .trello-ext-card-actions button:hover{background:var(--purple-soft);color:var(--purple);}
+.trello-ext-card-body{padding:14px;font-size:13px;color:var(--text);line-height:1.5;white-space:pre-wrap;word-break:break-word;outline:none;}
+.trello-ext-card-body:focus{background:var(--purple-soft);outline:1px solid var(--accent);border-radius:6px;}
 
-.trello-ext-card-body{
-  padding:14px;font-size:13px;color:var(--text);line-height:1.5;
-  white-space:pre-wrap;word-break:break-word;
-  outline:none;
-}
-.trello-ext-card-body:focus{
-  background:var(--purple-soft);outline:1px solid var(--accent);border-radius:6px;
-}
-
-.trello-ext-card-files{
-  padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
-}
-
-/* ── STAT CARD ── */
-.stat-card{
-  background:white;border-radius:14px;padding:18px 20px;
-  border:1px solid rgba(61,43,142,.07);position:relative;
-  transition:box-shadow .2s, opacity .2s, transform .2s;
-  cursor:default;
-}
+.stat-card{background:white;border-radius:14px;padding:18px 20px;border:1px solid rgba(61,43,142,.07);position:relative;transition:box-shadow .2s, opacity .2s, transform .2s;cursor:default;}
 .stat-card.dark{background:var(--purple);}
 .stat-card.dragging{opacity:.4;transform:scale(.98);}
-.stat-card.drag-placeholder{
-  border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;
-  box-shadow:none!important;opacity:.6;
-}
+.stat-card.drag-placeholder{border:2px dashed var(--accent)!important;background:var(--purple-soft)!important;box-shadow:none!important;opacity:.6;}
 .stat-card .sc-label{font-size:11px;color:var(--text-muted);margin-bottom:5px;cursor:text;}
 .stat-card.dark .sc-label{color:var(--lavender);}
-.stat-card .sc-value{
-  font-family:'Playfair Display',serif;font-size:26px;
-  color:var(--purple);font-weight:700;cursor:text;
-}
+.stat-card .sc-value{font-family:'Playfair Display',serif;font-size:26px;color:var(--purple);font-weight:700;cursor:text;}
 .stat-card.dark .sc-value{color:white;}
 .stat-card .sc-sub{font-size:11px;color:var(--text-muted);margin-top:2px;cursor:text;}
 .stat-card.dark .sc-sub{color:var(--lavender);}
@@ -382,200 +147,87 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .stat-card .card-drag-handle{position:absolute;top:12px;left:-22px;}
 .stat-card:hover .card-drag-handle{opacity:.6;}
 
-/* ── ADD CARD BUTTON ── */
-.add-card-btn{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:9px;border-radius:10px;cursor:pointer;
-  border:1px dashed rgba(61,43,142,.2);background:none;
-  color:var(--text-muted);font-size:12px;width:100%;
-  transition:all .2s;font-family:'DM Sans',sans-serif;
-  flex-shrink:0;
-}
+.add-card-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;border-radius:10px;cursor:pointer;border:1px dashed rgba(61,43,142,.2);background:none;color:var(--text-muted);font-size:12px;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;flex-shrink:0;}
 .add-card-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--purple-soft);}
-
-/* ── ADD ROW BUTTON (bottom) ── */
-.add-row-bottom{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:10px;border-radius:10px;cursor:pointer;
-  border:1px dashed rgba(61,43,142,.15);background:none;
-  color:var(--text-muted);font-size:12px;width:100%;
-  transition:all .2s;font-family:'DM Sans',sans-serif;
-  margin-top:8px;
-}
+.add-row-bottom{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;cursor:pointer;border:1px dashed rgba(61,43,142,.15);background:none;color:var(--text-muted);font-size:12px;width:100%;transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:8px;}
 .add-row-bottom:hover{border-color:var(--accent);color:var(--accent);background:var(--purple-soft);}
 
-/* ── SAVE INDICATOR ── */
-#save-indicator{
-  position:fixed;bottom:20px;right:20px;
-  background:var(--purple);color:white;
-  border-radius:20px;padding:8px 16px;font-size:12px;
-  opacity:0;transition:opacity .3s;pointer-events:none;
-  z-index:999;
-}
+#save-indicator{position:fixed;bottom:20px;right:20px;background:var(--purple);color:white;border-radius:20px;padding:8px 16px;font-size:12px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
 #save-indicator.show{opacity:1;}
 
-/* ── MODALS ── */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);
-  display:none;align-items:center;justify-content:center;z-index:1000;
-}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;}
 .modal-overlay.show{display:flex;}
-.modal{
-  background:white;border-radius:20px;padding:28px;
-  width:min(420px,90vw);box-shadow:0 20px 60px rgba(0,0,0,.2);
-}
+.modal{background:white;border-radius:20px;padding:28px;width:min(420px,90vw);box-shadow:0 20px 60px rgba(0,0,0,.2);}
 .modal h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--purple);margin-bottom:20px;}
 .modal label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:6px;}
-.modal input,.modal textarea,.modal select{
-  width:100%;padding:10px 13px;border:1.5px solid #e8e4f7;border-radius:10px;
-  font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);
-  outline:none;transition:border-color .2s;margin-bottom:16px;
-}
+.modal input,.modal textarea,.modal select{width:100%;padding:10px 13px;border:1.5px solid #e8e4f7;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:16px;}
 .modal input:focus,.modal textarea:focus{border-color:var(--accent);}
 .modal textarea{min-height:100px;resize:vertical;}
 .modal .emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.modal .emoji-opt{
-  width:36px;height:36px;border-radius:8px;border:2px solid transparent;
-  background:var(--purple-soft);cursor:pointer;font-size:18px;
-  display:flex;align-items:center;justify-content:center;transition:all .15s;
-}
+.modal .emoji-opt{width:36px;height:36px;border-radius:8px;border:2px solid transparent;background:var(--purple-soft);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .modal .emoji-opt:hover,.modal .emoji-opt.selected{border-color:var(--accent);background:var(--purple-light);}
-.modal .custom-emoji{
-  flex:1;min-width:80px;padding:6px 10px;border:1.5px solid #e8e4f7;
-  border-radius:8px;font-size:14px;text-align:center;
-  font-family:'DM Sans',sans-serif;outline:none;
-}
+.modal .custom-emoji{flex:1;min-width:80px;padding:6px 10px;border:1.5px solid #e8e4f7;border-radius:8px;font-size:14px;text-align:center;font-family:'DM Sans',sans-serif;outline:none;}
 .modal .custom-emoji:focus{border-color:var(--accent);}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px;}
-.btn-cancel{
-  padding:9px 20px;border-radius:10px;border:1.5px solid #e8e4f7;
-  background:none;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text-muted);
-  transition:all .2s;
-}
+.btn-cancel{padding:9px 20px;border-radius:10px;border:1.5px solid #e8e4f7;background:none;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text-muted);transition:all .2s;}
 .btn-cancel:hover{border-color:var(--accent);color:var(--accent);}
-.btn-confirm{
-  padding:9px 20px;border-radius:10px;border:none;
-  background:var(--purple);color:white;cursor:pointer;font-size:13px;
-  font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;
-}
+.btn-confirm{padding:9px 20px;border-radius:10px;border:none;background:var(--purple);color:white;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
 .btn-confirm:hover{background:var(--purple-mid);}
-.btn-danger{
-  padding:9px 20px;border-radius:10px;border:none;
-  background:#fde8e8;color:var(--red);cursor:pointer;font-size:13px;
-  font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;
-}
+.btn-danger{padding:9px 20px;border-radius:10px;border:none;background:#fde8e8;color:var(--red);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
 .btn-danger:hover{background:var(--red);color:white;}
 
-/* ── FILE ATTACHMENT ── */
-.card-files{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
-.file-chip{
-  display:flex;align-items:center;gap:5px;background:var(--purple-soft);
-  border-radius:20px;padding:3px 10px 3px 8px;font-size:11px;color:var(--purple);
-  text-decoration:none;transition:background .15s;
-}
-.file-chip:hover{background:var(--purple-light);}
-.file-chip .fc-icon{font-size:12px;}
-.file-chip .fc-del{
-  background:none;border:none;color:var(--text-muted);cursor:pointer;
-  font-size:11px;padding:0 0 0 3px;line-height:1;
-}
-.file-chip .fc-del:hover{color:var(--red);}
-.file-attach-btn{
-  background:none;border:none;color:var(--text-muted);cursor:pointer;
-  font-size:16px;padding:2px;line-height:1;transition:color .15s;
-  display:none;
-}
-.card:hover .file-attach-btn,.stat-card:hover .file-attach-btn,.trello-card:hover .file-attach-btn,.trello-ext-card:hover .file-attach-btn{display:inline;}
-.file-attach-btn:hover{color:var(--accent);}
-.file-input-hidden{display:none;}
-
-/* ── LOADING ── */
-#loading{
-  position:fixed;inset:0;background:var(--purple);
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:16px;z-index:9999;
-}
-#loading .spin{
-  width:36px;height:36px;border:3px solid rgba(255,255,255,.2);
-  border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;
-}
+#loading{position:fixed;inset:0;background:var(--purple);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:9999;}
+#loading .spin{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;}
 #loading p{color:rgba(255,255,255,.7);font-size:14px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ── DND GHOST ── */
-.dnd-ghost{
-  position:fixed;pointer-events:none;z-index:9000;
-  opacity:.85;transform:rotate(2deg) scale(1.02);
-  box-shadow:0 8px 30px rgba(0,0,0,.18);
-  border-radius:16px;background:white;
-  padding:16px;font-size:12px;color:var(--text);
-  max-width:220px;
-}
+.dnd-ghost{position:fixed;pointer-events:none;z-index:9000;opacity:.85;transform:rotate(2deg) scale(1.02);box-shadow:0 8px 30px rgba(0,0,0,.18);border-radius:16px;background:white;padding:16px;font-size:12px;color:var(--text);max-width:220px;}
 .page-view{display:none;}
 .page-view.active{display:block;}
 </style>
 </head>
 <body>
 
-<div id="loading"><div class="spin"></div><p>Loading dashboard…</p></div>
+<div id="loading"><div class="spin"></div><p>Loading...</p></div>
 
-<!-- AUTH -->
 <div id="auth-screen" style="display:none;">
   <div class="auth-card">
     <div class="auth-logo">🧙‍♀️</div>
-    <h1>Two Witches &amp; A Broom</h1>
-    <p>Sign in to access your personal dashboard</p>
+    <h1>WAAB Dashboard</h1>
+    <p>Sign in with Google</p>
     <button class="google-btn" id="sign-in-btn">
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Sign in with Google
+      Sign in
     </button>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
-  <nav class="sidebar" id="sidebar">
-    <div class="logo-area" id="logo-area">
-      <div class="logo-icon" id="logo-icon">🧙</div>
+  <nav class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon">🧙</div>
       <div class="logo-text">
-        <h2 id="company-name">Two Witches &amp; A Broom</h2>
-        <span id="company-sub">Cleaning Co.</span>
+        <h2>Dashboard</h2>
       </div>
     </div>
     <div id="nav-sections"></div>
     <div class="role-box">
-      <div class="rb-name" id="user-name">—</div>
-      <div class="rb-role" id="user-role">CX &amp; Sales VA</div>
+      <div class="rb-name" id="user-name">User</div>
       <button class="rb-signout" id="sign-out-btn">Sign out</button>
     </div>
   </nav>
-  <main class="main" id="main-content">
+  <main class="main">
     <div id="pages-container"></div>
   </main>
 </div>
 
-<!-- SAVE INDICATOR -->
 <div id="save-indicator">💾 Saved</div>
 
-<!-- MODAL: Add / Edit Page -->
 <div class="modal-overlay" id="modal-page">
   <div class="modal">
-    <h3 id="modal-page-title">New Page</h3>
-    <label>Icon</label>
-    <div class="emoji-row" id="page-emoji-row">
-      <span class="emoji-opt selected" data-emoji="📋">📋</span>
-      <span class="emoji-opt" data-emoji="💬">💬</span>
-      <span class="emoji-opt" data-emoji="🧼">🧼</span>
-      <span class="emoji-opt" data-emoji="💰">💰</span>
-      <span class="emoji-opt" data-emoji="🏢">🏢</span>
-      <span class="emoji-opt" data-emoji="⭐">⭐</span>
-      <span class="emoji-opt" data-emoji="📅">📅</span>
-      <span class="emoji-opt" data-emoji="🔄">🔄</span>
-      <span class="emoji-opt" data-emoji="📊">📊</span>
-      <input class="custom-emoji" placeholder="or type…" id="page-emoji-custom" maxlength="4"/>
-    </div>
+    <h3>New Page</h3>
     <label>Page Name</label>
-    <input type="text" id="page-name-input" placeholder="e.g. Sales Playbook"/>
+    <input type="text" id="page-name-input" placeholder="Name..."/>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-page')">Cancel</button>
       <button class="btn-confirm" id="modal-page-save">Save</button>
@@ -583,16 +235,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
-<!-- MODAL: Add Card -->
 <div class="modal-overlay" id="modal-card">
   <div class="modal">
     <h3>Add Card</h3>
     <label>Type</label>
     <select id="card-type-input">
-      <option value="text">Text / Notes (with emoji icon)</option>
+      <option value="text">Text (with emoji)</option>
       <option value="stat">Stat (big number)</option>
-      <option value="trello">Trello Card (title in header)</option>
-      <option value="trello-ext">Trello Extended (title + files + content)</option>
+      <option value="trello">Trello (header title)</option>
+      <option value="trello-ext">Trello Extended (title + content)</option>
     </select>
     <label id="emoji-label">Icon</label>
     <div class="emoji-row" id="card-emoji-row">
@@ -600,28 +251,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
       <span class="emoji-opt" data-emoji="✅">✅</span>
       <span class="emoji-opt" data-emoji="🚫">🚫</span>
       <span class="emoji-opt" data-emoji="💡">💡</span>
-      <span class="emoji-opt" data-emoji="📞">📞</span>
-      <span class="emoji-opt" data-emoji="💬">💬</span>
-      <span class="emoji-opt" data-emoji="⭐">⭐</span>
-      <span class="emoji-opt" data-emoji="🔢">🔢</span>
-      <input class="custom-emoji" placeholder="or type…" id="card-emoji-custom" maxlength="4"/>
     </div>
-    <label id="title-label">Card Title</label>
-    <input type="text" id="card-title-input" placeholder="e.g. Daily Routine"/>
+    <label id="title-label">Title</label>
+    <input type="text" id="card-title-input" placeholder="Title"/>
     <label id="content-label">Content</label>
-    <textarea id="card-content-input" placeholder="Write your content here…"></textarea>
+    <textarea id="card-content-input" placeholder="Content..."></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-card')">Cancel</button>
-      <button class="btn-confirm" id="modal-card-save">Add Card</button>
+      <button class="btn-confirm" id="modal-card-save">Add</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Confirm Delete -->
 <div class="modal-overlay" id="modal-delete">
   <div class="modal">
-    <h3>Delete this?</h3>
-    <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">This action cannot be undone.</p>
+    <h3>Delete?</h3>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">This cannot be undone.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-delete')">Cancel</button>
       <button class="btn-danger" id="modal-delete-confirm">Delete</button>
@@ -629,41 +274,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   </div>
 </div>
 
-<!-- MODAL: Emoji Picker -->
-<div class="modal-overlay" id="modal-emoji">
-  <div class="modal">
-    <h3>Choose Icon</h3>
-    <div class="emoji-row" id="pick-emoji-row" style="margin-bottom:16px;">
-      <span class="emoji-opt" data-emoji="📋">📋</span><span class="emoji-opt" data-emoji="✅">✅</span>
-      <span class="emoji-opt" data-emoji="🚫">🚫</span><span class="emoji-opt" data-emoji="💡">💡</span>
-      <span class="emoji-opt" data-emoji="📞">📞</span><span class="emoji-opt" data-emoji="💬">💬</span>
-      <span class="emoji-opt" data-emoji="⭐">⭐</span><span class="emoji-opt" data-emoji="🔢">🔢</span>
-      <span class="emoji-opt" data-emoji="🧼">🧼</span><span class="emoji-opt" data-emoji="💰">💰</span>
-      <span class="emoji-opt" data-emoji="🏢">🏢</span><span class="emoji-opt" data-emoji="📅">📅</span>
-      <span class="emoji-opt" data-emoji="🔄">🔄</span><span class="emoji-opt" data-emoji="📊">📊</span>
-      <span class="emoji-opt" data-emoji="🛡️">🛡️</span><span class="emoji-opt" data-emoji="🐾">🐾</span>
-      <span class="emoji-opt" data-emoji="🚀">🚀</span><span class="emoji-opt" data-emoji="🎯">🎯</span>
-      <input class="custom-emoji" placeholder="or type…" id="pick-emoji-custom" maxlength="4"/>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-emoji')">Cancel</button>
-      <button class="btn-confirm" id="pick-emoji-confirm">Set Icon</button>
-    </div>
-  </div>
-</div>
-
-<!-- DND Ghost element -->
-<div class="dnd-ghost" id="dnd-ghost" style="display:none;"></div>
-
-<!-- Firebase SDKs -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyBRYnwBSFGGvKcTS4fqGAwFxmykxMQ7YVE",
@@ -677,283 +291,115 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
-const storage = getStorage(fbApp);
 
-// ── DEFAULT DATA ──
 const DEFAULT_DATA = {
-  meta:{ companyName:"Two Witches & A Broom", companySub:"Cleaning Co.", logoIcon:"🧙" },
-  pages:[
-    {
-      id:"home", emoji:"🏠", label:"Dashboard",
-      title:"Hey, Manuela 🧙‍♀️", subtitle:"VA at Two Witches & A Broom · CX & Sales",
-      rows:[
-        {
-          id:"row-stats",
-          cols:[
-            { id:"col-s1", cards:[
-              {id:"s1",type:"stat",dark:true,label:"Min. Service",value:"$150",sub:"Never go below"},
-              {id:"s2",type:"stat",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"},
-            ]},
-            { id:"col-s2", cards:[
-              {id:"s3",type:"stat",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"},
-              {id:"s4",type:"stat",label:"Guarantee",value:"24h",sub:"Satisfaction window"},
-            ]},
-          ]
-        },
-        {
-          id:"row-main",
-          cols:[
-            { id:"col-m1", cards:[
-              {id:"c1",type:"text",emoji:"📅",title:"Daily Routine",content:"🟢 Morning — Open ZenMaid & Check Schedule\nReview today's appointments, verify all client profiles have complete notes.\n\n🟣 Ongoing — Handle Inbound Leads & Calls\nBuild rapport → Discovery → Close. Always push recurring services.\n\n🟠 1h after arrival — Open-to-Close Check-in\nTechs call office 1h after arrival. Confirm dirt level + time estimate.\n\n🟢 Post-clean — Charge Client in AuthNet\nCharge after service. Verify tax + total. If declined → try another card.\n\n🟣 Next day — 24-Hour Follow-Up Call\nHappy → upsell recurring + ask for Google review.\nUnhappy → offer re-clean fast.\n\n🟠 Ongoing — Manage Slack Comms\nCleaner issues → escalate to Sandy."},
-            ]},
-            { id:"col-m2", cards:[
-              {id:"c2",type:"text",emoji:"🚫",title:"Never Do / Always Do",content:"🚫 NEVER SAY:\n• Hourly rate ($60–$70/h) to clients\n• \"Time\" → say \"effort\" instead\n• Share owner's or your personal phone number\n\n🚫 NEVER CLEAN:\n• Walls • Exterior windows • Carpets • Unfinished basements\n• Wash dishes • Enter closed rooms\n• Use client products (except marble/granite)\n\n✅ ALWAYS:\n• Push recurring services every interaction\n• Sandwich method: nice → request → nice\n• Update ZenMaid after every call\n• Offer reschedule before skip\n• Skip weekly = biweekly rate (×1.25)"},
-            ]},
-          ]
-        }
-      ]
-    },
-    {
-      id:"sales", emoji:"💬", label:"Sales",
-      title:"Sales Playbook", subtitle:"Scripts, discovery & closing strategies",
-      rows:[
-        {
-          id:"row-s1",
-          cols:[
-            { id:"col-s1a", cards:[
-              {id:"sc1",type:"text",emoji:"📞",title:"Sales Call — Step by Step",content:"1️⃣ Build Rapport — warm greeting, smile, make them feel heard\n2️⃣ Discovery — bedrooms, bathrooms, sqft, adults/kids, pets?\n3️⃣ Identify Pain — find what frustrates them, use emotion\n4️⃣ Offer Solution — flat rate, push recurring first, always\n5️⃣ Close — 3 forms required before booking is confirmed"},
-            ]},
-            { id:"col-s1b", cards:[
-              {id:"sc2",type:"text",emoji:"📋",title:"Discovery Questions",content:"🛏️ How many bedrooms?\n🚿 How many bathrooms?\n📐 Approximate square footage?\n👨‍👩‍👧 How many adults / kids?\n🐶 Pets? Type? Aggressive?\n🚿 When was shower last cleaned with product?\n🍽️ How often are counters wiped?\n🧹 How often are floors cleaned?"},
-            ]},
-          ]
-        },
-        {
-          id:"row-s2",
-          cols:[
-            { id:"col-s2a", cards:[
-              {id:"sc3",type:"text",emoji:"🐾",title:"Pet Script",content:"\"That's awesome, we love pets! Our cleaners are comfortable around them as long as they are not aggressive.\"\n\n→ Always ask about aggression history.\n→ 75% of clients have pets."},
-            ]},
-            { id:"col-s2b", cards:[
-              {id:"sc4",type:"text",emoji:"💫",title:"Emotion Sells",content:"• \"Imagine never having to clean again\"\n• \"Look at the difference after this clean\"\n• Best upsell moment = right after spotless clean\n• Sale happens during estimate call or follow-up — NOT after"},
-            ]},
-            { id:"col-s2c", cards:[
-              {id:"sc5",type:"text",emoji:"🔢",title:"Dirt Code Scale",content:"1 — Spotless ✨\n2 — Clean 🟢\n3 — Average 🟡\n4 — Dirty 🟠\n5 — Heavy / Buildup 🔴\n\n→ 5+ = set expectations on effort upfront\n→ Option 1: stay within estimate\n→ Option 2: pay for additional effort"},
-            ]},
-          ]
-        }
-      ]
-    },
-    {
-      id:"services", emoji:"🧼", label:"Services",
-      title:"Services Menu", subtitle:"What we offer & how to position them",
-      rows:[
-        {
-          id:"row-sv1",
-          cols:[
-            { id:"col-sv1a", cards:[
-              {id:"sv1",type:"text",emoji:"🧼",title:"Service Types",content:"🟢 Recurring Cleaning — Weekly / Biweekly / Monthly\n85% of sales. Always push this first. Goal: $300/mo per client.\n\n🔵 General Clean — One-time\nFrom $150 minimum. Use as entry point → convert after follow-up.\n\n🟠 TTB (Top to Bottom) — Deep Clean\nStarts at $490. The \"big reset.\" Best positioned before recurring.\n\n🟣 Priority Clean — Custom\nLimited service, specific areas only. Custom quote."},
-            ]},
-            { id:"col-sv1b", cards:[
-              {id:"sv2",type:"text",emoji:"⭐",title:"Why We Win",content:"✦ Eco-friendly, non-toxic, odor-free products\n✦ Safe for pets, kids, and people\n✦ All techs pass background checks\n✦ Reliable — we always show up\n✦ Strong systems & processes\n✦ High consistency vs competitors\n\n⚠️ Main competitor: Serenity\n→ Bad reputation: inconsistent, hires anyone\n→ We position as the exact opposite"},
-            ]},
-          ]
-        },
-        {
-          id:"row-sv2",
-          cols:[
-            { id:"col-sv2a", cards:[
-              {id:"sv3",type:"text",emoji:"✅",title:"Included in Service",content:"✓ Microwave: inside + outside\n✓ Small appliances: move them\n✓ Surface >50% covered → clean around items\n✓ Floors: use client vacuum/mop if requested\n✓ Marble/granite: use client-approved cleaner"},
-            ]},
-            { id:"col-sv2b", cards:[
-              {id:"sv4",type:"text",emoji:"🚫",title:"NOT Included",content:"✗ Walls\n✗ Exterior windows\n✗ Carpets\n✗ Unfinished basements\n✗ Washing dishes\n✗ Entering closed rooms\n✗ Large appliances (don't move)"},
-            ]},
-          ]
-        }
-      ]
-    },
-    {
-      id:"pricing", emoji:"💰", label:"Pricing",
-      title:"Pricing Reference", subtitle:"Internal rates & how to quote clients",
-      rows:[
-        {
-          id:"row-p0",
-          cols:[
-            { id:"col-p0a", cards:[{id:"ps1",type:"stat",dark:true,label:"Minimum Service",value:"$150",sub:"Never go below this"}]},
-            { id:"col-p0b", cards:[{id:"ps2",type:"stat",label:"TTB Deep Clean",value:"$490+",sub:"Starting price"}]},
-            { id:"col-p0c", cards:[{id:"ps3",type:"stat",label:"Monthly Goal/Client",value:"$300",sub:"Recurring target"}]},
-          ]
-        },
-        {
-          id:"row-p1",
-          cols:[
-            { id:"col-p1a", cards:[
-              {id:"pc1",type:"text",emoji:"💡",title:"Pricing Rules",content:"🔒 Internal rate: $60–$70/h per tech — NEVER tell clients\n📊 We use flat rate pricing — clients feel safer, better margins\n🗣️ NEVER talk about time → always talk about effort\n📈 Skip weekly = charged as biweekly (×1.25 multiplier)\n💳 Charge via AuthNet after service. Verify tax + total.\nIf declined → try another card → contact client."},
-            ]},
-            { id:"col-p1b", cards:[
-              {id:"pc2",type:"text",emoji:"🏆",title:"How to Position Price",content:"✦ Lead with value: eco-friendly, background-checked, reliable\n✦ Use emotion: \"Imagine never having to clean again\"\n✦ Flat rate = no surprises → builds trust\n✦ If dirt code is high → set expectations upfront\n✦ TTB = \"big reset\" → frame as investment before recurring\n✦ Best close moment: right after a spotless clean"},
-            ]},
-          ]
-        }
-      ]
-    },
-    {
-      id:"company", emoji:"🏢", label:"Company Info",
-      title:"Company Info", subtitle:"Two Witches & A Broom — quick reference",
-      rows:[
-        {
-          id:"row-co1",
-          cols:[
-            { id:"col-co1a", cards:[
-              {id:"co1",type:"text",emoji:"🏢",title:"Overview",content:"Founded: August 2021\nTeam: ~7 techs (hiring +1)\nLocation: Ohio (EST)\nOwner: Remote (since 2025)\nGrowth: Doubled revenue YoY\nCRM: ZenMaid\nPayments: AuthNet\nComms: Slack\nMarketing: Facebook / Google / TikTok"},
-            ]},
-            { id:"col-co1b", cards:[
-              {id:"co2",type:"text",emoji:"👥",title:"Team Structure",content:"Sandy → Office Manager\n  Hours: 8 AM – 2 PM EST\n  (hiring, onboarding, training, oversight)\n\nManuela → CX + Sales VA\n  (you! until 5 PM EST)\n\nHailee → Trainer\n\nHouse Checkers → Quality Control\n\nTechs → Execution team\n\n⚠️ Samantha is in Montana (different TZ — always double check)"},
-            ]},
-          ]
-        },
-        {
-          id:"row-co2",
-          cols:[
-            { id:"col-co2a", cards:[
-              {id:"co3",type:"text",emoji:"🛠️",title:"Tools & Systems",content:"ZenMaid → Scheduling + CRM (Operations Hub)\n  If it's not in ZenMaid → it doesn't exist\n  Notes: Yellow = visible to techs | Private = office only\n\nAuthNet → Payments (charge after service)\n\nSlack → #general-office-questions\n  Cleaner issues → escalate to Sandy\n\nGoogle Reviews → Goal: 200 reviews"},
-            ]},
-            { id:"col-co2b", cards:[
-              {id:"co4",type:"text",emoji:"🧠",title:"Core Principles",content:"✦ Consistency matters — same tech whenever possible\n✦ Verbage is key — use standardized language always\n✦ No gossip — address issues directly\n✦ Feedback = opportunity to improve\n✦ Listening solves 90% of problems\n✦ If not in ZenMaid → doesn't exist\n✦ 2 complaints in 60 days → PIP triggered (Sandy handles)\n✦ Google Reviews goal: 200"},
-            ]},
-          ]
-        }
-      ]
-    }
-  ]
+  pages: [{
+    id: "1",
+    label: "Getting Started",
+    title: "Welcome",
+    subtitle: "Click + Add card to create your first card",
+    rows: [{
+      id: "r1",
+      cols: [{
+        id: "c1",
+        cards: [
+          {id: "card1", type: "text", emoji: "📋", title: "Text Card", content: "This is a text card with emoji. You can edit this!"},
+          {id: "card2", type: "trello-ext", title: "Trello Extended", content: "This is the new Trello Extended card type with title and content!"},
+          {id: "card3", type: "stat", label: "Example", value: "$100", sub: "per month"}
+        ]
+      }]
+    }]
+  }]
 };
 
-// ── STATE ──
 let appData = null;
 let currentUser = null;
 let currentPageId = null;
-let saveTimer = null;
 let pendingDelete = null;
-let pendingEmojiTarget = null;
-let pendingPageEdit = null;
 let pendingCardTarget = null;
-let unsubSnapshot = null;
 
-// ── AUTH ──
+window.openAddPage = () => { openModal('modal-page'); };
+window.openAddCard = (pageId, rowId, colId) => {
+  pendingCardTarget = {pageId, rowId, colId};
+  document.getElementById('card-type-input').value = 'text';
+  updateCardTypeLabels();
+  openModal('modal-card');
+};
+window.confirmDelete = (type, ...args) => {
+  pendingDelete = {type, args};
+  openModal('modal-delete');
+};
+window.openModal = id => document.getElementById(id).classList.add('show');
+window.closeModal = id => document.getElementById(id).classList.remove('show');
+window.toggleCardDark = (pageId, rowId, colId, cardId) => {
+  const card = getCard(pageId, rowId, colId, cardId);
+  if(card){ card.dark = !card.dark; saveData(); renderApp(); }
+};
+window.addColToRow = (pageId, rowId) => {
+  const row = getRow(pageId, rowId);
+  if(row){ if(!row.cols) row.cols = []; row.cols.push({id: 'col-'+Date.now(), cards: []}); saveData(); renderApp(); }
+};
+window.addRowAt = (pageId, idx) => {
+  const page = getPage(pageId);
+  if(page){ if(!page.rows) page.rows = []; page.rows.splice(idx, 0, {id: 'row-'+Date.now(), cols: [{id: 'col-'+Date.now()+'a', cards: []}, {id: 'col-'+Date.now()+'b', cards: []}]}); saveData(); renderApp(); }
+};
+
 document.getElementById('sign-in-btn').addEventListener('click', async () => {
-  const provider = new GoogleAuthProvider();
-  try { await signInWithPopup(auth, provider); } catch(e){ console.error(e); }
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ console.error(e); }
 });
 document.getElementById('sign-out-btn').addEventListener('click', () => signOut(auth));
 
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth, user => {
   document.getElementById('loading').style.display = 'none';
   if(user){
     currentUser = user;
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     document.getElementById('user-name').textContent = user.displayName || user.email;
-    await loadData();
+    loadData();
   } else {
     currentUser = null;
     document.getElementById('auth-screen').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
-    if(unsubSnapshot){ unsubSnapshot(); unsubSnapshot = null; }
   }
 });
 
-// ── FIRESTORE ──
-async function loadData(){
+function loadData(){
   const docRef = doc(db, 'dashboards', currentUser.uid);
-  unsubSnapshot = onSnapshot(docRef, snap => {
-    if(snap.exists()){
-      appData = snap.data();
-      migrateData();
-    } else {
-      appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      saveData();
-    }
+  onSnapshot(docRef, snap => {
+    appData = snap.exists() ? snap.data() : JSON.parse(JSON.stringify(DEFAULT_DATA));
+    currentPageId = currentPageId || appData.pages[0]?.id;
     renderApp();
+    setDoc(docRef, appData).catch(e => console.error(e));
   });
-}
-
-function migrateData(){
-  for(const page of (appData.pages||[])){
-    for(const row of (page.rows||[])){
-      if(row.cards && !row.cols){
-        const cols = [];
-        let col = { id:'col-'+Date.now()+Math.random().toString(36).slice(2), cards:[] };
-        row.cards.forEach((c,i)=>{
-          col.cards.push(c);
-          if((i+1) % Math.ceil(row.cards.length/(row.cols||2)) === 0){
-            cols.push(col);
-            col = { id:'col-'+Date.now()+Math.random().toString(36).slice(2), cards:[] };
-          }
-        });
-        if(col.cards.length) cols.push(col);
-        row.cols = cols;
-        delete row.cards;
-      }
-    }
-  }
 }
 
 function saveData(){
   if(!currentUser || !appData) return;
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    try{
-      await setDoc(doc(db,'dashboards',currentUser.uid), appData);
-      showSaved();
-    }catch(e){ console.error('Save error',e); }
-  }, 800);
-}
-
-function showSaved(){
+  setDoc(doc(db, 'dashboards', currentUser.uid), appData).catch(e => console.error(e));
   const el = document.getElementById('save-indicator');
   el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2000);
+  setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-// ── RENDER ──
 function renderApp(){
   renderSidebar();
-  const activePage = appData.pages.find(p=>p.id===currentPageId) || appData.pages[0];
-  currentPageId = activePage.id;
-  renderPage(activePage);
-  document.getElementById('logo-icon').textContent = appData.meta.logoIcon||'🧙';
-  document.getElementById('company-name').textContent = appData.meta.companyName||'';
-  document.getElementById('company-sub').textContent = appData.meta.companySub||'';
+  const page = appData.pages.find(p => p.id === currentPageId) || appData.pages[0];
+  if(!page) return;
+  currentPageId = page.id;
+  renderPage(page);
 }
 
 function renderSidebar(){
-  const container = document.getElementById('nav-sections');
-  container.innerHTML = '';
-  const section = document.createElement('div');
-  section.className = 'nav-section';
-  const lbl = document.createElement('div');
-  lbl.className = 'nav-section-label';
-  lbl.innerHTML = `<span>Pages</span><button title="Add page" onclick="openAddPage()">＋</button>`;
-  section.appendChild(lbl);
-  appData.pages.forEach(page => {
+  const nav = document.getElementById('nav-sections');
+  nav.innerHTML = '<div class="nav-section-label"><span>Pages</span><button onclick="openAddPage()">＋</button></div>';
+  appData.pages?.forEach(page => {
     const item = document.createElement('div');
-    item.className = 'nav-item' + (page.id===currentPageId?' active':'');
-    item.innerHTML = `
-      <span class="ni-emoji">${page.emoji||'📋'}</span>
-      <span class="ni-label">${page.label}</span>
-      <span class="ni-actions">
-        <button title="Edit" onclick="event.stopPropagation();openEditPage('${page.id}')">✏️</button>
-        <button title="Delete" onclick="event.stopPropagation();confirmDelete('page','${page.id}')">🗑️</button>
-      </span>`;
-    item.addEventListener('click', ()=>{ currentPageId=page.id; renderApp(); });
-    section.appendChild(item);
+    item.className = 'nav-item' + (page.id === currentPageId ? ' active' : '');
+    item.innerHTML = `<span class="ni-label">${page.label}</span><span class="ni-actions"><button onclick="event.stopPropagation();confirmDelete('page','${page.id}')">🗑️</button></span>`;
+    item.addEventListener('click', () => { currentPageId = page.id; renderApp(); });
+    nav.appendChild(item);
   });
-  const addBtn = document.createElement('button');
-  addBtn.className = 'add-page-btn';
-  addBtn.innerHTML = '＋ Add page';
-  addBtn.onclick = openAddPage;
-  section.appendChild(addBtn);
-  container.appendChild(section);
 }
 
 function renderPage(page){
@@ -964,36 +410,17 @@ function renderPage(page){
 
   const header = document.createElement('div');
   header.className = 'page-header';
-
-  const titleEl = document.createElement('h1');
-  titleEl.contentEditable = 'true';
-  titleEl.setAttribute('data-placeholder','Page Title');
-  titleEl.style.fontFamily = "'Playfair Display',serif";
-  titleEl.style.fontSize = '28px';
-  titleEl.style.color = 'var(--purple)';
-  titleEl.style.lineHeight = '1';
-  titleEl.textContent = page.title || '';
-  titleEl.addEventListener('blur',()=>{ page.title=titleEl.textContent.trim(); saveData(); });
-
-  const subEl = document.createElement('p');
-  subEl.contentEditable = 'true';
-  subEl.setAttribute('data-placeholder','Subtitle…');
-  subEl.style.marginTop='5px';subEl.style.fontSize='13px';subEl.style.color='var(--text-muted)';subEl.style.fontWeight='300';
-  subEl.textContent = page.subtitle || '';
-  subEl.addEventListener('blur',()=>{ page.subtitle=subEl.textContent.trim(); saveData(); });
-
-  const headerLeft = document.createElement('div');
-  headerLeft.className = 'page-header-left';
-  headerLeft.appendChild(titleEl);
-  headerLeft.appendChild(subEl);
-
-  const now = new Date();
-  const dateBadge = document.createElement('div');
-  dateBadge.className = 'date-badge';
-  dateBadge.innerHTML = `<div class="day">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][now.getDay()]}</div><div class="ds">${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>`;
-
-  header.appendChild(headerLeft);
-  header.appendChild(dateBadge);
+  const h1 = document.createElement('h1');
+  h1.contentEditable = 'true';
+  h1.textContent = page.title || '';
+  h1.addEventListener('blur', () => { page.title = h1.textContent; saveData(); });
+  const p = document.createElement('p');
+  p.contentEditable = 'true';
+  p.textContent = page.subtitle || '';
+  p.addEventListener('blur', () => { page.subtitle = p.textContent; saveData(); });
+  header.appendChild(document.createElement('div')).appendChild(h1);
+  header.appendChild(document.createElement('div')).appendChild(p);
+  header.firstChild.className = 'page-header-left';
   view.appendChild(header);
 
   const cardsArea = document.createElement('div');
@@ -1001,77 +428,64 @@ function renderPage(page){
   cardsArea.id = 'cards-area';
 
   const rows = page.rows || [];
-  rows.forEach((row, rowIdx) => {
-    cardsArea.appendChild(makeRowGap(page.id, rowIdx));
-    cardsArea.appendChild(renderRow(page.id, row));
-  });
-  cardsArea.appendChild(makeRowGap(page.id, rows.length));
+  rows.forEach((row, idx) => {
+    const gap = document.createElement('div');
+    gap.className = 'row-gap';
+    gap.innerHTML = `<div class="row-gap-line"></div><button class="row-gap-add" onclick="addRowAt('${page.id}',${idx})">＋</button>`;
+    cardsArea.appendChild(gap);
+    
+    const rowEl = document.createElement('div');
+    rowEl.className = 'notion-row';
+    rowEl.dataset.rowid = row.id;
+    
+    const controls = document.createElement('div');
+    controls.className = 'row-controls';
+    controls.innerHTML = `<button class="row-ctl-btn" onclick="addColToRow('${page.id}','${row.id}')">＋col</button><button class="row-ctl-btn" onclick="confirmDelete('row','${page.id}','${row.id}')" style="color:var(--red)">🗑️</button>`;
+    rowEl.appendChild(controls);
 
-  const addRowBtn = document.createElement('button');
-  addRowBtn.className = 'add-row-bottom';
-  addRowBtn.innerHTML = '＋ Add new row';
-  addRowBtn.onclick = () => addRow(page.id);
-  cardsArea.appendChild(addRowBtn);
+    (row.cols || []).forEach((col, colIdx) => {
+      if(colIdx > 0){
+        const resizer = document.createElement('div');
+        resizer.className = 'col-resizer';
+        resizer.innerHTML = '<div class="col-resizer-inner"></div>';
+        rowEl.appendChild(resizer);
+      }
+      
+      const colEl = document.createElement('div');
+      colEl.className = 'notion-col';
+      colEl.dataset.colid = col.id;
+
+      (col.cards || []).forEach(card => {
+        colEl.appendChild(renderCard(page.id, row.id, col.id, card));
+      });
+
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-card-btn';
+      addBtn.innerHTML = '＋ Add card';
+      addBtn.onclick = () => openAddCard(page.id, row.id, col.id);
+      colEl.appendChild(addBtn);
+
+      rowEl.appendChild(colEl);
+    });
+
+    cardsArea.appendChild(rowEl);
+  });
+
+  const gap = document.createElement('div');
+  gap.className = 'row-gap';
+  gap.innerHTML = `<div class="row-gap-line"></div><button class="row-gap-add" onclick="addRowAt('${page.id}',${rows.length})">＋</button>`;
+  cardsArea.appendChild(gap);
+
+  const addRow = document.createElement('button');
+  addRow.className = 'add-row-bottom';
+  addRow.innerHTML = '＋ Add row';
+  addRow.onclick = () => addRowAt(page.id, rows.length);
+  cardsArea.appendChild(addRow);
 
   view.appendChild(cardsArea);
   container.appendChild(view);
-
-  initDnd(page.id);
 }
 
-function makeRowGap(pageId, insertIdx){
-  const gap = document.createElement('div');
-  gap.className = 'row-gap';
-  gap.dataset.insertIdx = insertIdx;
-  gap.innerHTML = `<div class="row-gap-line"></div><button class="row-gap-add" onclick="addRowAt('${pageId}',${insertIdx})">＋ Add row here</button>`;
-  return gap;
-}
-
-function renderRow(pageId, row){
-  const rowEl = document.createElement('div');
-  rowEl.className = 'notion-row';
-  rowEl.dataset.rowid = row.id;
-
-  const controls = document.createElement('div');
-  controls.className = 'row-controls';
-  controls.innerHTML = `
-    <button class="row-ctl-btn" onclick="addColToRow('${pageId}','${row.id}')" title="Add column">＋ col</button>
-    <button class="row-ctl-btn" onclick="confirmDelete('row','${pageId}','${row.id}')" title="Delete row" style="color:var(--red)">🗑️</button>`;
-  rowEl.appendChild(controls);
-
-  const cols = row.cols || [];
-  cols.forEach((col, colIdx) => {
-    if(colIdx > 0){
-      const resizer = document.createElement('div');
-      resizer.className = 'col-resizer';
-      resizer.innerHTML = '<div class="col-resizer-inner"></div>';
-      rowEl.appendChild(resizer);
-    }
-    rowEl.appendChild(renderCol(pageId, row.id, col));
-  });
-
-  return rowEl;
-}
-
-function renderCol(pageId, rowId, col){
-  const colEl = document.createElement('div');
-  colEl.className = 'notion-col';
-  colEl.dataset.colid = col.id;
-
-  (col.cards || []).forEach(card => {
-    colEl.appendChild(renderCard(pageId, rowId, col.id, card));
-  });
-
-  const addBtn = document.createElement('button');
-  addBtn.className = 'add-card-btn';
-  addBtn.innerHTML = '＋ Add card';
-  addBtn.onclick = () => openAddCard(pageId, rowId, col.id);
-  colEl.appendChild(addBtn);
-
-  return colEl;
-}
-
-// ── RENDER CARD ──
 function renderCard(pageId, rowId, colId, card){
   if(card.type === 'stat') return renderStatCard(pageId, rowId, colId, card);
   if(card.type === 'trello') return renderTrelloCard(pageId, rowId, colId, card);
@@ -1080,723 +494,229 @@ function renderCard(pageId, rowId, colId, card){
   const el = document.createElement('div');
   el.className = 'card';
   el.dataset.cardid = card.id;
-  el.dataset.pageId = pageId;
-  el.dataset.rowId = rowId;
-  el.dataset.colId = colId;
-  if(card.dark){ el.style.background='var(--purple)'; }
-
-  const handle = document.createElement('div');
-  handle.className = 'card-drag-handle';
-  handle.title = 'Drag to move';
-  handle.innerHTML = '⠿';
-  handle.setAttribute('draggable','true');
-  el.appendChild(handle);
 
   const header = document.createElement('div');
   header.className = 'card-header';
-
-  const emojiEl = document.createElement('span');
-  emojiEl.className = 'card-emoji';
-  emojiEl.title = 'Change icon';
-  emojiEl.textContent = card.emoji || '📋';
-  emojiEl.onclick = () => openEmojiPicker('card', pageId, rowId, colId, card.id);
-
-  const titleEl = document.createElement('span');
-  titleEl.className = 'card-title-text';
-  titleEl.contentEditable = 'true';
-  titleEl.setAttribute('data-placeholder','Title');
-  titleEl.textContent = card.title || '';
-  if(card.dark) titleEl.style.color = 'var(--lavender)';
-  titleEl.addEventListener('blur',()=>{ updateCardField(pageId,rowId,colId,card.id,'title',titleEl.textContent.trim()); });
-
+  
+  const emoji = document.createElement('span');
+  emoji.className = 'card-emoji';
+  emoji.textContent = card.emoji || '📋';
+  
+  const title = document.createElement('span');
+  title.className = 'card-title-text';
+  title.contentEditable = 'true';
+  title.textContent = card.title || '';
+  title.addEventListener('blur', () => { card.title = title.textContent; saveData(); });
+  
   const actions = document.createElement('div');
   actions.className = 'card-actions';
-  actions.innerHTML = `
-    <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button>
-    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
-
-  header.appendChild(emojiEl);
-  header.appendChild(titleEl);
+  actions.innerHTML = `<button onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button><button onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+  
+  header.appendChild(emoji);
+  header.appendChild(title);
   header.appendChild(actions);
   el.appendChild(header);
 
-  const bodyEl = document.createElement('div');
-  bodyEl.className = 'card-body';
-  bodyEl.contentEditable = 'true';
-  bodyEl.setAttribute('data-placeholder','Write content here…');
-  bodyEl.textContent = card.content || '';
-  if(card.dark) bodyEl.style.color = 'white';
-  bodyEl.addEventListener('blur',()=>{
-    updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
-  });
-  bodyEl.addEventListener('keydown', e=>{
-    if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
-  });
-  el.appendChild(bodyEl);
-
-  const filesEl = document.createElement('div');
-  filesEl.className = 'card-files';
-  filesEl.id = 'files-'+card.id;
-  renderFileChips(pageId, rowId, colId, card, filesEl);
-  el.appendChild(filesEl);
-
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.multiple = true;
-  fileInput.className = 'file-input-hidden';
-  fileInput.id = 'file-input-'+card.id;
-  fileInput.addEventListener('change', e => uploadFiles(e, pageId, rowId, colId, card.id));
-  el.appendChild(fileInput);
-
-  const attachBtn = document.createElement('button');
-  attachBtn.className = 'file-attach-btn';
-  attachBtn.title = 'Attach file';
-  attachBtn.textContent = '📎';
-  attachBtn.onclick = () => fileInput.click();
-  el.appendChild(attachBtn);
-
-  setupCardDrag(handle, el);
+  const body = document.createElement('div');
+  body.className = 'card-body';
+  body.contentEditable = 'true';
+  body.textContent = card.content || '';
+  body.addEventListener('blur', () => { card.content = body.textContent; saveData(); });
+  el.appendChild(body);
 
   return el;
 }
 
-// ── RENDER TRELLO CARD ──
 function renderTrelloCard(pageId, rowId, colId, card){
   const el = document.createElement('div');
   el.className = 'trello-card';
   el.dataset.cardid = card.id;
-  el.dataset.pageId = pageId;
-  el.dataset.rowId = rowId;
-  el.dataset.colId = colId;
-
-  const handle = document.createElement('div');
-  handle.className = 'trello-card-drag-handle';
-  handle.title = 'Drag to move';
-  handle.innerHTML = '⠿';
-  handle.setAttribute('draggable','true');
-  el.appendChild(handle);
 
   const header = document.createElement('div');
   header.className = 'trello-card-header';
-
-  const titleEl = document.createElement('input');
-  titleEl.className = 'trello-card-title';
-  titleEl.type = 'text';
-  titleEl.placeholder = 'Card title…';
-  titleEl.value = card.title || '';
-  titleEl.addEventListener('blur',()=>{ updateCardField(pageId,rowId,colId,card.id,'title',titleEl.value.trim()); });
-
+  
+  const title = document.createElement('input');
+  title.className = 'trello-card-title';
+  title.type = 'text';
+  title.value = card.title || '';
+  title.addEventListener('blur', () => { card.title = title.value; saveData(); });
+  
   const actions = document.createElement('div');
   actions.className = 'trello-card-actions';
-  actions.innerHTML = `
-    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
-
-  header.appendChild(titleEl);
+  actions.innerHTML = `<button onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+  
+  header.appendChild(title);
   header.appendChild(actions);
   el.appendChild(header);
 
-  const bodyEl = document.createElement('div');
-  bodyEl.className = 'trello-card-body';
-  bodyEl.contentEditable = 'true';
-  bodyEl.setAttribute('data-placeholder','Write description here…');
-  bodyEl.textContent = card.content || '';
-  bodyEl.addEventListener('blur',()=>{
-    updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
-  });
-  bodyEl.addEventListener('keydown', e=>{
-    if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
-  });
-  el.appendChild(bodyEl);
-
-  const filesEl = document.createElement('div');
-  filesEl.className = 'trello-card-files';
-  filesEl.id = 'files-'+card.id;
-  renderFileChips(pageId, rowId, colId, card, filesEl);
-  el.appendChild(filesEl);
-
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.multiple = true;
-  fileInput.className = 'file-input-hidden';
-  fileInput.id = 'file-input-'+card.id;
-  fileInput.addEventListener('change', e => uploadFiles(e, pageId, rowId, colId, card.id));
-  el.appendChild(fileInput);
-
-  const attachBtn = document.createElement('button');
-  attachBtn.className = 'file-attach-btn';
-  attachBtn.title = 'Attach file';
-  attachBtn.textContent = '📎';
-  attachBtn.onclick = () => fileInput.click();
-  el.appendChild(attachBtn);
-
-  setupCardDrag(handle, el);
+  const body = document.createElement('div');
+  body.className = 'trello-card-body';
+  body.contentEditable = 'true';
+  body.textContent = card.content || '';
+  body.addEventListener('blur', () => { card.content = body.textContent; saveData(); });
+  el.appendChild(body);
 
   return el;
 }
 
-// ── RENDER TRELLO EXTENDED CARD (NEW) ──
 function renderTrelloExtCard(pageId, rowId, colId, card){
   const el = document.createElement('div');
   el.className = 'trello-ext-card';
   el.dataset.cardid = card.id;
-  el.dataset.pageId = pageId;
-  el.dataset.rowId = rowId;
-  el.dataset.colId = colId;
-
-  const handle = document.createElement('div');
-  handle.className = 'trello-ext-card-drag-handle';
-  handle.title = 'Drag to move';
-  handle.innerHTML = '⠿';
-  handle.setAttribute('draggable','true');
-  el.appendChild(handle);
 
   const header = document.createElement('div');
   header.className = 'trello-ext-card-header';
-
-  const titleEl = document.createElement('input');
-  titleEl.className = 'trello-ext-card-title';
-  titleEl.type = 'text';
-  titleEl.placeholder = 'Card title…';
-  titleEl.value = card.title || '';
-  titleEl.addEventListener('blur',()=>{ updateCardField(pageId,rowId,colId,card.id,'title',titleEl.value.trim()); });
-
+  
+  const title = document.createElement('input');
+  title.className = 'trello-ext-card-title';
+  title.type = 'text';
+  title.value = card.title || '';
+  title.addEventListener('blur', () => { card.title = title.value; saveData(); });
+  
   const actions = document.createElement('div');
   actions.className = 'trello-ext-card-actions';
-  actions.innerHTML = `
-    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
-
-  header.appendChild(titleEl);
+  actions.innerHTML = `<button onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+  
+  header.appendChild(title);
   header.appendChild(actions);
   el.appendChild(header);
 
-  const bodyEl = document.createElement('div');
-  bodyEl.className = 'trello-ext-card-body';
-  bodyEl.contentEditable = 'true';
-  bodyEl.setAttribute('data-placeholder','Write content here…');
-  bodyEl.textContent = card.content || '';
-  bodyEl.addEventListener('blur',()=>{
-    updateCardField(pageId,rowId,colId,card.id,'content',bodyEl.textContent);
-  });
-  bodyEl.addEventListener('keydown', e=>{
-    if(e.key==='Enter'){ e.preventDefault(); document.execCommand('insertLineBreak'); }
-  });
-  el.appendChild(bodyEl);
-
-  const filesEl = document.createElement('div');
-  filesEl.className = 'trello-ext-card-files';
-  filesEl.id = 'files-'+card.id;
-  renderFileChips(pageId, rowId, colId, card, filesEl);
-  el.appendChild(filesEl);
-
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.multiple = true;
-  fileInput.className = 'file-input-hidden';
-  fileInput.id = 'file-input-'+card.id;
-  fileInput.addEventListener('change', e => uploadFiles(e, pageId, rowId, colId, card.id));
-  el.appendChild(fileInput);
-
-  const attachBtn = document.createElement('button');
-  attachBtn.className = 'file-attach-btn';
-  attachBtn.title = 'Attach file';
-  attachBtn.textContent = '📎';
-  attachBtn.onclick = () => fileInput.click();
-  el.appendChild(attachBtn);
-
-  setupCardDrag(handle, el);
+  const body = document.createElement('div');
+  body.className = 'trello-ext-card-body';
+  body.contentEditable = 'true';
+  body.textContent = card.content || '';
+  body.addEventListener('blur', () => { card.content = body.textContent; saveData(); });
+  el.appendChild(body);
 
   return el;
 }
 
 function renderStatCard(pageId, rowId, colId, card){
   const el = document.createElement('div');
-  el.className = 'stat-card' + (card.dark?' dark':'');
+  el.className = 'stat-card' + (card.dark ? ' dark' : '');
   el.dataset.cardid = card.id;
-  el.dataset.pageId = pageId;
-  el.dataset.rowId = rowId;
-  el.dataset.colId = colId;
 
-  const handle = document.createElement('div');
-  handle.className = 'card-drag-handle';
-  handle.title = 'Drag to move';
-  handle.innerHTML = '⠿';
-  handle.setAttribute('draggable','true');
-  el.appendChild(handle);
+  const label = document.createElement('div');
+  label.className = 'sc-label';
+  label.contentEditable = 'true';
+  label.textContent = card.label || '';
+  label.addEventListener('blur', () => { card.label = label.textContent; saveData(); });
+
+  const value = document.createElement('div');
+  value.className = 'sc-value';
+  value.contentEditable = 'true';
+  value.textContent = card.value || '';
+  value.addEventListener('blur', () => { card.value = value.textContent; saveData(); });
+
+  const sub = document.createElement('div');
+  sub.className = 'sc-sub';
+  sub.contentEditable = 'true';
+  sub.textContent = card.sub || '';
+  sub.addEventListener('blur', () => { card.sub = sub.textContent; saveData(); });
 
   const actions = document.createElement('div');
   actions.className = 'card-actions';
-  actions.style.cssText='position:absolute;top:8px;right:8px;';
-  actions.innerHTML = `
-    <button title="Toggle dark" onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button>
-    <button title="Delete" onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+  actions.style.cssText = 'position:absolute;top:8px;right:8px;';
+  actions.innerHTML = `<button onclick="toggleCardDark('${pageId}','${rowId}','${colId}','${card.id}')">🌙</button><button onclick="confirmDelete('card','${pageId}','${rowId}','${colId}','${card.id}')">🗑️</button>`;
+
+  el.appendChild(label);
+  el.appendChild(value);
+  el.appendChild(sub);
   el.appendChild(actions);
 
-  const labelEl = document.createElement('div');
-  labelEl.className = 'sc-label';
-  labelEl.contentEditable = 'true';
-  labelEl.setAttribute('data-placeholder','Label');
-  labelEl.textContent = card.label || '';
-  labelEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'label',labelEl.textContent.trim()));
-
-  const valueEl = document.createElement('div');
-  valueEl.className = 'sc-value';
-  valueEl.contentEditable = 'true';
-  valueEl.setAttribute('data-placeholder','Value');
-  valueEl.textContent = card.value || '';
-  valueEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'value',valueEl.textContent.trim()));
-
-  const subEl = document.createElement('div');
-  subEl.className = 'sc-sub';
-  subEl.contentEditable = 'true';
-  subEl.setAttribute('data-placeholder','Subtitle');
-  subEl.textContent = card.sub || '';
-  subEl.addEventListener('blur',()=>updateCardField(pageId,rowId,colId,card.id,'sub',subEl.textContent.trim()));
-
-  el.appendChild(labelEl);
-  el.appendChild(valueEl);
-  el.appendChild(subEl);
-
-  const filesEl = document.createElement('div');
-  filesEl.className = 'card-files';
-  filesEl.id = 'files-'+card.id;
-  filesEl.style.marginTop='8px';
-  renderFileChips(pageId,rowId,colId,card,filesEl);
-  el.appendChild(filesEl);
-
-  const fileInput = document.createElement('input');
-  fileInput.type='file';fileInput.multiple=true;fileInput.className='file-input-hidden';
-  fileInput.id='file-input-'+card.id;
-  fileInput.addEventListener('change', e=>uploadFiles(e,pageId,rowId,colId,card.id));
-  el.appendChild(fileInput);
-
-  const attachBtn = document.createElement('button');
-  attachBtn.className='file-attach-btn';attachBtn.title='Attach file';attachBtn.textContent='📎';
-  attachBtn.onclick=()=>fileInput.click();
-  el.appendChild(attachBtn);
-
-  setupCardDrag(handle, el);
   return el;
 }
 
-function renderFileChips(pageId, rowId, colId, card, container){
-  container.innerHTML = '';
-  (card.files||[]).forEach(f=>{
-    const chip = document.createElement('a');
-    chip.className = 'file-chip';
-    chip.href = f.url; chip.target = '_blank';
-    const icon = document.createElement('span');
-    icon.className = 'fc-icon'; icon.textContent = '📄';
-    const name = document.createTextNode(f.name);
-    const del = document.createElement('button');
-    del.className = 'fc-del'; del.textContent = '✕';
-    del.onclick = (e)=>{ e.preventDefault(); deleteFile(pageId,rowId,colId,card.id,f.storagePath); };
-    chip.appendChild(icon); chip.appendChild(name); chip.appendChild(del);
-    container.appendChild(chip);
-  });
-}
-
-// ── DRAG AND DROP ──
-let dragState = null;
-
-function setupCardDrag(handle, cardEl){
-  handle.addEventListener('dragstart', e => {
-    e.stopPropagation();
-    dragState = {
-      cardId: cardEl.dataset.cardid,
-      pageId: cardEl.dataset.pageId,
-      rowId: cardEl.dataset.rowId,
-      colId: cardEl.dataset.colId,
-    };
-    cardEl.classList.add('dragging');
-    const ghost = document.getElementById('dnd-ghost');
-    const titleEl = cardEl.querySelector('.card-title-text,.trello-card-title,.trello-ext-card-title,.sc-label');
-    ghost.textContent = titleEl ? (titleEl.textContent||titleEl.value||'Card') : 'Card';
-    ghost.style.display = 'block';
-    e.dataTransfer.setDragImage(ghost, 20, 20);
-    e.dataTransfer.effectAllowed = 'move';
-    setTimeout(()=>ghost.style.display='none',0);
-  });
-
-  handle.addEventListener('dragend', e => {
-    e.stopPropagation();
-    cardEl.classList.remove('dragging');
-    clearDndHighlights();
-    dragState = null;
-  });
-}
-
-function initDnd(pageId){
-  const area = document.getElementById('cards-area');
-  if(!area) return;
-
-  area.addEventListener('dragover', e => {
-    if(!dragState) return;
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-
-    const colEl = e.target.closest('.notion-col');
-    if(!colEl) return;
-
-    clearDndHighlights();
-    colEl.classList.add('drag-over-col');
-
-    const cards = [...colEl.querySelectorAll('.card,.stat-card,.trello-card,.trello-ext-card')].filter(c=>!c.classList.contains('dragging'));
-    let afterCard = null;
-    for(const c of cards){
-      const box = c.getBoundingClientRect();
-      if(e.clientY < box.top + box.height/2){ break; }
-      afterCard = c;
-    }
-    colEl._dropAfterCard = afterCard ? afterCard.dataset.cardid : null;
-  });
-
-  area.addEventListener('drop', e => {
-    if(!dragState) return;
-    e.preventDefault();
-
-    const colEl = e.target.closest('.notion-col');
-    if(!colEl) return;
-
-    const targetColId = colEl.dataset.colid;
-    const targetRowEl = colEl.closest('.notion-row');
-    const targetRowId = targetRowEl ? targetRowEl.dataset.rowid : null;
-    const afterCardId = colEl._dropAfterCard;
-
-    if(!targetRowId || !targetColId) return;
-
-    const page = getPage(pageId);
-    let movedCard = null;
-    for(const row of (page.rows||[])){
-      for(const col of (row.cols||[])){
-        const idx = (col.cards||[]).findIndex(c=>c.id===dragState.cardId);
-        if(idx !== -1){
-          movedCard = col.cards.splice(idx, 1)[0];
-          break;
-        }
-      }
-      if(movedCard) break;
-    }
-    if(!movedCard) return;
-
-    const targetRow = (page.rows||[]).find(r=>r.id===targetRowId);
-    if(!targetRow) return;
-    const targetCol = (targetRow.cols||[]).find(c=>c.id===targetColId);
-    if(!targetCol) return;
-    if(!targetCol.cards) targetCol.cards=[];
-
-    let insertIdx = targetCol.cards.length;
-    if(afterCardId){
-      const ai = targetCol.cards.findIndex(c=>c.id===afterCardId);
-      if(ai !== -1) insertIdx = ai + 1;
-    } else {
-      insertIdx = 0;
-    }
-    targetCol.cards.splice(insertIdx, 0, movedCard);
-
-    clearDndHighlights();
-    saveData();
-    renderApp();
-  });
-
-  area.addEventListener('dragleave', e => {
-    if(!e.relatedTarget || !area.contains(e.relatedTarget)){
-      clearDndHighlights();
-    }
-  });
-}
-
-function clearDndHighlights(){
-  document.querySelectorAll('.drag-over-col,.drag-over-row,.drop-active').forEach(el=>{
-    el.classList.remove('drag-over-col','drag-over-row','drop-active');
-  });
-}
-
-// ── CARD / ROW / COL OPERATIONS ──
-function updateCardField(pageId,rowId,colId,cardId,field,val){
-  const card = getCard(pageId,rowId,colId,cardId);
-  if(card){ card[field]=val; saveData(); }
-}
-
-window.toggleCardDark = (pageId,rowId,colId,cardId)=>{
-  const card = getCard(pageId,rowId,colId,cardId);
-  if(card){ card.dark=!card.dark; saveData(); renderApp(); }
-};
-
-function getPage(pageId){ return (appData.pages||[]).find(p=>p.id===pageId); }
-function getRow(pageId,rowId){ const pg=getPage(pageId); return pg?(pg.rows||[]).find(r=>r.id===rowId):null; }
-function getCol(pageId,rowId,colId){ const row=getRow(pageId,rowId); return row?(row.cols||[]).find(c=>c.id===colId):null; }
-function getCard(pageId,rowId,colId,cardId){ const col=getCol(pageId,rowId,colId); return col?(col.cards||[]).find(c=>c.id===cardId):null; }
-
-window.addColToRow = (pageId, rowId)=>{
-  const row = getRow(pageId,rowId);
-  if(!row) return;
-  if(!row.cols) row.cols=[];
-  row.cols.push({ id:'col-'+Date.now(), cards:[] });
-  saveData(); renderApp();
-};
-
-window.deleteRow = (pageId,rowId)=>{ confirmDelete('row',pageId,rowId); };
-
-function addRow(pageId){
-  addRowAt(pageId, getPage(pageId)?.rows?.length||0);
-}
-
-window.addRowAt = (pageId, insertIdx)=>{
-  const pg = getPage(pageId);
-  if(!pg) return;
-  if(!pg.rows) pg.rows=[];
-  const newRow = {
-    id:'row-'+Date.now(),
-    cols:[
-      { id:'col-'+Date.now()+'a', cards:[] },
-      { id:'col-'+Date.now()+'b', cards:[] },
-    ]
-  };
-  pg.rows.splice(insertIdx, 0, newRow);
-  saveData(); renderApp();
-};
-
-// ── PAGE OPERATIONS ──
-window.openAddPage = ()=>{
-  pendingPageEdit = null;
-  document.getElementById('modal-page-title').textContent = 'New Page';
-  document.getElementById('page-name-input').value = '';
-  setSelectedEmoji('page-emoji-row','📋');
-  document.getElementById('page-emoji-custom').value = '';
-  openModal('modal-page');
-};
-window.openEditPage = (pageId)=>{
-  const pg = getPage(pageId);
-  if(!pg) return;
-  pendingPageEdit = pageId;
-  document.getElementById('modal-page-title').textContent = 'Edit Page';
-  document.getElementById('page-name-input').value = pg.label;
-  setSelectedEmoji('page-emoji-row', pg.emoji||'📋');
-  openModal('modal-page');
-};
-document.getElementById('modal-page-save').onclick = ()=>{
-  const name = document.getElementById('page-name-input').value.trim();
-  if(!name) return;
-  const emoji = getSelectedEmoji('page-emoji-row','page-emoji-custom');
-  if(pendingPageEdit){
-    const pg = getPage(pendingPageEdit);
-    if(pg){ pg.label=name; pg.emoji=emoji; }
-  } else {
-    const newPage = {
-      id:'page-'+Date.now(), emoji, label:name,
-      title:name, subtitle:'', rows:[]
-    };
-    appData.pages.push(newPage);
-    currentPageId = newPage.id;
-  }
-  saveData(); closeModal('modal-page'); renderApp();
-};
-
-// ── ADD CARD ──
-window.openAddCard = (pageId,rowId,colId)=>{
-  pendingCardTarget = {pageId,rowId,colId};
-  document.getElementById('card-title-input').value = '';
-  document.getElementById('card-content-input').value = '';
-  document.getElementById('card-type-input').value = 'text';
-  updateCardTypeFields();
-  setSelectedEmoji('card-emoji-row','📋');
-  document.getElementById('card-emoji-custom').value = '';
-  openModal('modal-card');
-};
-
-// Update labels based on card type
-function updateCardTypeFields(){
+function updateCardTypeLabels(){
   const type = document.getElementById('card-type-input').value;
   const emojiLabel = document.getElementById('emoji-label');
   const titleLabel = document.getElementById('title-label');
   const contentLabel = document.getElementById('content-label');
   const emojiRow = document.getElementById('card-emoji-row');
 
-  if(type === 'trello'){
-    emojiLabel.style.display = 'none';
-    emojiRow.style.display = 'none';
-    titleLabel.textContent = 'Card Title';
-    contentLabel.textContent = 'Description';
-  } else if(type === 'trello-ext'){
-    emojiLabel.style.display = 'none';
-    emojiRow.style.display = 'none';
-    titleLabel.textContent = 'Card Title';
-    contentLabel.textContent = 'Content';
-  } else {
-    emojiLabel.style.display = 'block';
-    emojiRow.style.display = 'flex';
-    titleLabel.textContent = type === 'stat' ? 'Label' : 'Card Title';
-    contentLabel.textContent = type === 'stat' ? 'Value' : 'Content';
-  }
+  emojiLabel.style.display = (type === 'stat' || type === 'trello' || type === 'trello-ext') ? 'none' : 'block';
+  emojiRow.style.display = (type === 'stat' || type === 'trello' || type === 'trello-ext') ? 'none' : 'flex';
+  titleLabel.textContent = type === 'stat' ? 'Label' : 'Title';
+  contentLabel.textContent = type === 'stat' ? 'Value' : 'Content';
 }
 
-document.getElementById('card-type-input').addEventListener('change', updateCardTypeFields);
+document.getElementById('card-type-input').addEventListener('change', updateCardTypeLabels);
 
-document.getElementById('modal-card-save').onclick = ()=>{
+document.getElementById('modal-page-save').onclick = () => {
+  const name = document.getElementById('page-name-input').value.trim();
+  if(!name) return;
+  appData.pages.push({id: 'page-'+Date.now(), label: name, title: name, subtitle: '', rows: []});
+  saveData();
+  closeModal('modal-page');
+  renderApp();
+  document.getElementById('page-name-input').value = '';
+};
+
+document.getElementById('modal-card-save').onclick = () => {
   if(!pendingCardTarget) return;
-  const {pageId,rowId,colId} = pendingCardTarget;
-  const col = getCol(pageId,rowId,colId);
+  const {pageId, rowId, colId} = pendingCardTarget;
+  const col = getCol(pageId, rowId, colId);
   if(!col) return;
+
   const type = document.getElementById('card-type-input').value;
   const title = document.getElementById('card-title-input').value.trim();
   const content = document.getElementById('card-content-input').value.trim();
   
   let newCard;
-  if(type === 'trello'){
-    newCard = {
-      id:'card-'+Date.now(),
-      type:'trello',
-      title: title || 'Untitled',
-      content: content || '',
-      files: []
-    };
+  if(type === 'stat'){
+    newCard = {id: 'card-'+Date.now(), type: 'stat', label: title || 'Label', value: content || '', sub: ''};
+  } else if(type === 'trello'){
+    newCard = {id: 'card-'+Date.now(), type: 'trello', title: title || 'Card', content: content || ''};
   } else if(type === 'trello-ext'){
-    newCard = {
-      id:'card-'+Date.now(),
-      type:'trello-ext',
-      title: title || 'Untitled',
-      content: content || '',
-      files: []
-    };
-  } else if(type === 'stat'){
-    const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
-    newCard = {
-      id:'card-'+Date.now(),
-      type:'stat',
-      emoji,
-      label: title || 'Label',
-      value: content || '',
-      sub: '',
-      files: []
-    };
+    newCard = {id: 'card-'+Date.now(), type: 'trello-ext', title: title || 'Card', content: content || ''};
   } else {
-    const emoji = getSelectedEmoji('card-emoji-row','card-emoji-custom');
-    newCard = {
-      id:'card-'+Date.now(),
-      type:'text',
-      emoji,
-      title: title || 'Untitled',
-      content: content || '',
-      files: []
-    };
+    const emoji = document.querySelector('#card-emoji-row .emoji-opt.selected')?.dataset.emoji || '📋';
+    newCard = {id: 'card-'+Date.now(), type: 'text', emoji, title: title || 'Card', content: content || ''};
   }
   
-  if(!col.cards) col.cards=[];
+  if(!col.cards) col.cards = [];
   col.cards.push(newCard);
-  saveData(); closeModal('modal-card'); renderApp();
+  saveData();
+  closeModal('modal-card');
+  renderApp();
 };
 
-// ── DELETE ──
-window.confirmDelete = (type,...args)=>{
-  pendingDelete = {type,args};
-  openModal('modal-delete');
-};
-document.getElementById('modal-delete-confirm').onclick = ()=>{
+document.getElementById('modal-delete-confirm').onclick = () => {
   if(!pendingDelete) return;
-  const {type,args} = pendingDelete;
-  if(type==='page'){
-    appData.pages = appData.pages.filter(p=>p.id!==args[0]);
-    if(currentPageId===args[0]) currentPageId = appData.pages[0]?.id;
-  } else if(type==='row'){
-    const [pageId,rowId] = args;
-    const pg = getPage(pageId);
-    if(pg) pg.rows=(pg.rows||[]).filter(r=>r.id!==rowId);
-  } else if(type==='card'){
-    const [pageId,rowId,colId,cardId] = args;
-    const col = getCol(pageId,rowId,colId);
-    if(col) col.cards=(col.cards||[]).filter(c=>c.id!==cardId);
+  const {type, args} = pendingDelete;
+  
+  if(type === 'page'){
+    appData.pages = appData.pages.filter(p => p.id !== args[0]);
+    if(currentPageId === args[0]) currentPageId = appData.pages[0]?.id;
+  } else if(type === 'row'){
+    const [pageId, rowId] = args;
+    const page = getPage(pageId);
+    if(page) page.rows = (page.rows || []).filter(r => r.id !== rowId);
+  } else if(type === 'card'){
+    const [pageId, rowId, colId, cardId] = args;
+    const col = getCol(pageId, rowId, colId);
+    if(col) col.cards = (col.cards || []).filter(c => c.id !== cardId);
   }
-  saveData(); closeModal('modal-delete'); renderApp();
+  saveData();
+  closeModal('modal-delete');
+  renderApp();
 };
 
-// ── EMOJI PICKER ──
-window.openEmojiPicker = (targetType,...args)=>{
-  pendingEmojiTarget = {targetType,args};
-  openModal('modal-emoji');
-};
-document.getElementById('pick-emoji-confirm').onclick = ()=>{
-  if(!pendingEmojiTarget) return;
-  const {targetType,args} = pendingEmojiTarget;
-  const emoji = getSelectedEmoji('pick-emoji-row','pick-emoji-custom');
-  if(targetType==='card'){
-    const [pageId,rowId,colId,cardId] = args;
-    const card = getCard(pageId,rowId,colId,cardId);
-    if(card){ card.emoji=emoji; saveData(); }
-  }
-  closeModal('modal-emoji'); renderApp();
-};
-document.getElementById('pick-emoji-row').querySelectorAll('.emoji-opt').forEach(el=>{
-  el.addEventListener('click',function(){
-    document.querySelectorAll('#pick-emoji-row .emoji-opt').forEach(e=>e.classList.remove('selected'));
+document.querySelectorAll('.emoji-opt').forEach(el => {
+  el.addEventListener('click', function(){
+    this.parentElement.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
     this.classList.add('selected');
   });
 });
 
-// ── LOGO EDIT ──
-document.getElementById('logo-area').addEventListener('dblclick',()=>{
-  const name = prompt('Company name:',appData.meta.companyName);
-  if(name!==null){ appData.meta.companyName=name; saveData(); renderApp(); }
-});
-document.getElementById('logo-icon').addEventListener('click',e=>{
-  e.stopPropagation();
-  const icon = prompt('Logo emoji:',appData.meta.logoIcon);
-  if(icon){ appData.meta.logoIcon=icon; saveData(); renderApp(); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) m.classList.remove('show'); });
 });
 
-// ── FILE UPLOAD ──
-async function uploadFiles(e, pageId, rowId, colId, cardId){
-  const files = [...e.target.files];
-  if(!files.length) return;
-  for(const file of files){
-    const path = `files/${currentUser.uid}/${cardId}/${Date.now()}_${file.name}`;
-    const storageRef = ref(storage,path);
-    await uploadBytes(storageRef,file);
-    const url = await getDownloadURL(storageRef);
-    const card = getCard(pageId,rowId,colId,cardId);
-    if(card){
-      if(!card.files) card.files=[];
-      card.files.push({name:file.name,url,storagePath:path});
-      saveData();
-    }
-  }
-  e.target.value = '';
-  renderApp();
-}
-
-window.deleteFile = async(pageId,rowId,colId,cardId,storagePath)=>{
-  const card = getCard(pageId,rowId,colId,cardId);
-  if(!card) return;
-  card.files=(card.files||[]).filter(f=>f.storagePath!==storagePath);
-  try{ await deleteObject(ref(storage,storagePath)); }catch(e){}
-  saveData(); renderApp();
-};
-
-// ── MODAL HELPERS ──
-window.openModal = id=>document.getElementById(id).classList.add('show');
-window.closeModal = id=>document.getElementById(id).classList.remove('show');
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('show'); });
-});
-
-function getSelectedEmoji(rowId,customId){
-  const custom = document.getElementById(customId).value.trim();
-  if(custom) return custom;
-  const sel = document.querySelector(`#${rowId} .emoji-opt.selected`);
-  return sel ? sel.dataset.emoji : '📋';
-}
-function setSelectedEmoji(rowId,emoji){
-  document.querySelectorAll(`#${rowId} .emoji-opt`).forEach(e=>{
-    e.classList.toggle('selected',e.dataset.emoji===emoji);
-  });
-}
-document.querySelectorAll('.emoji-row').forEach(row=>{
-  row.querySelectorAll('.emoji-opt').forEach(el=>{
-    el.addEventListener('click',function(){
-      row.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected'));
-      this.classList.add('selected');
-    });
-  });
-});
+function getPage(pageId){ return appData.pages.find(p => p.id === pageId); }
+function getRow(pageId, rowId){ const p = getPage(pageId); return p ? (p.rows || []).find(r => r.id === rowId) : null; }
+function getCol(pageId, rowId, colId){ const r = getRow(pageId, rowId); return r ? (r.cols || []).find(c => c.id === colId) : null; }
+function getCard(pageId, rowId, colId, cardId){ const c = getCol(pageId, rowId, colId); return c ? (c.cards || []).find(card => card.id === cardId) : null; }
 </script>
 </body>
 </html>
